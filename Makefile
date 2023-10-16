@@ -1,6 +1,7 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -lreadline
+CFLAGS = -Wall -Wextra -Werror
+LDFLAGS = -lreadline
 SRCS = main.c 
 OBJS = $(SRCS:.c=.o)
 
@@ -13,7 +14,7 @@ $(LIBFT):
 	$(MAKE) -C $(LIBFT_PATH)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:58 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/15 22:56:22 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:36:37 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,17 @@
 #include <sys/types.h>
 // WAIT 
 #include <sys/wait.h>
+
+// typedef struct s_token
+// {
+//     char *token;
+//     t_token 
+// }   t_token;
+
+// typedef struct s_input
+// {
+//     char *input;
+    
+// }   t_input;
 
 #endif

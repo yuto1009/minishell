@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:58 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/16 13:36:37 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/16 21:47:06 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+// LIMITS
+#include <limits.h>
 // ACCESS
 #include <unistd.h>
 // SIGNAL
@@ -27,6 +29,8 @@
 #include <sys/types.h>
 // WAIT 
 #include <sys/wait.h>
+// LIBFT
+#include "libft/libft.h"
 
 // typedef struct s_token
 // {

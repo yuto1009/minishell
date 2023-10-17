@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:58 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/16 21:47:06 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/17 12:04:18 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,5 @@
 #include <sys/wait.h>
 // LIBFT
 #include "libft/libft.h"
-
-// typedef struct s_token
-// {
-//     char *token;
-//     t_token 
-// }   t_token;
-
-// typedef struct s_input
-// {
-//     char *input;
-    
-// }   t_input;
 
 #endif

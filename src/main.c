@@ -6,11 +6,11 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:27 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/17 12:42:47 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/17 16:43:24 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 void	fatal_error(const char *msg) __attribute__((noreturn));
 void    err_exit(const char *location, const char *msg, int status) __attribute__((noreturn));

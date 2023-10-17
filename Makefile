@@ -2,7 +2,7 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 LDFLAGS = -lreadline
-SRCS = main.c 
+SRCS = src/main.c 
 OBJS = $(SRCS:.c=.o)
 
 LIBFT_PATH = ./libft

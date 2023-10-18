@@ -6,12 +6,13 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 14:21:01 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/18 15:31:59 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/18 23:58:12 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+// トークンを作成、文字列と種類を格納する
 t_token *new_token(char *word, t_token_kind kind)
 {
     t_token *token;
@@ -29,7 +30,8 @@ bool is_blank(char c)
     return (c == ' ' || c == '\t' || c == '\n');
 }
 
-bool consume_blank(char **rest, char *line)
+// 文字列の先頭を空白文字がなくなるまでポインタを進める
+bool consume_blank(char **rest, char *line) 
 {
     if (is_blank(*line))
     {
@@ -47,6 +49,7 @@ bool startswith(const char *s, const char *keyword)
     return (ft_memcmp(s, keyword, ft_strlen(keyword)) == 0);
 }
 
+// 文字列が特定の演算子で始まるか確認
 bool is_operator(const char *s)
 {
     static const char *operators[] = {"||", "&", "&&", ";", ";;", "(", ")", "|", "\n"};
@@ -61,6 +64,7 @@ bool is_operator(const char *s)
     return (false);
 }
 
+// 文字がシェルにおいて特別な意味を持つメタ文字か確認
 bool is_metacharacter(char c)
 {
     return (c && ft_strchr("|&;()<> \t\n",c));
@@ -98,7 +102,21 @@ t_token *word(char **rest, char *line)
     char *word;
 
     while (*line && !is_metacharacter(*line))
-        line++;
+    {
+        if (*line == SINGLE_QUOTE_CHAR)
+        {
+            line++; // クオートをスキップ
+            while (*line != SINGLE_QUOTE_CHAR)
+            {
+                if (*line == '\0')
+                    todo("Unclosed single quote");
+                line++;
+            }
+            line++; // クオートをスキップ
+        }
+        else
+            line++;
+    }
     word = strndup(start, line - start);    // 作る?
     if (word == NULL)
         fatal_error("strndup");
@@ -106,6 +124,7 @@ t_token *word(char **rest, char *line)
     return (new_token(word, TK_WORD));
 }
 
+// 文字列をトークン化して連結リストに格納する
 t_token *tokenize(char *line)
 {
     t_token head;
@@ -115,7 +134,7 @@ t_token *tokenize(char *line)
     token = &head;
     while (*line)
     {
-        if (consume_blank(&line, line))
+        if (consume_blank(&line, line)) // 空白文字がなくなるまで文字列のポインタを移動
             continue;
         else if (is_operator(line))
             token = token->next = operator(&line, line);

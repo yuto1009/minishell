@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:27 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/18 14:20:33 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/18 23:53:54 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int exec(char *argv[])
         if (ft_strchr(path, '/') == NULL)
             path = search_path(path);
         validate_access(path, argv[0]);
-        execve(path, argv, environ);
+        execve(path, argv, environ);    // 実行される　現在のプロセスが新しいプロセスに置き換わる
         fatal_error("execve");
     }
     else    // 親プロセスの場合
@@ -78,6 +78,7 @@ int exec(char *argv[])
     }
 }
 
+// 
 void interpret(char *const line, int *stat_loc)
 {   
     t_token *token;
@@ -88,6 +89,7 @@ void interpret(char *const line, int *stat_loc)
         ;
     else
     {
+        expand(token);
         argv = token_list_to_argv(token);
         *stat_loc = exec(argv);
         free_argv(argv);

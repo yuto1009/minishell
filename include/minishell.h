@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:58 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/17 22:59:36 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/18 15:09:51 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,14 @@
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <stdbool.h>
 #include "../libft/libft.h"
 
 // error.c
-void todo(const char *msg) __attribute__((nonreturn));
-void fatal_error(const char *msg) __attribute__((nonreturn));
-void assert_error(const char *msg) __attribute__((nonreturn));
-void err_exit(const char *location, const char *msg, int status) __attribute__((nonreturn));
+void todo(const char *msg) __attribute__((noreturn));
+void fatal_error(const char *msg) __attribute__((noreturn));
+void assert_error(const char *msg) __attribute__((noreturn));
+void err_exit(const char *location, const char *msg, int status) __attribute__((noreturn));
 
 // tokenize.c
 typedef enum e_token_kind {
@@ -40,11 +41,13 @@ typedef enum e_token_kind {
     TK_EOF,
 } t_token_kind;
 
-typedef struct s_token {
+typedef struct s_token t_token;
+
+struct s_token {
     char *word;
     t_token_kind kind;
     t_token *next;
-} t_token;
+};
 
 t_token *tokenize(char *line);
 char **token_list_to_argv(t_token *token);

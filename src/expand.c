@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:34:54 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/22 12:47:58 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/22 17:48:04 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,48 +32,84 @@ void append_char(char **s, char c)
     *s = new;
 }
 
-void quote_removal(t_token *token)
+void remove_single_quote(char **dst, char **rest, char *p)
+{
+    if (*p == SINGLE_QUOTE_CHAR)
+    {
+        // クオートをスキップ
+        p++;
+        while (*p != SINGLE_QUOTE_CHAR)
+        {
+            if (*p == '\0')
+                assert_error("Unclosed single quote");
+            append_char(dst, *p++);
+        }
+        // クオートをスキップ
+        p++;
+        *rest = p;
+    }
+    else
+    {
+        assert_error("Expected single quote");
+    }
+}
+
+void remove_double_quote(char **dst, char **rest, char *p)
+{
+    if (*p == DOUBLE_QUOTE_CHAR)
+    {
+        // クオートをスキップ
+        p++;
+        while (*p != DOUBLE_QUOTE_CHAR)
+        {
+            if (*p == '\0')
+            {
+                assert_error("Unclosed double quote");
+            }
+                append_char(dst, *p++);
+        }
+            // クオートをスキップ
+            p++;
+            *rest = p;
+    }
+    else
+    {
+        assert_error("Expected double quote");
+    }
+}
+
+void remove_quote(t_token *token)
 {
     char *new_word;
     char *p;
     
     if (token == NULL || token->kind != TK_WORD || token->word == NULL)
-        return;
+        return ;
     p = token->word;
     new_word = NULL;
-    while(*p && !is_metacharacter(*p))
+    while (*p && !is_metacharacter(*p))
     {
         if (*p == SINGLE_QUOTE_CHAR)
-        {
-            p++;    // クオートをスキップ
-            while (*p != SINGLE_QUOTE_CHAR)
-            {
-                if (*p == '\0')
-                    assert_error("Unclosed single quote");
-                append_char(&new_word, *p++);
-            }
-            p++;    // クオートをスキップ
-        }
+            remove_single_quote(&new_word, &p, p);
         else if (*p == DOUBLE_QUOTE_CHAR)
-        {
-            p++;    // クオートをスキップ
-            while (*p != DOUBLE_QUOTE_CHAR)
-            {
-                if (*p == '\0')
-                    assert_error("Unclosed double quote");
-                append_char(&new_word, *p++);
-            }
-            p++;    // クオートをスキップ
-        }
+            remove_double_quote(&new_word, &p, p);
         else
             append_char(&new_word, *p++);
     }
     free(token->word);
     token->word = new_word;
-    quote_removal(token->next);
+    remove_quote(token->next);
 }
 
-void expand(t_token *token)
+void expand_quote_removal(t_node *node)
 {
-    quote_removal(token);
+    if (node == NULL)
+        return ;
+    remove_quote(node->args);
+    expand_quote_removal(node->next);
+}
+
+void expand(t_node *node)
+{
+    expand_quote_removal(node);
 }

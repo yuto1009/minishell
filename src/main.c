@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:27 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/22 14:57:52 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/22 17:40:07 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ int exec(char *argv[])
 void interpret(char *const line, int *status)
 {   
     t_token *token;
-    char **argv;   
+    char **argv;
+    t_node *node;
     
     token = tokenize(line);
     if (token->kind == TK_EOF)
@@ -91,10 +92,12 @@ void interpret(char *const line, int *status)
         *status = ERROR_TOKENIZE;
     else
     {
-        expand(token);  // トークンを展開
-        argv = token_list_to_argv(token);
+        node = parse(token);
+        expand(node);
+        argv = token_list_to_argv(node->args);
         *status = exec(argv);
         free_argv(argv);
+        free_node(node);
     }
     free_token(token);
 }

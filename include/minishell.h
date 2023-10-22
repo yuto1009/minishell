@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:58 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/22 14:54:52 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/22 17:17:07 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,17 @@ struct s_token {
     t_token *next;
 };
 
+typedef enum e_node_kind {
+    ND_SIMPLE_CMD,
+} t_node_kind;
+
+typedef struct s_node t_node;
+struct s_node {
+    t_token *args;
+    t_node_kind kind;
+    t_node *next;
+};
+
 t_token *tokenize(char *line);
 char **token_list_to_argv(t_token *token);
 t_token *new_token(char *word, t_token_kind kind);
@@ -68,10 +79,18 @@ t_token *operator(char **rest, char *line);
 t_token *word(char **rest, char *line);
 
 // expand.c
-void expand(t_token *token);
+void expand(t_node *node);
 
 // destructor.c
 void free_token(t_token *token);
 void free_argv(char **argv);
+void free_node(t_node *node);
+
+// parse.c
+t_node *parse(t_token *token);
+bool at_eof(t_token *token);
+t_node *new_node(t_node_kind kind);
+void append_token(t_token **tokens, t_token *token);
+t_token *tokendup(t_token *token);
 
 #endif

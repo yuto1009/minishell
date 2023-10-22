@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:34:54 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/18 23:53:15 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/22 12:47:58 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,18 @@ void quote_removal(t_token *token)
             while (*p != SINGLE_QUOTE_CHAR)
             {
                 if (*p == '\0')
-                    todo("Unclosed single quote");
+                    assert_error("Unclosed single quote");
+                append_char(&new_word, *p++);
+            }
+            p++;    // クオートをスキップ
+        }
+        else if (*p == DOUBLE_QUOTE_CHAR)
+        {
+            p++;    // クオートをスキップ
+            while (*p != DOUBLE_QUOTE_CHAR)
+            {
+                if (*p == '\0')
+                    assert_error("Unclosed double quote");
                 append_char(&new_word, *p++);
             }
             p++;    // クオートをスキップ

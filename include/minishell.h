@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:58 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/18 23:44:51 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/22 14:54:52 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,18 @@
 #include "../libft/libft.h"
 
 // error.c
+# define ERROR_TOKENIZE 258
+extern bool syntax_error;
 void todo(const char *msg) __attribute__((noreturn));
 void fatal_error(const char *msg) __attribute__((noreturn));
 void assert_error(const char *msg) __attribute__((noreturn));
 void err_exit(const char *location, const char *msg, int status) __attribute__((noreturn));
+void    tokenize_error(const char *location, char **rest, char *line);
 
 // tokenize.c
 # define SINGLE_QUOTE_CHAR '\''
+# define DOUBLE_QUOTE_CHAR '"'
+
 typedef enum e_token_kind {
     TK_WORD,    // 単語
     TK_RESERVED,    // 予約語

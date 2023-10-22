@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 14:21:01 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/18 23:58:12 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/22 15:21:59 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ bool startswith(const char *s, const char *keyword)
 // 文字列が特定の演算子で始まるか確認
 bool is_operator(const char *s)
 {
-    static const char *operators[] = {"||", "&", "&&", ";", ";;", "(", ")", "|", "\n"};
+    static const char *operators[] = {"||", "&", "&&", ";", ";;", "(", ")", "|", "\n"}; // 演算子　区切り文字
     size_t i = 0;
 
     while (i < sizeof(operators) / sizeof(*operators)) 
@@ -106,16 +106,37 @@ t_token *word(char **rest, char *line)
         if (*line == SINGLE_QUOTE_CHAR)
         {
             line++; // クオートをスキップ
-            while (*line != SINGLE_QUOTE_CHAR)
+            while (*line && *line != SINGLE_QUOTE_CHAR)
+                line++; // クオートをスキップ
+            if (*line == '\0')
             {
-                if (*line == '\0')
-                    todo("Unclosed single quote");
+                tokenize_error("Unclosed single quote", &line, line);
+                break;
+            }
+            else
+            {
                 line++;
             }
-            line++; // クオートをスキップ
+        }
+        else if (*line == DOUBLE_QUOTE_CHAR)
+        {
+            line++;
+            while (*line && *line != DOUBLE_QUOTE_CHAR)
+                line++; // クオートをスキップ
+            if (*line == '\0')
+            {
+                tokenize_error("Unclosed double quote", &line, line);
+                break;
+            }
+            else
+            {
+                line++;
+            }
         }
         else
+        {
             line++;
+        }
     }
     word = strndup(start, line - start);    // 作る?
     if (word == NULL)
@@ -130,6 +151,7 @@ t_token *tokenize(char *line)
     t_token head;
     t_token *token;
 
+    syntax_error = false;
     head.next = NULL;
     token = &head;
     while (*line)
@@ -141,7 +163,7 @@ t_token *tokenize(char *line)
         else if (is_word(line))
             token = token->next = word(&line, line);
         else   
-            assert_error("Unexpected Token");
+            tokenize_error("Unexpected Token", &line, line);
     }
     token->next = new_token(NULL, TK_EOF);
     return (head.next);

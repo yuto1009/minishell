@@ -15,7 +15,7 @@ cleanup() {
 	rm -f cmp out a.out print_args
 }
 assert() {
-	printf '%-50s:' "\"$1\""
+	printf '%-50s:' "[$1]"
 	# exit status
 	echo -n -e "$1" | bash >cmp 2>&-
 	expected=$?
@@ -55,7 +55,13 @@ assert "/print_args 'hello	world' '42Tokyo'"
 assert "echo 'hello	world' '42Tokyo'"
 assert "echo '\"hello	world\"' '42Tokyo'"
 
+## double quote
+assert './print_args "hello   world" "42Tokyo"'
+assert 'echo "hello   world" "42Tokyo"'
+assert "echo \"'hello   world'\" \"42Tokyo\""
+
 ## combination
 assert "echo hello'    world'"
+assert "echo hello'  world  '\"  42Tokyo  \""
 cleanup
 echo 'all OK'

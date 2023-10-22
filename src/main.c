@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:27 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/18 23:53:54 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/22 14:57:52 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int exec(char *argv[])
         fatal_error("fork");
     else if (pid == 0)  // 子プロセスの場合
     {
-        if (ft_strchr(path, '/') == NULL)
+        if (ft_strchr(path, '/') == NULL)   // pwd ls
             path = search_path(path);
         validate_access(path, argv[0]);
         execve(path, argv, environ);    // 実行される　現在のプロセスが新しいプロセスに置き換わる
@@ -79,7 +79,7 @@ int exec(char *argv[])
 }
 
 // 
-void interpret(char *const line, int *stat_loc)
+void interpret(char *const line, int *status)
 {   
     t_token *token;
     char **argv;   
@@ -87,11 +87,13 @@ void interpret(char *const line, int *stat_loc)
     token = tokenize(line);
     if (token->kind == TK_EOF)
         ;
+    else if (syntax_error)
+        *status = ERROR_TOKENIZE;
     else
     {
-        expand(token);
+        expand(token);  // トークンを展開
         argv = token_list_to_argv(token);
-        *stat_loc = exec(argv);
+        *status = exec(argv);
         free_argv(argv);
     }
     free_token(token);

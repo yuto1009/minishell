@@ -11,21 +11,25 @@ LIBFT = $(LIBFT_PATH)/libft.a
 all: $(LIBFT) $(NAME) 
 
 $(LIBFT):
-	$(MAKE) -C $(LIBFT_PATH)
+	@$(MAKE) -C $(LIBFT_PATH)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	@echo "Successfully compiled $(NAME)"
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
-	$(MAKE) -C $(LIBFT_PATH) clean
+	@rm -f $(OBJS)
+	@$(MAKE) -C $(LIBFT_PATH) clean
+	@echo $@
 
-fclean: clean
-	rm -f $(NAME)
-	$(MAKE) -C $(LIBFT_PATH) fclean
+fclean:
+	@rm -f $(OBJS)
+	@rm -f $(NAME)
+	@$(MAKE) -C $(LIBFT_PATH) fclean
+	@echo $@
 
 re: fclean all
 

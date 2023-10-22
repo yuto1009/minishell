@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 16:48:25 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/22 17:15:21 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/22 18:35:14 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ t_node *parse(t_token *token)
         if (token->kind == TK_WORD)
         {
             append_token(&node->args, tokendup(token));
+            token = token->next;
         }
         else
         {
-            todo("Implement parser");
+            parse_error("Unexpected Token", &token, token);
         }
-        token = token->next;
     }
     return (node);
 }

@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:58 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/22 17:17:07 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/22 18:16:31 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,27 @@
 #include <stdbool.h>
 #include "../libft/libft.h"
 
-// error.c
 # define ERROR_TOKENIZE 258
+# define ERROR_PARSE 258
+# define SINGLE_QUOTE_CHAR '\''
+# define DOUBLE_QUOTE_CHAR '"'
+
+typedef struct s_token t_token;
+typedef enum e_token_kind t_token_kind;
+typedef enum e_node_kind t_node_kind;
+typedef struct s_node t_node;
+
+// error.c
 extern bool syntax_error;
 void todo(const char *msg) __attribute__((noreturn));
 void fatal_error(const char *msg) __attribute__((noreturn));
 void assert_error(const char *msg) __attribute__((noreturn));
 void err_exit(const char *location, const char *msg, int status) __attribute__((noreturn));
-void    tokenize_error(const char *location, char **rest, char *line);
+void tokenize_error(const char *location, char **rest, char *line);
+void parse_error(const char *location, t_token **rest, t_token *token);
+void xperror(const char *location);
 
 // tokenize.c
-# define SINGLE_QUOTE_CHAR '\''
-# define DOUBLE_QUOTE_CHAR '"'
 
 typedef enum e_token_kind {
     TK_WORD,    // 単語

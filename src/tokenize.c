@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 14:21:01 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/22 15:21:59 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/24 21:48:05 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ bool startswith(const char *s, const char *keyword)
 }
 
 // 文字列が特定の演算子で始まるか確認
-bool is_operator(const char *s)
+bool is_control_operator(const char *s)
 {
     static const char *operators[] = {"||", "&", "&&", ";", ";;", "(", ")", "|", "\n"}; // 演算子　区切り文字
     size_t i = 0;
@@ -64,10 +64,28 @@ bool is_operator(const char *s)
     return (false);
 }
 
+bool is_redirection_operator(const char *s)
+{
+    static const char *operators[] = {">", "<", ">>", "<<"};
+    size_t i = 0;
+    
+    while (i < sizeof(operators) / sizeof(*operators))
+    {
+        if (startswith(s, operators[i]))
+            return (true);
+        i++;
+    }
+    return (false);
+}
+
 // 文字がシェルにおいて特別な意味を持つメタ文字か確認
 bool is_metacharacter(char c)
 {
-    return (c && ft_strchr("|&;()<> \t\n",c));
+    if (is_blank(c))
+    {
+        return (true);
+    }
+    return (c && ft_strchr("|&;()<>\n",c));
 }
 
 bool is_word(const char *s)
@@ -77,7 +95,7 @@ bool is_word(const char *s)
 
 t_token *operator(char **rest, char *line)
 {
-    static const char *operators[] =  {"||", "&", "&&", ";", ";;", "(", ")", "|", "\n"};
+    static const char *operators[] =  {">>", "<<", "||", "&&", ";;", "<", ">", "&", ";", "(", ")", "|", "\n"};
     size_t i = 0;
     char *op;
     
@@ -158,7 +176,7 @@ t_token *tokenize(char *line)
     {
         if (consume_blank(&line, line)) // 空白文字がなくなるまで文字列のポインタを移動
             continue;
-        else if (is_operator(line))
+        else if (is_metacharacter(*line))
             token = token->next = operator(&line, line);
         else if (is_word(line))
             token = token->next = word(&line, line);

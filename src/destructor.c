@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 23:00:42 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/22 16:56:31 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/24 16:19:22 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void free_node(t_node *node)
     if (node == NULL)
         return ;
     free_token(node->args);
+    free_token(node->filename);
+    free_node(node->redirects);
     free_node(node->next);
     free(node);
 }

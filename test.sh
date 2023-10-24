@@ -15,18 +15,34 @@ cleanup() {
 	rm -f cmp out a.out print_args
 }
 assert() {
-	printf '%-50s:' "[$1]"
+	COMMAND="$1"
+	shift
+	printf '%-50s:' "[$COMMAND]"
 	# exit status
-	echo -n -e "$1" | bash >cmp 2>&-
+	echo -n -e "$COMMAND" | bash >cmp 2>&-
 	expected=$?
-	echo -n -e "$1" | ./minishell >out 2>&-
+	for arg in "$@"
+	do
+		mv "$arg" "$arg"".cmp"
+	done
+	echo -n -e "$COMMAND" | ./minishell >out 2>&-
 	actual=$?
+	for arg in "$@"
+	do
+		mv "$arg" "$arg"".out"
+	done
 	diff cmp out >/dev/null && echo -n '  diff OK' || echo -n '  diff NG'
 	if [ "$actual" = "$expected" ]; then
 		echo -n '  status OK'
 	else
 		echo -n "  status NG, expected $expected but got $actual"
 	fi
+	for arg in "$@"
+	do
+		echo -n "  [$arg] "
+		diff "$arg"".cmp" "$arg"".out" >/dev/null && echo -e -n "$OK" || echo -e -n "$NG"
+		rm -f "$arg"".cmp" "$arg"".out"
+	done
 	echo
 }
 # Empty line (EOF)
@@ -65,3 +81,8 @@ assert "echo hello'    world'"
 assert "echo hello'  world  '\"  42Tokyo  \""
 cleanup
 echo 'all OK'
+
+# Redirect
+## Redirecting output
+assert 'echo hello >hello.txt' 'hello.txt'
+assert 'echo hello >f1>f2>f3' 'f1' 'f2' 'f3'

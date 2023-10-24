@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:58 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/22 18:16:31 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/24 21:55:36 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <stdbool.h>
+#include <fcntl.h>
 #include "../libft/libft.h"
 
 # define ERROR_TOKENIZE 258
@@ -66,14 +67,31 @@ struct s_token {
 
 typedef enum e_node_kind {
     ND_SIMPLE_CMD,
+    ND_REDIR_OUT,
 } t_node_kind;
 
 typedef struct s_node t_node;
 struct s_node {
-    t_token *args;
     t_node_kind kind;
     t_node *next;
+    // CMD
+    t_token *args;
+    t_node *redirects;
+    // REDIR
+    int target_fd;
+    t_token *filename;
+    int file_fd;
+    int stashed_target_fd;
 };
+
+// Redirecting output example
+// command          : "echo hello 1 > out"
+// targetfd         : 1
+// filename         : "out"
+// filefd           : open("out")
+// stashed_targetfd : dup(targetfd)
+
+#define ERROR_PARSE 258
 
 t_token *tokenize(char *line);
 char **token_list_to_argv(t_token *token);
@@ -97,9 +115,15 @@ void free_node(t_node *node);
 
 // parse.c
 t_node *parse(t_token *token);
+void append_command_element(t_node *command, t_token **rest, t_token *token);
 bool at_eof(t_token *token);
 t_node *new_node(t_node_kind kind);
 void append_token(t_token **tokens, t_token *token);
 t_token *tokendup(t_token *token);
+
+// redirect.c
+void open_redir_file(t_node *redirects);
+void do_redirect(t_node *redirects);
+void reset_redirect(t_node *redirects);
 
 #endif

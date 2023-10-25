@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:58 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/25 17:35:53 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/25 18:16:23 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef enum e_node_kind {
     ND_SIMPLE_CMD,
     ND_REDIR_OUT,
     ND_REDIR_IN,
+    ND_REDIR_APPEND,
 } t_node_kind;
 
 typedef struct s_node t_node;

@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:27 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/24 16:34:01 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/25 13:13:25 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void interpret(char *const line, int *status)
         else
         {
             expand(node);
-            *status = ERROR_PARSE;
+            *status = exec(node);
         }
         free_node(node);
     }

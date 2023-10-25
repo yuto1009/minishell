@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 16:48:25 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/24 17:00:36 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/25 13:20:19 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void append_token(t_token **token, t_token *element)
 
 void append_node(t_node **node, t_node *element)
 {
-    if (node == NULL)
+    if (*node == NULL)
     {
         *node = element;
         return ;

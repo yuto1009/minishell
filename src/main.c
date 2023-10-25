@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:27 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/25 13:13:25 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/25 14:35:43 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,14 +97,14 @@ void interpret(char *const line, int *status)
     t_token *token;
     t_node *node;
     
-    token = tokenize(line);
+    token = tokenize(line); // トークン化（字句解析）
     if (at_eof(token))
         ;
     else if (syntax_error)
         *status = ERROR_TOKENIZE;
     else
     {
-        node = parse(token);
+        node = parse(token);    // 構文解析
         if (syntax_error)
         {
             *status = ERROR_PARSE;

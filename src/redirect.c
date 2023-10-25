@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 16:00:51 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/25 18:23:54 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/25 18:40:34 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int open_redir_file(t_node *redir)
     }
     else if (redir->kind == ND_REDIR_APPEND)
     {
-        redir->file_fd = open(redir->filename->word, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+        redir->file_fd = open(redir->filename->word, O_CREAT | O_WRONLY | O_APPEND, 0644);
     }
     else
     {

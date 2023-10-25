@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:27 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/25 14:35:43 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:36:34 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,10 @@ int exec_cmd(t_node *node)
 int exec(t_node *node)
 {
     int status;
-    open_redir_file(node->redirects);
+    if (open_redir_file(node->redirects) < 0)
+    {
+        return (ERROR_OPEN_REDIR);
+    }
     do_redirect(node->redirects);
     status = exec_cmd(node);
     reset_redirect(node->redirects);

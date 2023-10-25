@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:58 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/24 21:55:36 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:35:53 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 
 # define ERROR_TOKENIZE 258
 # define ERROR_PARSE 258
+# define ERROR_OPEN_REDIR 1
 # define SINGLE_QUOTE_CHAR '\''
 # define DOUBLE_QUOTE_CHAR '"'
 
@@ -68,6 +69,7 @@ struct s_token {
 typedef enum e_node_kind {
     ND_SIMPLE_CMD,
     ND_REDIR_OUT,
+    ND_REDIR_IN,
 } t_node_kind;
 
 typedef struct s_node t_node;
@@ -122,7 +124,7 @@ void append_token(t_token **tokens, t_token *token);
 t_token *tokendup(t_token *token);
 
 // redirect.c
-void open_redir_file(t_node *redirects);
+int open_redir_file(t_node *redirects);
 void do_redirect(t_node *redirects);
 void reset_redirect(t_node *redirects);
 

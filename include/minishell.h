@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:58 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/25 18:16:23 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/26 12:27:37 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef enum e_node_kind {
     ND_REDIR_OUT,
     ND_REDIR_IN,
     ND_REDIR_APPEND,
+    ND_REDIR_HEREDOC,
 } t_node_kind;
 
 typedef struct s_node t_node;
@@ -83,6 +84,7 @@ struct s_node {
     // REDIR
     int target_fd;
     t_token *filename;
+    t_token *delimiter;
     int file_fd;
     int stashed_target_fd;
 };

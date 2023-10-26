@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 16:48:25 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/25 18:21:07 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/26 12:32:35 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,17 @@ t_node *redirect_append(t_token **rest, t_token *token)
     return (node);
 }
 
+t_node *redirect_heredoc(t_token **rest, t_token *token)
+{
+    t_node *node;
+    
+    node = new_node(ND_REDIR_HEREDOC);
+    node->delimiter = tokendup(token->next);
+    node->target_fd = STDIN_FILENO;
+    *rest = token->next->next;
+    return (node);
+}
+
 void append_command_element(t_node *command, t_token **rest, t_token *token)
 {
     if (token->kind == TK_WORD)
@@ -86,6 +97,10 @@ void append_command_element(t_node *command, t_token **rest, t_token *token)
     else if (equal_op(token, ">>") && token->next->kind == TK_WORD)
     {
         append_node(&command->redirects, redirect_append(&token, token));
+    }
+    else if (equal_op(token, "<<") && token->next->kind == TK_WORD)
+    {
+        append_node(&command->redirects, redirect_heredoc(&token, token));
     }
     else
     {

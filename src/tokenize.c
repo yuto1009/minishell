@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 14:21:01 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/24 21:48:05 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/26 21:29:48 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,35 +47,6 @@ bool consume_blank(char **rest, char *line)
 bool startswith(const char *s, const char *keyword)
 {
     return (ft_memcmp(s, keyword, ft_strlen(keyword)) == 0);
-}
-
-// 文字列が特定の演算子で始まるか確認
-bool is_control_operator(const char *s)
-{
-    static const char *operators[] = {"||", "&", "&&", ";", ";;", "(", ")", "|", "\n"}; // 演算子　区切り文字
-    size_t i = 0;
-
-    while (i < sizeof(operators) / sizeof(*operators)) 
-    {
-        if (startswith(s, operators[i]))
-            return (true);
-        i++;
-    }
-    return (false);
-}
-
-bool is_redirection_operator(const char *s)
-{
-    static const char *operators[] = {">", "<", ">>", "<<"};
-    size_t i = 0;
-    
-    while (i < sizeof(operators) / sizeof(*operators))
-    {
-        if (startswith(s, operators[i]))
-            return (true);
-        i++;
-    }
-    return (false);
 }
 
 // 文字がシェルにおいて特別な意味を持つメタ文字か確認

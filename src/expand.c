@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 23:34:54 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/26 12:28:31 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/26 14:43:54 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void expand_quote_removal(t_node *node)
     remove_quote(node->filename);
     remove_quote(node->delimiter);
     expand_quote_removal(node->redirects);
+    expand_quote_removal(node->command);
     expand_quote_removal(node->next);
 }
 

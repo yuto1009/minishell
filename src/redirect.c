@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 16:00:51 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/26 14:06:55 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/26 21:29:19 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,37 +50,49 @@ int read_heredoc(const char *delimiter)
     return (pfd[0]);
 }
 
-int open_redir_file(t_node *redir)
+int open_redir_file(t_node *node)
 {
-    if (redir == NULL)
+    if (node == NULL)
         return (0);
-    if (redir->kind == ND_REDIR_OUT)
+    if (node->kind == ND_PIPELINE)
     {
-        redir->file_fd = open(redir->filename->word, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+        if (open_redir_file(node->command) < 0)
+            return (-1);
+        if (open_redir_file(node->next) < 0)
+            return (-1);
+        return (0);
     }
-    else if (redir->kind == ND_REDIR_IN)
+    else if (node->kind == ND_SIMPLE_CMD)
     {
-        redir->file_fd = open(redir->filename->word, O_RDONLY);
+        return (open_redir_file(node->redirects));
     }
-    else if (redir->kind == ND_REDIR_APPEND)
+    else if (node->kind == ND_REDIR_OUT)
     {
-        redir->file_fd = open(redir->filename->word, O_CREAT | O_WRONLY | O_APPEND, 0644);
+        node->file_fd = open(node->filename->word, O_CREAT | O_WRONLY | O_TRUNC, 0644);
     }
-    else if (redir->kind == ND_REDIR_HEREDOC)
+    else if (node->kind == ND_REDIR_IN)
     {
-        redir->file_fd = read_heredoc(redir->delimiter->word);            
+        node->file_fd = open(node->filename->word, O_RDONLY);
+    }
+    else if (node->kind == ND_REDIR_APPEND)
+    {
+        node->file_fd = open(node->filename->word, O_CREAT | O_WRONLY | O_APPEND, 0644);
+    }
+    else if (node->kind == ND_REDIR_HEREDOC)
+    {
+        node->file_fd = read_heredoc(node->delimiter->word);
     }
     else
     {
         assert_error("open_redir_file");
     }
-    if (redir->file_fd < 0)
+    if (node->file_fd < 0)
     {
-        xperror(redir->filename->word);
+        xperror(node->filename->word);
         return (-1);
     }
-    redir->file_fd = stash_fd(redir->file_fd);
-    return (open_redir_file(redir->next));
+    node->file_fd = stash_fd(node->file_fd);
+    return (open_redir_file(node->next));
 }
 
 bool is_redirect(t_node *node)

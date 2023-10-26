@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:58 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/26 12:27:37 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/26 14:54:04 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 #include <sys/wait.h>
 #include <stdbool.h>
 #include <fcntl.h>
+#include <errno.h> 
 #include "../libft/libft.h"
 
 # define ERROR_TOKENIZE 258
@@ -67,6 +68,7 @@ struct s_token {
 };
 
 typedef enum e_node_kind {
+    ND_PIPELINE,
     ND_SIMPLE_CMD,
     ND_REDIR_OUT,
     ND_REDIR_IN,
@@ -87,6 +89,10 @@ struct s_node {
     t_token *delimiter;
     int file_fd;
     int stashed_target_fd;
+    // PIPELINE
+    int inpipe[2];
+    int outpipe[2];
+    t_node *command;
 };
 
 // Redirecting output example
@@ -127,8 +133,13 @@ void append_token(t_token **tokens, t_token *token);
 t_token *tokendup(t_token *token);
 
 // redirect.c
-int open_redir_file(t_node *redirects);
+int open_redir_file(t_node *node);
 void do_redirect(t_node *redirects);
 void reset_redirect(t_node *redirects);
+
+// pipe.c
+void prepare_pipe(t_node *node);
+void prepare_pipe_child(t_node *node);
+void prepare_pipe_parent(t_node *node);
 
 #endif

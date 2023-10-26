@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:27 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/25 17:36:34 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/26 14:58:14 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,44 +53,77 @@ void validate_access(const char *path, const char *filename)
         err_exit(filename, "command not found", 127);   
 }
 
-int exec_cmd(t_node *node)
+pid_t exec_pipeline(t_node *node)
 {
     extern char **environ;
     char *path;
     pid_t pid;
-    int wstatus;
     char **argv;
 
+    if (node == NULL)
+    {
+        return (-1);                
+    }
+    prepare_pipe(node);
     pid = fork();   // 子プロセスを作成
     if (pid < 0)
         fatal_error("fork");
     else if (pid == 0)  // 子プロセスの場合
     {
-        argv = token_list_to_argv(node->args);
+        // argv = token_list_to_argv(node->args);
+        prepare_pipe_child(node);
+        do_redirect(node->command->redirects);
+        argv = token_list_to_argv(node->command->args);
         path = argv[0];
         if (ft_strchr(path, '/') == NULL)   // pwd ls
             path = search_path(path);
         validate_access(path, argv[0]);
         execve(path, argv, environ);    // 実行される　現在のプロセスが新しいプロセスに置き換わる
+        reset_redirect(node->command->redirects);
         fatal_error("execve");
     }
-    else    // 親プロセスの場合
+    // 親プロセス
+    prepare_pipe_parent(node);
+    if (node->next != NULL)
     {
-        wait(&wstatus); // 子プロセスの終了を待機
-        return(WEXITSTATUS(wstatus));   // 子プロセスの終了ステータスを返す
+        return (exec_pipeline(node->next));        
     }
+    return (pid);
+}
+
+int wait_pipeline(pid_t last_pid)
+{
+    pid_t wait_result;
+    int status;
+    int wstatus;
+    
+    while (1)
+    {
+        wait_result = wait(&wstatus);
+        if (wait_result == last_pid)
+        {
+            status = WEXITSTATUS(wstatus);    
+        }
+        else if (wait_result < 0)
+        {
+            if (errno == ECHILD)
+                break;
+        }
+    }
+    return (status);
 }
 
 int exec(t_node *node)
 {
+    pid_t last_pid;
     int status;
-    if (open_redir_file(node->redirects) < 0)
+    
+    if (open_redir_file(node) < 0)
     {
         return (ERROR_OPEN_REDIR);
     }
-    do_redirect(node->redirects);
-    status = exec_cmd(node);
-    reset_redirect(node->redirects);
+    last_pid = exec_pipeline(node);
+    status = wait_pipeline(last_pid);
     return (status);
 }
 

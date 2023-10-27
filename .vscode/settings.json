@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "_null.h": "c"
+        "_null.h": "c",
+        "stdio.h": "c",
+        "types.h": "c"
     }
 }

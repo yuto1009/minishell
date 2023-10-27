@@ -1,20 +1,9 @@
 NAME     = minishell
 CC       = cc
-RLDIR    = $(shell brew --prefix readline)
-INCLUDES = -I include -I$(RLDIR)/include
-CFLAGS   = -Wall -Wextra -Werror $(INCLUDES)
-LIBS     = -L$(RLDIR)/lib -lreadline 
+CFLAGS   = -Wall -Wextra -Werror
+LDFLAGS  = -lreadline 
 SRCS     = src/main.c\
-           src/error.c\
-           src/tokenize.c\
-           src/destructor.c\
-           src/expand.c\
-		   src/parse.c\
-		   src/redirect.c\
-		   src/pipe.c\
-		   src/exec.c\
-		   src/signal.c\
-		   
+
 OBJS = $(SRCS:.c=.o)
 
 LIBFT_PATH = ./libft
@@ -26,7 +15,7 @@ $(LIBFT):
 	@$(MAKE) -C $(LIBFT_PATH)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(LIBS) -o $(NAME) $(OBJS) $(LIBFT)
+	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBFT)
 	@echo "Successfully compiled $(NAME)"
 
 %.o: %.c

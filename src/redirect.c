@@ -6,11 +6,13 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 16:00:51 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/27 12:00:03 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/27 12:29:46 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+bool readline_interrupted = false;
 
 int stash_fd(int fd)
 {
@@ -57,11 +59,17 @@ int read_heredoc(const char *delimiter, bool is_delim_unquoted)
     {
         fatal_error("pipe");            
     }
+    readline_interrupted = false;
     while(1)
     {
         line = readline("> ");
         if (line == NULL)
             break;
+        if (readline_interrupted == true)
+        {
+            free(line);
+            break;
+        }
         if (strcmp(line, delimiter) == 0)
         {
             free(line);
@@ -75,6 +83,11 @@ int read_heredoc(const char *delimiter, bool is_delim_unquoted)
         free(line);
     }
     close(pfd[1]);
+    if (readline_interrupted == true)
+    {
+        close(pfd[0]);
+        return (-1);
+    }
     return (pfd[0]);
 }
 
@@ -116,7 +129,10 @@ int open_redir_file(t_node *node)
     }
     if (node->file_fd < 0)
     {
-        xperror(node->filename->word);
+        if (node->kind == ND_REDIR_OUT || node->kind == ND_REDIR_APPEND || node->kind == ND_REDIR_IN)
+        {
+            xperror(node->filename->word);
+        }
         return (-1);
     }
     node->file_fd = stash_fd(node->file_fd);

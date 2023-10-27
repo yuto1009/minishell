@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:58 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/27 11:50:34 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/27 12:16:30 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void prepare_pipe_parent(t_node *node);
 
 // signal.c
 
-// void setup_signal(void);
-// void reset_signal(void);
+void setup_signal(void);
+void reset_signal(void);
 
 #endif

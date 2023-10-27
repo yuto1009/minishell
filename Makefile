@@ -1,8 +1,11 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
-LDFLAGS = -lreadline
-SRCS = src/main.c src/tokenize.c src/error.c src/destructor.c src/expand.c src/parse.c src/redirect.c src/pipe.c
+RLDIR = $(shell brew --prefix readline)
+INCLUDES = -I include -I$(RLDIR)/include
+CFLAGS = -Wall -Wextra -Werror $(INCLUDES)
+LIBS = -lreadline -L$(RLDIR)/lib
+SRCS = src/main.c src/exec.c src/tokenize.c src/error.c src/destructor.c\
+		src/expand.c src/parse.c src/redirect.c src/pipe.c src/signal.c\
 OBJS = $(SRCS:.c=.o)
 
 LIBFT_PATH = ./libft

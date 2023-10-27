@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:27 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/27 12:24:17 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/27 19:54:26 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void interpret(char *const line, int *status)
 int main(void)
 {
     char *line;
-    int status;
     
     rl_outstream = stderr;
     setup_signal();

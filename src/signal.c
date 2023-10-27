@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 12:12:37 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/27 13:09:30 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/27 19:57:35 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void setup_sigint(void)
 #include <signal.h>
 #include <readline/history.h>
 #include <readline/readline.h>
+#include <sys/types.h>
 
 int check_state(void)
 {
@@ -94,5 +95,5 @@ void setup_signal(void)
 void reset_signal(void)
 {
     reset_sig(SIGQUIT);
-    reset_redirect(SIGINT);
+    reset_sig(SIGINT);
 }

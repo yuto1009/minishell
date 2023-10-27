@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:58 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/27 12:16:30 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/27 19:22:34 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,14 @@ struct s_node {
 
 #define ERROR_PARSE 258
 
+// exec.c
+char *search_path(const char *filename);
+void validate_access(const char *path, const char *filename);
+pid_t exec_pipeline(t_node *node);
+int wait_pipeline(pid_t last_pid);
+int exec(t_node *node);
+
+// tokenize.c
 t_token *tokenize(char *line);
 char **token_list_to_argv(t_token *token);
 t_token *new_token(char *word, t_token_kind kind);

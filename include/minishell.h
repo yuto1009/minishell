@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 11:27:58 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/26 14:54:04 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/27 11:50:34 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ typedef enum e_node_kind t_node_kind;
 typedef struct s_node t_node;
 
 // error.c
+extern int last_status;
 extern bool syntax_error;
+extern bool readline_interrupted;
+extern volatile sig_atomic_t sig;
 void todo(const char *msg) __attribute__((noreturn));
 void fatal_error(const char *msg) __attribute__((noreturn));
 void assert_error(const char *msg) __attribute__((noreturn));
@@ -87,6 +90,7 @@ struct s_node {
     int target_fd;
     t_token *filename;
     t_token *delimiter;
+    bool is_delim_unquoted;
     int file_fd;
     int stashed_target_fd;
     // PIPELINE
@@ -118,6 +122,7 @@ t_token *word(char **rest, char *line);
 
 // expand.c
 void expand(t_node *node);
+char *expand_heredoc_line(char *line);
 
 // destructor.c
 void free_token(t_token *token);
@@ -141,5 +146,10 @@ void reset_redirect(t_node *redirects);
 void prepare_pipe(t_node *node);
 void prepare_pipe_child(t_node *node);
 void prepare_pipe_parent(t_node *node);
+
+// signal.c
+
+// void setup_signal(void);
+// void reset_signal(void);
 
 #endif

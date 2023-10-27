@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 16:00:51 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/26 21:29:19 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/27 12:00:03 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,31 @@ int stash_fd(int fd)
     return (stash_fd);
 }
 
-int read_heredoc(const char *delimiter)
+/*
+   Here Documents
+	   This type of redirection instructs the shell to read input from the
+	   current source until a line containing only word (with no trailing
+	   blanks) is seen.  All of the lines read up to that point are then used
+	   as the standard input for a command.
+	   The format of here-documents is:
+              <<[-]word
+                      here-document
+              delimiter
+	   No parameter expansion, command substitution, arithmetic expansion, or
+	   pathname expansion is performed on word.  If any characters in word are
+	   quoted, the delimiter is the result of quote removal on word, and the
+	   lines in the here-document are not expanded.  If word is unquoted, all
+	   lines of the here-document are subjected to parameter expansion, command
+	   substitution, and arithmetic expansion.  In the latter case, the
+	   character sequence \<newline> is ignored, and \ must be used to quote
+	   the characters \, $, and `.
+	   If the redirection operator is <<-, then all leading tab characters are
+	   stripped from input lines and the line containing delimiter.  This
+	   allows here-documents within shell scripts to be indented in a natural
+	   fashion.
+*/
+
+int read_heredoc(const char *delimiter, bool is_delim_unquoted)
 {
     char *line;
     int pfd[2];
@@ -42,6 +66,10 @@ int read_heredoc(const char *delimiter)
         {
             free(line);
             break;
+        }
+        if (is_delim_unquoted == true)
+        {
+            line = expand_heredoc_line(line);
         }
         dprintf(pfd[1], "%s\n", line);
         free(line);
@@ -80,7 +108,7 @@ int open_redir_file(t_node *node)
     }
     else if (node->kind == ND_REDIR_HEREDOC)
     {
-        node->file_fd = read_heredoc(node->delimiter->word);
+        node->file_fd = read_heredoc(node->delimiter->word, node->is_delim_unquoted);
     }
     else
     {

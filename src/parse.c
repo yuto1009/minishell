@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 16:48:25 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/26 20:58:02 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/27 11:57:43 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,10 @@ t_node *redirect_heredoc(t_token **rest, t_token *token)
     
     node = new_node(ND_REDIR_HEREDOC);
     node->delimiter = tokendup(token->next);
+    if (ft_strchr(node->delimiter->word, SINGLE_QUOTE_CHAR) == NULL && ft_strchr(node->delimiter->word, DOUBLE_QUOTE_CHAR) == NULL)
+    {
+        node->is_delim_unquoted = true;
+    }
     node->target_fd = STDIN_FILENO;
     *rest = token->next->next;
     return (node);

@@ -16,8 +16,12 @@ int main(int argc, char *argv[]) {
 		printf("argv[%d] = %s\n", i, argv[i]);
 }
 EOF
+cat <<EOF | gcc -xc -o exit42 -
+int main() { return 42; }
+EOF
+
 cleanup() {
-	rm -f cmp out a.out print_args
+	rm -f cmp out a.out print_args exit42
 }
 assert() {
 	COMMAND="$1"
@@ -103,6 +107,12 @@ assert 'cat <<EOF\nhello\nworld\nEOF\nNOPRINT'
 assert 'cat <<EOF<<eof\nhello\nworld\nEOF\neof\nNOPRINT'
 assert 'cat <<EOF\nhello\nworld'
 assert 'cat <<E"O"F\nhello\nworld\nEOF\nNOPRINT'
+assert 'cat <<EOF   \n$USER\n$NO_SUCH_VAR\n$FOO$BAR\nEOF'
+assert 'cat <<"EOF" \n$USER\n$NO_SUCH_VAR\n$FOO$BAR\nEOF'
+assert 'cat <<EO"F" \n$USER\n$NO_SUCH_VAR\n$FOO$BAR\nEOF'
+export EOF="eof"
+assert 'cat <<$EOF         \neof\n$EOF\nEOF'
+assert 'cat <<"$EOF"       \neof\n$EOF\nEOF'
 
 # Pipe
 assert 'cat Makefile | grep minishell'
@@ -112,5 +122,11 @@ assert 'cat | cat | ls\n\n'
 assert 'echo $USER'
 assert 'echo $USER$PATH$TERM'
 assert 'echo "$USER  $PATH   $TERM"'
+
+# Special Parameter $?
+assert 'echo $?'
+assert 'invalid\necho $?\necho $?'
+assert 'exit42\necho $?\necho $?'
+assert 'exit42\n\necho $?\necho $?'
 
 cleanup

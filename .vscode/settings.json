@@ -2,6 +2,8 @@
     "files.associations": {
         "_null.h": "c",
         "stdio.h": "c",
-        "types.h": "c"
+        "types.h": "c",
+        "stdlib.h": "c",
+        "unistd.h": "c"
     }
 }

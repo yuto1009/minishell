@@ -24,6 +24,9 @@ assert() {
 
 # Empty line (EOF)
 assert ''
+# Path
+assert '/bin/pwd'
+assert '/bin/ls'
 
-cleanup
+cleanup 
 echo 'all OK'

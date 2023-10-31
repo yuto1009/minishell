@@ -26,7 +26,7 @@ $(LIBFT):
 	@$(MAKE) -C $(LIBFT_PATH)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(LIBS) -o $(NAME) $(OBJS) $(LIBFT)
+	@$(CC) $(CFLAGS) $(LIBS) -o $(NAME) $(OBJS) $(LIBFT)
 	@echo "Successfully compiled $(NAME)"
 
 %.o: %.c

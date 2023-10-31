@@ -6,11 +6,13 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/31 13:11:51 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/31 22:55:31 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+#include <stdio.h> // DEBUG
 
 bool is_path_executable(const char *path)
 {
@@ -34,10 +36,11 @@ char *trim_single_path(char *paths)
             break;
         i++;
     }
-    path = (char *)malloc(sizeof(char)*(i) + 1);
+    path = (char *)malloc(sizeof(char)*(i) + 2);
     if (path == NULL)
         fatal_error("Malloc Error");
     ft_strlcpy(path, paths, i+1);
+    ft_strlcat(path, "/", i+2);
     return path;
 }
 
@@ -62,7 +65,7 @@ char *search_path(char *filename)
         executable = ft_strjoin(path, filename);
         if (executable == NULL)
             fatal_error("Malloc Error");
-        if (access(executable, X_OK))
+        if (access(executable, X_OK) == 0)
         {
             free(path);
             return (executable);
@@ -88,6 +91,7 @@ int interpret(char *line)
     if (pid == 0)
     {
         // // 子プロセス
+        printf("ERROR");
         if (ft_strchr(line, '/') == NULL)
         {
             executable = search_path(line);

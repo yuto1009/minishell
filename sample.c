@@ -21,10 +21,10 @@
 //     return path;
 // }
 
-__attribute__((destructor))
-static void destructor() {
-    system("leaks -q a.out");
-}
+// __attribute__((destructor))
+// static void destructor() {
+//     system("leaks -q a.out");
+// }
 // int main(void)
 // {
 //     extern char **environ;
@@ -48,6 +48,12 @@ static void destructor() {
 
 int main(void)
 {
-    ft_strjoin("Hello", "World");
+    // Allocate memory for the concatenated string
+    char p[9] = "Hello"; // Ensure this is large enough for both strings plus null terminator
+    char *p2 = "DAY";
+
+    // Use the function (assuming it behaves like strlcat)
+    ft_strlcat(p, p2, 9);
+    printf("%s\n", p);
     return (0);
 }

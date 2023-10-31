@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/31 22:55:31 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/31 23:15:06 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,21 +91,26 @@ int interpret(char *line)
     if (pid == 0)
     {
         // // 子プロセス
-        printf("ERROR");
         if (ft_strchr(line, '/') == NULL)
         {
             executable = search_path(line);
+            printf("HELLO %s\n", executable);
         }
         else
         {
+            printf("HELLO\n");
             executable = line;
         }
-        char *argv[] = {executable, NULL};
-        execve(executable, argv, environ);
+        if (executable != NULL)
+        {   
+            char *argv[] = {executable, NULL};
+            execve(executable, argv, environ);
+        }
         error_exit(line, "command not found", 127);
     }
     else 
     {
+        // printf("DEBUG\n");
         // 親プロセス
         wait(&wstatus);
     }

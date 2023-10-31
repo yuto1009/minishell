@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/28 17:08:52 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/10/31 11:19:33 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,15 @@ void fatal_error(char *message)
     exit(EXIT_FAILURE);
 }
 
-void assert_error(char *message)
+void error_exit(char *message, int exit_status)
 {
     ft_putendl_fd(message, STDERR_FILENO);
+    exit(exit_status);
 }
 
-bool is_path_executable(const char *filename)
+bool is_path_executable(const char *path)
 {
-    int result = access(filename, X_OK);
+    int result = access(path, X_OK);
     if (result < 0)
     {
         return (false);
@@ -42,9 +43,57 @@ bool is_path_executable(const char *filename)
     return (true);
 }
 
+char *trim_single_path(char *paths)
+{
+    size_t i;
+    char *path;
+
+    i = 0;
+    while(paths[i] != '\0')
+    {
+        if (paths[i] == ':')
+            break;
+        i++;
+    }
+    path = (char *)malloc(sizeof(char)*(i) + 1);
+    if (path == NULL)
+        fatal_error("Malloc Error");
+    ft_strlcpy(path, paths, i+1);
+    return path;
+}
+
+char *search_path(char *filename)
+{
+    extern char **environ;
+    char *paths = getenv("PATH");
+    char *path;
+    
+    path = NULL;
+    while(*paths)
+    {
+        path = trim_single_path(paths);
+        paths = ft_strchr(paths, ':');
+        if (paths == NULL && is_path_executable(ft_strjoin(path, filename)))
+            break;
+        else if(paths == NULL)
+        {
+            assert_error()
+        }
+        paths++;
+        if (is_path_executable(ft_strjoin(path, filename)))
+        {
+            break;
+        }
+        // printf("%s\n", path);
+        free(path);
+    }
+    return (path);
+}
+
 int interpret(char *line)
 {
     pid_t pid = fork();
+    char *path;
     char *argv[] = {line, NULL};
     extern char **environ;
     int wstatus;
@@ -53,14 +102,31 @@ int interpret(char *line)
         fatal_error("fork");
     if (pid == 0)
     {
-        // 子プロセス
-        if (is_path_executable(line))
+        // // 子プロセス
+        // if (is_path_executable(line))
+        // {
+        //     execve(line, argv, environ);
+        // }
+        // else
+        // {
+        //     assert_error("command not found");
+        // }
+        if (ft_strchr(line, '/') == NULL)
         {
-            execve(line, argv, environ);
+            path = search_path(line);
         }
         else
         {
-            assert_error("command not found");
+            path = line;
+        }
+        if (is_path_executable(path))
+        {
+            const char *argv[] = {path, NULL};
+            execve(path, argv, environ);
+        }
+        else
+        {
+            assert_error("Unknown Path");
         }
     }
     else 

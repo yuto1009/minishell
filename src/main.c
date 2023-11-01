@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/01 11:40:50 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/11/01 14:41:43 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ char *trim_single_path(char *paths)
     }
     path = (char *)malloc(sizeof(char)*(i) + 2);
     if (path == NULL)
+    {
         fatal_error("Malloc Error");
+    }
     ft_strlcpy(path, paths, i+1);
     ft_strlcat(path, "/", i+2);
     return path;
@@ -54,7 +56,7 @@ char *search_path(char *filename)
     
     path = NULL;
     executable = NULL;
-    while(*paths)
+    while(paths != NULL)
     {
         path = trim_single_path(paths);
         paths = ft_strchr(paths, ':');
@@ -64,7 +66,9 @@ char *search_path(char *filename)
         }
         executable = ft_strjoin(path, filename);
         if (executable == NULL)
+        {
             fatal_error("Malloc Error");
+        }
         if (access(executable, F_OK) == 0)
         {
             free(path);

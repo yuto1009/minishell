@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/10/31 23:25:03 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/11/01 11:40:50 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char *search_path(char *filename)
         executable = ft_strjoin(path, filename);
         if (executable == NULL)
             fatal_error("Malloc Error");
-        if (access(executable, X_OK) == 0)
+        if (access(executable, F_OK) == 0)
         {
             free(path);
             return (executable);
@@ -81,11 +81,11 @@ char *search_path(char *filename)
 
 int interpret(char *line)
 {
-    pid_t pid = fork();
-    char *executable;
+    char *executable = NULL;
     extern char **environ;
     int wstatus;
     
+    pid_t pid = fork();
     if (pid < 0)
         fatal_error("fork");
     if (pid == 0)
@@ -94,25 +94,20 @@ int interpret(char *line)
         if (ft_strchr(line, '/') == NULL)
         {
             executable = search_path(line);
-            printf("HELLO %s\n", executable);
         }
         else
         {
-            printf("HELLO\n");
             executable = line;
-        }
-        if (executable != NULL)
-        {   
-            char *argv[] = {executable, NULL};
-            execve(executable, argv, environ);
-        }
+        }   
+        char *argv[] = {executable, NULL};
+        execve(executable, argv, environ);
         error_exit(line, "command not found", 127);
     }
     else 
     {
-        // printf("DEBUG\n");
         // 親プロセス
         wait(&wstatus);
+        return (WEXITSTATUS(wstatus));
     }
     return (WEXITSTATUS(wstatus));
 }

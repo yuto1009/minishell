@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 15:22:40 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/01 13:46:49 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/11/05 23:39:23 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void set_output_destination(FILE *dst)
 }
 
 // 実装できないシステムコール関係のエラー
+// ex: malloc, free
 void fatal_error(char *message)
 {
     ft_putendl_fd(message, STDERR_FILENO);

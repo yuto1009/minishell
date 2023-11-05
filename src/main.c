@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/05 19:07:42 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/11/05 23:28:13 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,8 @@ int interpret(char *line)
 int main(void)
 {
     char *line;
+    t_token *token;
+    char **argv;
     int status;
 
     set_output_destination(stderr);
@@ -134,7 +136,8 @@ int main(void)
         if (line == NULL)
             break;  // breakをreturn (0)に変えるとリークが確認できる (テスターがNG出すようになる)
         add_history(line);
-        // tokenize
+        token = tokenize(line);
+        argv = detokenize(token);
         // token to 2darray 
         status = interpret(line);
         free(line);

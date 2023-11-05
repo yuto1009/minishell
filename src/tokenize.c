@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/05 18:58:04 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/11/05 23:40:38 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_token *new_token(char *str, token_kind kind)
 
     token = (t_token *)ft_calloc(1, sizeof(t_token));
     if (token == NULL)
-        exit(EXIT_FAILURE);
+        fatal_error("Malloc Error");
     token->str = str;
     token->kind = kind;
     token->next = NULL;
@@ -75,7 +75,7 @@ t_token *tokenize_operator(char **line)
     }
     operator = ft_substr(*line, 0, ft_strlen(operators[i]));
     if (operator == NULL)
-        exit(EXIT_FAILURE);
+        fatal_error("Malloc Error");
     *line += ft_strlen(operator);
     return (new_token(operator, TK_OPERATOR));
 } 
@@ -95,7 +95,7 @@ t_token *tokenize_word(char **line)
     }
     word = ft_substr(*line, 0, i);
     if (word == NULL)
-        exit(EXIT_FAILURE);
+        fatal_error("Malloc Error");
     *line += ft_strlen(word);
     return (new_token(word, TK_WORD));
 }
@@ -108,8 +108,6 @@ t_token *tokenize(char *line)
 
     head = NULL;
     current = NULL;
-    if (line == NULL)
-        exit(EXIT_FAILURE);
     while (*line != '\0')
     {
         if (is_blank(*line) == true)
@@ -141,4 +139,9 @@ t_token *tokenize(char *line)
     else
         current->next = new_token(NULL, TK_EOF);
     return (head);
+}
+
+char **token_to_argv(t_token *token)
+{
+    
 }

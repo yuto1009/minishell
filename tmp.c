@@ -15,12 +15,32 @@ struct s_token {
     t_token *next;
 };
 
-bool is_operator(char c)
+bool is_operator(char *line)
 {
-    // const char metacharacters[] = {'|', '&', ';', '(', ')', '<', '>', ' ', '\t'};
+    const char *operators[] = {"||", "&&", "&", ";", ";;", "(", ")", "|", "\n"};
+
+    int i = 0;
+    while (i < sizeof(operators) / sizeof(*operators))
+    {
+       if (ft_strncmp(line, operators[i], ft_strlen(operators[i])) == 0) 
+       {
+            return (true);
+       }
+       i++;
+    }
+    return (false);
+}
+
+int is_blank(char c) 
+{
+    return (c == ' ' || c == '\t');
+}
+
+bool is_metacharacter(char c)
+{
     const char *metacharacters = "|&;()<> \t";
 
-    if (ft_strchr(metacharacters, c))
+    if (ft_strchr(metacharacters, c) != NULL)
     {
         return (true);
     }
@@ -42,33 +62,45 @@ t_token *new_token(char *str, token_kind kind)
 
 t_token *tokenize_operator(char **line)
 {
-    const char *metacharacters = "|&;()<> \t";
-    size_t operator_size;
+    const char *operators[] = {"||", "&&", ";;", "&", ";", "(", ")", "|", "\n"};
+    char *operator;
+    int i;
 
-    operator_size = 0;
-    while (**line != '\0')
+    operator = NULL;
+    i = 0;
+    while (i < sizeof(operators) / sizeof(*operators))
     {
-        if (!ft_strchr(metacharacters, **line))
-        {
+       if (ft_strncmp(*line, operators[i], ft_strlen(operators[i])) == 0) 
+       {
             break;
-        }
-        operator_size++;
-        (*line)++;
+       }
+       i++;
     }
-    return (new_token(ft_substr(*line, 0, operator_size), TK_OPERATOR));
+    operator = ft_substr(*line, 0, ft_strlen(operators[i]));
+    if (operator == NULL)
+        exit(EXIT_FAILURE);
+    *line += ft_strlen(operator);
+    return (new_token(operator, TK_OPERATOR));
 } 
 
 t_token *tokenize_word(char **line)
 {
     size_t word_size;
+    char *word;
+    int i;
 
+    word = NULL;
     word_size = 0;
-    while (**line != '\0' && is_operator(**line) != true)
+    i = 0;
+    while ((*line)[i] != '\0' && is_metacharacter((*line)[i]) == false)
     {
-        word_size++;
-        (*line)++;
+        i++;
     }
-    return (new_token(ft_substr(*line, 0, word_size), TK_WORD));
+    word = ft_substr(*line, 0, i);
+    if (word == NULL)
+        exit(EXIT_FAILURE);
+    *line += ft_strlen(word);
+    return (new_token(word, TK_WORD));
 }
 
 t_token *tokenize(char *line)
@@ -83,13 +115,11 @@ t_token *tokenize(char *line)
         exit(EXIT_FAILURE);
     while (*line != '\0')
     {
-        if (ft_isprint(*line) != true)
-        {
+        if (is_blank(*line) == true)
             line++;
-        }
         else
         {
-            if (is_operator(*line))
+            if (is_operator(line))
             {
                 new = tokenize_operator(&line);
             }
@@ -97,25 +127,22 @@ t_token *tokenize(char *line)
             {
                 new = tokenize_word(&line);
             }
-            if (head == NULL)
-            {
-                head = new;
-                current = new;
-            }
-            else
-            {
-                 current->next = new;
-            }
+        }
+        if (head == NULL)
+        {
+            head = new;
+            current = new;
+        }
+        else
+        {
+            current->next = new;
+            current = current->next;
         }
     }
     if (head == NULL)
-    {
         head = new_token(NULL, TK_EOF);
-    }
     else
-    {
         current->next = new_token(NULL, TK_EOF);
-    }
     return (head);
 }
 
@@ -130,7 +157,7 @@ int main(void)
     printf("%s\n", line);
     while (token)
     {
-        printf("token type is %d\n", token->kind);
+        printf("token string is %s\n", token->str);
         token = token->next;
     }
     return (0);

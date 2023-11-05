@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/03 11:15:54 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/11/05 19:04:53 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,27 @@ void fatal_error(char *message);
 void minishell_error(char *message);
 void error_exit(char *location, char *message, int exit_status);
 
+// tokenize.c
+bool is_operator(char *line);
+int is_blank(char c) ;
+bool is_metacharacter(char c);
+t_token *new_token(char *str, token_kind kind);
+t_token *tokenize_operator(char **line);
+t_token *tokenize_word(char **line);
+t_token *tokenize(char *line);
+
 # define TK_WORD 0
-# define TL_OPERATOR 1
+# define TK_OPERATOR 1
+# define TK_EOF 2
 
 typedef int token_kind;
 typedef struct s_token t_token;
 struct s_token {
-    char *word;
+    char *str;
     token_kind kind;
     t_token *next;
 };
+
+
 
 #endif

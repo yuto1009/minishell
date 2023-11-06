@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/05 23:28:13 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/11/06 13:47:43 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,29 +83,28 @@ char *search_path(char *filename)
     return (NULL);
 }
 
-int interpret(char *line)
+int execute(char **argv)
 {
-    char *executable = NULL;
-    extern char **environ;
     int wstatus;
-    
+    extern char **environ;
+    char *executable;
     pid_t pid = fork();
+    
     if (pid < 0)
         fatal_error("fork");
     if (pid == 0)
     {
         // // 子プロセス
-        if (ft_strchr(line, '/') == NULL)
+        if (ft_strchr(argv[0], '/') == NULL)
         {
-            executable = search_path(line);
+            executable = search_path(argv[0]);
         }
         else
         {
-            executable = line;
+            executable = argv[0];
         }   
-        char *argv[] = {executable, NULL};
         execve(executable, argv, environ);
-        error_exit(line, "command not found", 127);
+        error_exit(executable, "command not found", 127);
     }
     else 
     {
@@ -114,6 +113,12 @@ int interpret(char *line)
         return (WEXITSTATUS(wstatus));
     }
     return (WEXITSTATUS(wstatus));
+}
+
+int interpret(char *line)
+{
+    t_token *token = tokenize(line);
+    
 }
 
 // __attribute__((destructor))
@@ -137,7 +142,7 @@ int main(void)
             break;  // breakをreturn (0)に変えるとリークが確認できる (テスターがNG出すようになる)
         add_history(line);
         token = tokenize(line);
-        argv = detokenize(token);
+        
         // token to 2darray 
         status = interpret(line);
         free(line);

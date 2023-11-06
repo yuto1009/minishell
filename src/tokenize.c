@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/05 23:40:38 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/11/06 13:59:26 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,5 +143,20 @@ t_token *tokenize(char *line)
 
 char **token_to_argv(t_token *token)
 {
-    
+    char **argv;
+
+    *argv = NULL;
+    while (token->kind != TK_EOF)
+    {
+        if (*argv == NULL)
+        {
+            *argv = token->str;
+        }
+        else 
+        {
+            
+        }
+        (*argv)++;
+        token = token->next;
+    }
 }

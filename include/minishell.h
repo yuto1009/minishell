@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/05 19:04:53 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/11/06 17:33:13 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,14 @@
 
 # define MINISHELL_ERROR 255
 
+typedef int token_kind;
+typedef struct s_token t_token;
+struct s_token {
+    char *str;
+    token_kind kind;
+    t_token *next;
+};
+
 // error.c
 void set_output_destination(FILE *dst);
 void fatal_error(char *message);
@@ -37,18 +45,12 @@ t_token *new_token(char *str, token_kind kind);
 t_token *tokenize_operator(char **line);
 t_token *tokenize_word(char **line);
 t_token *tokenize(char *line);
+char **token_to_argv(t_token *token);
 
 # define TK_WORD 0
 # define TK_OPERATOR 1
 # define TK_EOF 2
 
-typedef int token_kind;
-typedef struct s_token t_token;
-struct s_token {
-    char *str;
-    token_kind kind;
-    t_token *next;
-};
 
 
 

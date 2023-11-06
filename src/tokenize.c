@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/06 13:59:26 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/11/06 17:37:54 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ bool is_operator(char *line)
 {
     const char *operators[] = {"||", "&&", "&", ";", ";;", "(", ")", "|", "\n"};
 
-    int i = 0;
+    size_t i = 0;
     while (i < sizeof(operators) / sizeof(*operators))
     {
        if (ft_strncmp(line, operators[i], ft_strlen(operators[i])) == 0) 
@@ -61,7 +61,7 @@ t_token *tokenize_operator(char **line)
 {
     const char *operators[] = {"||", "&&", ";;", "&", ";", "(", ")", "|", "\n"};
     char *operator;
-    int i;
+    size_t i;
 
     operator = NULL;
     i = 0;
@@ -82,12 +82,10 @@ t_token *tokenize_operator(char **line)
 
 t_token *tokenize_word(char **line)
 {
-    size_t word_size;
     char *word;
     int i;
 
     word = NULL;
-    word_size = 0;
     i = 0;
     while ((*line)[i] != '\0' && is_metacharacter((*line)[i]) == false)
     {
@@ -144,19 +142,28 @@ t_token *tokenize(char *line)
 char **token_to_argv(t_token *token)
 {
     char **argv;
-
-    *argv = NULL;
+    t_token *head = token;
+    size_t token_size;
+    size_t i;
+    
+    token_size = 0;
     while (token->kind != TK_EOF)
     {
-        if (*argv == NULL)
-        {
-            *argv = token->str;
-        }
-        else 
-        {
-            
-        }
-        (*argv)++;
         token = token->next;
+        token_size++;
     }
+    token_size++;
+    argv = (char **)calloc(token_size+1, sizeof(char *));
+    if (argv == NULL)
+        exit(EXIT_FAILURE);
+    token = head;
+    i = 0;
+    while (i < token_size)
+    {
+        argv[i] = token->str;
+        token = token->next;
+        i++;
+    }
+    argv[i] = NULL;
+    return (argv);
 }

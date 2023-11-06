@@ -146,6 +146,35 @@ t_token *tokenize(char *line)
     return (head);
 }
 
+char **token_to_argv(t_token *token)
+{
+    char **argv;
+    t_token *head = token;
+    size_t token_size;
+    size_t i;
+    
+    token_size = 0;
+    while (token->kind != TK_EOF)
+    {
+        token = token->next;
+        token_size++;
+    }
+    token_size++;
+    argv = (char **)calloc(token_size+1, sizeof(char *));
+    if (argv == NULL)
+        exit(EXIT_FAILURE);
+    token = head;
+    i = 0;
+    while (i < token_size)
+    {
+        argv[i] = token->str;
+        token = token->next;
+        i++;
+    }
+    argv[i] = NULL;
+    return (argv);
+}
+
 int main(void)
 {
     t_token *token;
@@ -153,12 +182,11 @@ int main(void)
 
     token = NULL;
     token = tokenize(line);
-    // puts("DEBUG");
-    printf("%s\n", line);
-    while (token)
+    char **argv = token_to_argv(token);
+    while(*argv)
     {
-        printf("token string is %s\n", token->str);
-        token = token->next;
+        printf("argv: %s\n", *argv);
+        argv++;
     }
     return (0);
 }

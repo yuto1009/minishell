@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/06 17:37:54 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/11/07 12:50:19 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool is_operator(char *line)
 
 int is_blank(char c) 
 {
-    return (c == ' ' || c == '\t');
+    return (c == ' ' || c == '\t' || c == '\n');
 }
 
 bool is_metacharacter(char c)

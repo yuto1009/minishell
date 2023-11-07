@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/07 15:25:25 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/11/07 17:29:17 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,6 @@ int interpret(char *line)
 int main(void)
 {
     char *line;
-    // t_token *token;
     int status;
 
     set_output_destination(stderr);
@@ -148,10 +147,7 @@ int main(void)
         line = readline("minishell$ ");
         if (line == NULL)
             break;  // breakをreturn (0)に変えるとリークが確認できる (テスターがNG出すようになる)
-        add_history(line);
-        // token = tokenize(line);
-        
-        // token to 2darray 
+        add_history(line); 
         status = interpret(line);
         free(line);
     }

@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/06 17:33:13 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/11/07 18:06:12 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,9 @@ char **token_to_argv(t_token *token);
 # define TK_WORD 0
 # define TK_OPERATOR 1
 # define TK_EOF 2
+
+# define SINGLE_QUOTE '\''
+# define DOUBLE_QUOTE '\"'
 
 
 

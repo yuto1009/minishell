@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/07 12:50:19 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:17:02 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,48 @@ t_token *tokenize_operator(char **line)
     return (new_token(operator, TK_OPERATOR));
 } 
 
+char *remove_single_quote(char *word)
+{
+    char *trimmed_word;
+    char *open_quote = ft_strchr(word, SINGLE_QUOTE);
+    char *close_quote = ft_strrchr(word, SINGLE_QUOTE);
+
+    if (ft_strchr(word, SINGLE_QUOTE) == NULL)
+        return (word);
+    if (ft_strchr(word, SINGLE_QUOTE) == ft_strrchr(word, SINGLE_QUOTE))
+        TODO("Unclosed single quote");
+    
+}
+
+char *remove_double_quote(char *word)
+{
+    
+}
+
+char *remove_quote(char *word)
+{
+    size_t i;
+
+    if (word == NULL)
+        return (NULL);
+    i = 0;
+    while (word[i])
+    {
+        if (word[i] == SINGLE_QUOTE)
+        {
+            word = remove_single_quote(word);
+            break;
+        }
+        if (word[i] == DOUBLE_QUOTE)
+        {
+            word = remove_double_quote(word);
+            break;
+        }
+        i++;
+    }   
+    return (word);
+}
+
 t_token *tokenize_word(char **line)
 {
     char *word;
@@ -94,7 +136,12 @@ t_token *tokenize_word(char **line)
     word = ft_substr(*line, 0, i);
     if (word == NULL)
         fatal_error("Malloc Error");
-    *line += ft_strlen(word);
+    word = remove_quote(word);
+    if (ft_strchr(word, SINGLE_QUOTE))
+        remove_single_qupte();
+    if (ft_strchr(word, DOUBLE_QUOTE))
+        remove_double_quote();
+    *line += ft_strlen(word);   // 入力から得た文字列をインクリメント
     return (new_token(word, TK_WORD));
 }
 

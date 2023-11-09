@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/07 15:25:25 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/11/08 10:11:19 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,16 +117,9 @@ int execute(char **argv)
 
 int interpret(char *line)
 {
-    t_token *token = tokenize(line);
+    t_token *token = tokenize(line);    // トークン化
     char **argv = token_to_argv(token);
-    // int i = 0;
-    // while(argv[i])
-    // {
-    //     printf("argv: %s\n", argv[i]);
-    //     i++;
-    // }
     int status = execute(argv);
-    // printf("status: %d\n", status);
     return (status);
 }
 

@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/07 12:50:19 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/11/07 22:15:48 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ bool is_operator(char *line)
     size_t i = 0;
     while (i < sizeof(operators) / sizeof(*operators))
     {
-       if (ft_strncmp(line, operators[i], ft_strlen(operators[i])) == 0) 
-       {
+        if (ft_strncmp(line, operators[i], ft_strlen(operators[i])) == 0) 
+        {
             return (true);
-       }
-       i++;
+        }
+        i++;
     }
     return (false);
 }
@@ -67,18 +67,18 @@ t_token *tokenize_operator(char **line)
     i = 0;
     while (i < sizeof(operators) / sizeof(*operators))
     {
-       if (ft_strncmp(*line, operators[i], ft_strlen(operators[i])) == 0) 
-       {
+        if (ft_strncmp(*line, operators[i], ft_strlen(operators[i])) == 0) 
+        {
             break;
-       }
-       i++;
+        }
+        i++;
     }
     operator = ft_substr(*line, 0, ft_strlen(operators[i]));
     if (operator == NULL)
         fatal_error("Malloc Error");
     *line += ft_strlen(operator);
     return (new_token(operator, TK_OPERATOR));
-} 
+}
 
 t_token *tokenize_word(char **line)
 {

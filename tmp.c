@@ -19,7 +19,7 @@ bool is_operator(char *line)
 {
     const char *operators[] = {"||", "&&", "&", ";", ";;", "(", ")", "|", "\n"};
 
-    int i = 0;
+    size_t i = 0;
     while (i < sizeof(operators) / sizeof(*operators))
     {
        if (ft_strncmp(line, operators[i], ft_strlen(operators[i])) == 0) 
@@ -64,7 +64,7 @@ t_token *tokenize_operator(char **line)
 {
     const char *operators[] = {"||", "&&", ";;", "&", ";", "(", ")", "|", "\n"};
     char *operator;
-    int i;
+    size_t i;
 
     operator = NULL;
     i = 0;
@@ -85,12 +85,10 @@ t_token *tokenize_operator(char **line)
 
 t_token *tokenize_word(char **line)
 {
-    size_t word_size;
     char *word;
-    int i;
+    size_t i;
 
     word = NULL;
-    word_size = 0;
     i = 0;
     while ((*line)[i] != '\0' && is_metacharacter((*line)[i]) == false)
     {
@@ -178,15 +176,21 @@ char **token_to_argv(t_token *token)
 int main(void)
 {
     t_token *token;
-    char *line = "echo \"Hello World\"";
+    char *line = "echo \"Hello World\" | grep \"H\"";
 
     token = NULL;
     token = tokenize(line);
-    char **argv = token_to_argv(token);
-    while(*argv)
+    while(token)
     {
-        printf("argv: %s\n", *argv);
-        argv++;
+        printf("token: %s ", token->str);
+        printf("token: %d\n", token->kind);
+        token = token->next;
     }
+    // char **argv = token_to_argv(token);
+    // while(*argv)
+    // {
+    //     printf("argv: %s\n", *argv);
+    //     argv++;
+    // }
     return (0);
 }

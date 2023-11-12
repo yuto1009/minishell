@@ -2,52 +2,93 @@
 #include <string.h>
 #include <stdbool.h>
 #include "libft/libft.h"
-# define SINGLE_QUOTE_CHAR '\''
-# define DOUBLE_QUOTE_CHAR '\"'
+# define SINGLE_QUOTE '\''
+# define DOUBLE_QUOTE '\"'
 
 #include <stdio.h>
 
-char *	*word(char **rest, char *line)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char *remove_quotes(char *word)
 {
-	const char	*start = line;
-	char		*word;
-	while (*line && !is_metacharacter(*line))
-	{
-		if (*line == SINGLE_QUOTE_CHAR)
-		{
-			// skip quote
-			line++;
-			while (*line != SINGLE_QUOTE_CHAR)
-			{
-				if (*line == '\0')
-					todo("Unclosed single quote");
-				line++;
-			}
-			// skip quote
-			line++;
-		}
-		else if (*line == DOUBLE_QUOTE_CHAR)
-		{
-			// skip quote
-			line++;
-			while (*line != DOUBLE_QUOTE_CHAR)
-			{
-				if (*line == '\0')
-					todo("Unclosed double quote");
-				line++;
-			}
-			// skip quote
-			line++;
-		}
-		else
-			line++;
-	}
-	word = strndup(start, line - start);
-	return (word);
+    const int result_size = ft_strlen(word) + 1;
+    char *result;
+    char *trimmed;
+    size_t i;
+    size_t str_size;
+
+    result = (char *)ft_calloc(result_size, sizeof(char));
+    if (result == NULL)
+        exit(EXIT_FAILURE);
+    i = 0;
+    while(word[i] != '\0')
+    {
+        str_size = 0;
+        if (word[i] != '\0' && word[i] == SINGLE_QUOTE)
+        {
+            i++;
+            while (word[i] != '\0' && word[i] != SINGLE_QUOTE)
+            {
+                str_size++;
+                i++;
+            }
+            if (word[i] == '\0' || word[i] != SINGLE_QUOTE)
+            {
+                exit(EXIT_FAILURE);
+            }
+            else
+            {
+                trimmed = ft_substr(word, i - str_size, str_size);
+                if (trimmed == NULL)
+                    exit(EXIT_FAILURE);
+                ft_strlcat(result, trimmed, result_size);
+                free(trimmed);
+            }
+        }
+        str_size = 0;
+        if (word[i] != '\0' && word[i] == DOUBLE_QUOTE)
+        {
+            i++;
+            while (word[i] != '\0' && word[i] != DOUBLE_QUOTE)
+            {
+                str_size++;
+                i++;
+            }
+            if (word[i] == '\0' || word[i] != DOUBLE_QUOTE)
+            {
+                exit(EXIT_FAILURE);
+            }
+            else
+            {
+                trimmed = ft_substr(word, i - str_size, str_size);
+                if (trimmed == NULL)
+                    exit(EXIT_FAILURE);
+                ft_strlcat(result, trimmed, result_size);
+                free(trimmed);
+            }
+        }
+        printf("%s\n", result);
+    }
+    // minishellの場合　free(word); した方がよくね？
+    return (result);
 }
 
-int main(void)
-{
-    
-    return (0);
-}
+// int main() {
+//     // char input[] = "\'\'\"\"\"\'Hello\'\"\"\"\'\'";
+//     char input[] = "\"\'H\'\"e\"l\"o\"\'o\'\"";
+//     // Original: "'H'"e"l"o"'o'"
+//     // Modified: 'H'elo'o'
+//     char *output = remove_quotes(input);
+
+//     if (output != NULL) {
+//         printf("Original: %s\n", input);
+//         printf("Modified: %s\n", output);
+//         free(output);
+//     } else {
+//         printf("Memory allocation failed.\n");
+//     }
+
+//     return 0;
+// }

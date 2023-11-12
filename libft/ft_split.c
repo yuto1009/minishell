@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 11:36:49 by yuendo            #+#    #+#             */
-/*   Updated: 2023/06/13 12:17:30 by yuendo           ###   ########.fr       */
+/*   Updated: 2023/11/12 18:01:28 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,19 +109,3 @@ char	**ft_split(char const *s, char c)
 	split[i] = NULL;
 	return (split);
 }
-
-// #include <stdio.h>
-// int main(void)
-// {
-//     char s[] = "h\0ello\0hello s ";
-//     char sep = 'e';
-//     char **a;
-//     a = ft_split(s,sep);
-// 	size_t i;
-// 	i = 0;
-//    while(a[i]){
-// 	printf("%s\n", a[i]);
-// 	i++;
-//    }
-//     return (0);
-// }

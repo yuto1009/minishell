@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 13:16:34 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/05/25 16:21:18 by yuendo           ###   ########.fr       */
+/*   Updated: 2023/11/12 18:00:31 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,3 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	dst[i] = '\0';
 	return (ft_strlen(src));
 }
-
-// #include <stdio.h>
-// #include <string.h>
-// int    main(void)
-// {
-//     char    dst[11];
-//     char        src[] = "0123456789";
-//     char    dst2[11];
-//     char        src2[] = "0123456789";
-//     ft_strlcpy(dst, src, sizeof(dst)); // "012345678"になる
-//     printf("ft : %s\n", dst);
-//     strlcpy(dst2, src2, sizeof(dst2)); // "012345678"になる
-//     printf("or : %s\n", dst2);
-// }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 17:54:28 by yuendo            #+#    #+#             */
-/*   Updated: 2023/05/20 17:22:31 by yuendo           ###   ########.fr       */
+/*   Updated: 2023/11/12 18:01:08 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,3 @@ char	*ft_strrchr(const char *s, int c)
 	return (NULL);
 }
 
-// #include <string.h>
-// #include <stdio.h>
-// int main()
-// {
-//     char a[] = "aiueo";
-//     printf("%s : %s\n", "ft", "lib");
-//     printf("%s : %s\n", ft_strrchr(a, 'a'), strrchr(a, 'a'));
-//     printf("%s : %s\n", ft_strrchr(a, 'i'), strrchr(a, 'i'));
-//     printf("%s : %s\n", ft_strrchr(a, 'u'), strrchr(a, 'u'));
-//     printf("%s : %s\n", ft_strrchr(a, 'e'), strrchr(a, 'e'));
-//     printf("%s : %s\n", ft_strrchr(a, 'o'), strrchr(a, 'o'));
-//     printf("%s : %s\n", ft_strrchr(a, 0), strrchr(a, 0));
-//     printf("%p : %p\n", ft_strrchr(a, 0), strrchr(a, 0));
-//     printf("%s : %s\n", ft_strrchr(a, 1), strrchr(a, 1));
-//     printf("%s : %s\n", ft_strrchr(a, 'z'), strrchr(a, 'z'));
-
-//     printf("size of a is %zu\n", ft_strlen(a));
-//     return (0);
-// }

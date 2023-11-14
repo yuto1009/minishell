@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/07 21:17:02 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/11/14 19:16:30 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_token *new_token(char *str, token_kind kind)
 
     token = (t_token *)ft_calloc(1, sizeof(t_token));
     if (token == NULL)
-        fatal_error("Malloc Error");
+        fatal_error("malloc error");
     token->str = str;
     token->kind = kind;
     token->next = NULL;
@@ -75,51 +75,47 @@ t_token *tokenize_operator(char **line)
     }
     operator = ft_substr(*line, 0, ft_strlen(operators[i]));
     if (operator == NULL)
-        fatal_error("Malloc Error");
+        fatal_error("malloc error");
     *line += ft_strlen(operator);
     return (new_token(operator, TK_OPERATOR));
 } 
 
-char *remove_single_quote(char *word)
-{
-    char *trimmed_word;
-    char *open_quote = ft_strchr(word, SINGLE_QUOTE);
-    char *close_quote = ft_strrchr(word, SINGLE_QUOTE);
+char *remove_quotes(const char *word) {
 
-    if (ft_strchr(word, SINGLE_QUOTE) == NULL)
-        return (word);
-    if (ft_strchr(word, SINGLE_QUOTE) == ft_strrchr(word, SINGLE_QUOTE))
-        TODO("Unclosed single quote");
-    
-}
-
-char *remove_double_quote(char *word)
-{
-    
-}
-
-char *remove_quote(char *word)
-{
+    const size_t result_size = ft_strlen(word) + 1;
+    char *result;
     size_t i;
-
-    if (word == NULL)
-        return (NULL);
+    size_t j;
+    
+    if (word == NULL) 
+        return NULL;
+    result = (char *)malloc(result_size * sizeof(char));
+    if (result == NULL) 
+        fatal_error("malloc error");
     i = 0;
-    while (word[i])
-    {
-        if (word[i] == SINGLE_QUOTE)
+    j = 0;
+    while (word[i] != '\0') {
+        if (word[i] == SINGLE_QUOTE || word[i] == DOUBLE_QUOTE) 
         {
-            word = remove_single_quote(word);
-            break;
-        }
-        if (word[i] == DOUBLE_QUOTE)
+            const char current_quote = word[i++];
+            while (word[i] != '\0' && word[i] != current_quote) 
+            {
+                result[j++] = word[i++];
+            }
+            if (word[i] == '\0') 
+            {
+                free(result);
+                minishell_error("unclosed quote");
+            }
+            i++; // 閉じクオートをスキップ
+        } else 
         {
-            word = remove_double_quote(word);
-            break;
+            result[j++] = word[i++];
         }
-        i++;
-    }   
-    return (word);
+    }
+    free((void *)word);
+    result[j] = '\0';
+    return result;
 }
 
 t_token *tokenize_word(char **line)
@@ -135,12 +131,9 @@ t_token *tokenize_word(char **line)
     }
     word = ft_substr(*line, 0, i);
     if (word == NULL)
-        fatal_error("Malloc Error");
-    word = remove_quote(word);
-    if (ft_strchr(word, SINGLE_QUOTE))
-        remove_single_qupte();
-    if (ft_strchr(word, DOUBLE_QUOTE))
-        remove_double_quote();
+        fatal_error("malloc error");
+    word = remove_quotes(word);
+    
     *line += ft_strlen(word);   // 入力から得た文字列をインクリメント
     return (new_token(word, TK_WORD));
 }
@@ -202,7 +195,7 @@ char **token_to_argv(t_token *token)
     token_size++;
     argv = (char **)calloc(token_size+1, sizeof(char *));
     if (argv == NULL)
-        exit(EXIT_FAILURE);
+        fatal_error("malloc error");
     token = head;
     i = 0;
     while (i < token_size)

@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:29:17 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/03 16:35:30 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/01/03 17:25:35 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void mini_pwd()
     char *buff = ft_calloc(PATH_MAX, 1);
     if (buff == NULL)
         fatal_error("Malloc Error");
-    if (getcwd(buff, PATH_MAX) == NULL)
+    if (getcwd(buff, PATH_MAX) == NULL) // ユーザーの現在位置を絶対パスで取得する
     {
         free(buff);
         fatal_error("The provided pathname exceeds the maximum length limit of 1024 characters. Please use a shorter pathname.");

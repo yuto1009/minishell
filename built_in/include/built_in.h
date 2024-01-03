@@ -6,10 +6,12 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 16:34:36 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/03 16:36:32 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/01/03 22:45:36 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#define OP_N "-n"
 
 void mini_pwd();
+void mini_echo(t_token **token) 

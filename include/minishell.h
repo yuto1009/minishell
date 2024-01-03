@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/07 18:06:12 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/01/03 16:37:44 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define MINISHELL_H
 
 #include "../libft/libft.h"
+#include "../built_in/include/built_in.h"
 #include <readline/readline.h> // readline, add_history
 #include <stdlib.h> // free exit getenv
 #include <unistd.h> // fork execve access 

@@ -6,11 +6,11 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:29:17 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/03 15:09:57 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/01/03 16:35:30 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "include/built_in.h"
 
 void mini_pwd()
 {

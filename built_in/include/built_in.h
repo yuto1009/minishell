@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#define OP_N "-n"
 
 void mini_pwd();
+void mini_echo(t_token **token);
 int mini_exit(char **args);
+

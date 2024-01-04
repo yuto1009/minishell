@@ -6,19 +6,20 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:56:12 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/03 22:45:12 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/01/04 19:22:51 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/built_in.h"
 
-// 動作確認してないぜ
+// echo関数は動作確認むずいから飛ばす
+// 実装も難しくないから後回し！
 void mini_echo(t_token **token) 
 {
     t_token *current;
     bool print_newline;
     
-    if (token == NULL || *token == NULL)
+    if (token == NULL || *token == '\0')
      {
         printf("\n");
         return;

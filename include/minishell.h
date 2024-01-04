@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/04 17:51:50 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/01/04 18:21:55 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ t_token *tokenize_operator(char **line);
 t_token *tokenize_word(char **line);
 t_token *tokenize(char *line);
 char **token_to_argv(t_token *token);
-//builtin
-int mini_exit(char **args);
+
 
 # define TK_WORD 0
 # define TK_OPERATOR 1

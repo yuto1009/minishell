@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/03 16:37:44 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/01/04 15:40:52 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 #include <unistd.h> // fork execve access 
 #include <stdbool.h> // boolean
 #include <sys/wait.h> // wait
+#include <errno.h> // errno
+#include <string.h> // strerror
 // #include <limits.h>
 
 # define MINISHELL_ERROR 255

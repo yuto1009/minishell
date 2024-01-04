@@ -14,6 +14,7 @@
 #define MINISHELL_H
 
 #include "../libft/libft.h"
+#include "../built_in/include/built_in.h"
 #include <readline/readline.h> // readline, add_history
 #include <stdlib.h> // free exit getenv
 #include <unistd.h> // fork execve access 

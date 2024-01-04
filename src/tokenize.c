@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/14 23:33:13 by yutoendo         ###   ########.fr       */
+/*   Updated: 2023/12/31 19:56:15 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ bool is_operator(char *line)
     const char *operators[] = {"||", "&&", "&", ";", ";;", "(", ")", "|", "\n"};
 
     size_t i = 0;
-    while (i < sizeof(operators) / sizeof(*operators))
+    while (i < sizeof(operators) / sizeof(*operators))//comment by kyoshida iを配列の要素数より小さいだけ回している？
     {
        if (ft_strncmp(line, operators[i], ft_strlen(operators[i])) == 0) 
        {

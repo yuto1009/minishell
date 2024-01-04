@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/03 16:37:44 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/01/04 18:21:55 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 #include <unistd.h> // fork execve access 
 #include <stdbool.h> // boolean
 #include <sys/wait.h> // wait
+#include <errno.h> // errno
+#include <string.h> // strerror
 // #include <limits.h>
 
 # define MINISHELL_ERROR 255
@@ -48,13 +50,13 @@ t_token *tokenize_word(char **line);
 t_token *tokenize(char *line);
 char **token_to_argv(t_token *token);
 
+
 # define TK_WORD 0
 # define TK_OPERATOR 1
 # define TK_EOF 2
 
 # define SINGLE_QUOTE '\''
 # define DOUBLE_QUOTE '\"'
-
 
 
 

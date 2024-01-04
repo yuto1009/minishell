@@ -20,6 +20,8 @@
 #include <unistd.h> // fork execve access 
 #include <stdbool.h> // boolean
 #include <sys/wait.h> // wait
+#include <errno.h> // errno
+#include <string.h> // strerror
 // #include <limits.h>
 
 # define MINISHELL_ERROR 255

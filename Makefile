@@ -2,7 +2,7 @@ NAME     = minishell
 CC       = cc
 CFLAGS   = -Wall -Wextra -Werror
 LDFLAGS  = -lreadline 
-SRCS     = src/main.c src/error.c src/tokenize.c built_in/builtin_exit.c\
+SRCS     = src/main.c src/error.c src/tokenize.c built_in/builtin_exit.c built_in/builtin_env.c\
 
 OBJS = $(SRCS:.c=.o)
 

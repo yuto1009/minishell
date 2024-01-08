@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/04 18:21:55 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/01/08 18:37:28 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <unistd.h> // fork execve access 
 #include <stdbool.h> // boolean
 #include <sys/wait.h> // wait
+#include <stdio.h> // DEBUG
 // #include <limits.h>
 
 # define MINISHELL_ERROR 255
@@ -31,6 +32,7 @@ struct s_token {
     token_kind kind;
     t_token *next;
 };
+
 
 // error.c
 void set_output_destination(FILE *dst);

@@ -21,6 +21,9 @@
 #include <stdbool.h> // boolean
 #include <sys/wait.h> // wait
 #include <stdio.h> // DEBUG
+#include <errno.h> // errno
+#include <string.h> // strerror
+
 // #include <limits.h>
 
 # define MINISHELL_ERROR 255

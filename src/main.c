@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/08 19:47:55 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/01/09 14:58:07 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,8 @@ int interpret(char *line)
     t_token *token = tokenize(line);
     char **argv = token_to_argv(token);
     //ここからとりあえずbuiltinを実装 comment by kyoshida
-    if(ft_strncmp(argv[0], "exit",4) == 0)
-      return mini_exit(argv);
+    // if(ft_strncmp(argv[0], "exit",4) == 0)
+    //   return mini_exit(argv);
     // else if(ft_strncmp(argv[0],"env",3) == 0)
     //   return mini_env(argv);
     // int i = 0;

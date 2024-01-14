@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/01/14 17:35:15 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/01/14 17:40:30 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void parser(t_token *token)
     {
         if (token->kind == TK_OPERATOR && strncmp(token->str,";",1) == 0)
         {
-          token = token->pre ;
+          token = token->prev ;
           
         }
     }

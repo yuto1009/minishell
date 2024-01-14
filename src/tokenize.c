@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/14 17:35:15 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/01/14 17:43:18 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ t_token *new_token(char *str, token_kind kind)
         fatal_error("malloc error");
     token->str = str;
     token->kind = kind;
+    token->prev = NULL;
     token->next = NULL;
     return (token);
 }

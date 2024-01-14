@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/01/14 18:49:20 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/01/14 19:26:37 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,17 @@ struct s_node {
     t_node *left;
 };
 
-// 最高層のノードを見つける
-t_token *find_node_token(t_token *token)
-{
-    
-}
-
 // 見つけた最高層のノードを軸に子ノードを格納する
-t_node *new_node(t_token *token)
+t_node *new_node(t_token *axis)
 {
     t_node *node;
 
     node = (t_node *)ft_calloc(1, sizeof(t_node));
     if (node == NULL)
         fatal_error("malloc error");
-    node->token = token;
-    node->right = NULL;
+    node->token = axis;
     node->left = NULL;
+    node->right = NULL;
     return (node);
 }
 
@@ -65,28 +59,36 @@ t_token *split_right_tokens(t_token *token)
     return (token);
 }
 
-t_token *find_highest_node(t_token *token)
+t_token *find_axis_token(t_token *token)
 {
     t_token *token;
-    t_token *highest;
+    t_token *axis;
 
-    highest = NULL;
+    axis = NULL;
     while(token->next != NULL)
     {
         if (ft_strncmp(token->str, ';', 1) == 0)
-        {
-            highest = token;
-        }
-        else if ()
+            axis = token;
+        else if (ft_strncmp(axis,';',1) != 0 && ft_strncmp(token->str , '|',1) == 0)
+            axis = token;
+            
         token = token->next;
     }
-    return token;
+    return axis;
 }
 // 色んな関数のまとめ？
-void parser(t_token *token)
+t_node *parser(t_token *token, t_node *node)
 {
-    t_token *current;
-    current = find_highest_node(token);
-    while()
+    t_node *node;
+    t_token *axis;
+    t_token *left;
+    t_token *right;
+    
+    axis = find_highest_node(token);
+    if(axis == NULL)
+        return;
+    left = split_left_tokens(axis);
+    right = split_right_tokens(axis);
+    node = new_node(axis);
     
 }

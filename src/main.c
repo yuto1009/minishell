@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/09 14:58:07 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/01/14 17:17:04 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,25 @@ int execute(char **argv)
     return (WEXITSTATUS(wstatus));
 }
 
+// void TEST_print_token(t_token *token)
+// {
+//     while (token->kind != TK_EOF)
+//     {
+//         printf("%s : ", token->str);
+//         if (token->kind == TK_WORD)
+//             printf("WORD\n");
+//         else if (token->kind == TK_OPERATOR)
+//             printf("OPERATOR\n");
+//         else 
+//             printf("PRESERVED\n");
+//         token = token->next;
+//     }
+// }
+
 int interpret(char *line)
 {
     t_token *token = tokenize(line);
+    // TEST_print_token(token);
     char **argv = token_to_argv(token);
     //ここからとりあえずbuiltinを実装 comment by kyoshida
     // if(ft_strncmp(argv[0], "exit",4) == 0)

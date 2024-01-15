@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/14 18:42:38 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/01/15 09:59:25 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ t_token *tokenize(char *line)
 
     head = NULL;
     current = NULL;
+    new = NULL;
     while (*line != '\0')
     {
         if (is_blank(*line) == true)
@@ -162,8 +163,10 @@ t_token *tokenize(char *line)
     if (head == NULL)
         head = new_token(NULL, TK_EOF);
     else
+    {
         current->next = new_token(NULL, TK_EOF);
         current->next->prev = current;
+    }
     return (head);
 }
 

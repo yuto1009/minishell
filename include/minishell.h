@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/14 18:42:38 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/01/15 10:14:25 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include "../libft/libft.h"
 #include "../built_in/include/built_in.h"
+// #include "parser.h"
 #include <readline/readline.h> // readline, add_history
 #include <stdlib.h> // free exit getenv
 #include <unistd.h> // fork execve access 
@@ -37,6 +38,14 @@ struct s_token {
     t_token *next;
 };
 
+// typedef struct s_token t_token;
+typedef struct s_node t_node;
+
+struct s_node {
+    t_token *token;
+    t_node *left;
+    t_node *right;
+};
 
 // error.c
 void set_output_destination(FILE *dst);
@@ -53,6 +62,9 @@ t_token *tokenize_operator(char **line);
 t_token *tokenize_word(char **line);
 t_token *tokenize(char *line);
 char **token_to_argv(t_token *token);
+
+//parser
+void parser(t_node *node);
 
 
 # define TK_WORD 0

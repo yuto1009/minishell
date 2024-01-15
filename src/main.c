@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/15 09:51:07 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/01/15 11:27:25 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,24 +132,31 @@ int execute(char **argv)
 
 int interpret(char *line)
 {
-    printf("ok");
+    struct s_node *node = (struct s_node *)malloc(sizeof(struct s_node));      
     t_token *token = tokenize(line);
-    // TEST_print_token(token);
-    char **argv = token_to_argv(token);
+    node->token = token;
+    node->left = NULL;
+    node->right = NULL;
+    parser(node);
+    return (0);
+    // char **argv = token_to_argv(token);
+    
     //ここからとりあえずbuiltinを実装 comment by kyoshida
     // if(ft_strncmp(argv[0], "exit",4) == 0)
     //   return mini_exit(argv);
     // else if(ft_strncmp(argv[0],"env",3) == 0)
     //   return mini_env(argv);
+    //ここまで
+    
     // int i = 0;
     // while(argv[i])
     // {
     //     printf("argv: %s\n", argv[i]);
     //     i++;
     // }
-    int status = execute(argv);
+    // int status = execute(argv);
     // printf("status: %d\n", status);
-    return (status);
+    // return (status);
 }
 
 // __attribute__((destructor))

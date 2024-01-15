@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/15 09:59:25 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/01/15 12:41:04 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,17 @@
 
 bool is_operator(char *line)
 {
-    const char *operators[] = {"||", "&&", "&", ";", ";;", "(", ")", "|", "\n"};
+    //operatorに<>追加しました　by kyoshida
+    const char *operators[] = {"||", "&&", "&", ";", ";;", "(", ")", "|", "<",">","\n"};
 
     size_t i = 0;
     while (i < sizeof(operators) / sizeof(*operators))//comment by kyoshida iを配列の要素数より小さいだけ回している？
     {
-       if (ft_strncmp(line, operators[i], ft_strlen(operators[i])) == 0) 
-       {
+        if (ft_strncmp(line, operators[i], ft_strlen(operators[i])) == 0) 
+        {
             return (true);
-       }
-       i++;
+        }
+        i++;
     }
     return (false);
 }
@@ -60,7 +61,7 @@ t_token *new_token(char *str, token_kind kind)
 
 t_token *tokenize_operator(char **line)
 {
-    const char *operators[] = {"||", "&&", ";;", "&", ";", "(", ")", "|", "\n"};
+    const char *operators[] = {"||", "&&", ";;", "&", ";", "(", ")", "|", "<",">","\n"};
     char *operator;
     size_t i;
 
@@ -68,11 +69,11 @@ t_token *tokenize_operator(char **line)
     i = 0;
     while (i < sizeof(operators) / sizeof(*operators))
     {
-       if (ft_strncmp(*line, operators[i], ft_strlen(operators[i])) == 0) 
-       {
+        if (ft_strncmp(*line, operators[i], ft_strlen(operators[i])) == 0) 
+        {
             break;
-       }
-       i++;
+        }
+        i++;
     }
     operator = ft_substr(*line, 0, ft_strlen(operators[i]));
     if (operator == NULL)
@@ -134,32 +135,29 @@ t_token *tokenize(char *line)
     current = NULL;
     new = NULL;
     while (*line != '\0')
-    {
-        if (is_blank(*line) == true)
-            line++;
-        else
-        {
-            if (is_operator(line))
-            {
-                new = tokenize_operator(&line);
-            }
-            else
-            {
-                new = tokenize_word(&line);
-            }
-        }
-        if (head == NULL)
-        {
+{
+    if (is_blank(*line) == true) {
+        line++;
+        continue;  // 空白文字の後、次のトークンへ進む
+    }
+    if (is_operator(line)) {
+        new = tokenize_operator(&line);
+    } else {
+        new = tokenize_word(&line);
+    }
+    if (new != NULL) {  // ここでnewがNULLでないことを確認
+        if (head == NULL) {
             head = new;
+            head->prev = NULL;  // 新しいヘッドのprevをNULLに設定
             current = new;
-        }
-        else
-        {
+        } else {
             current->next = new;
             new->prev = current;
             current = new;
         }
     }
+}
+
     if (head == NULL)
         head = new_token(NULL, TK_EOF);
     else

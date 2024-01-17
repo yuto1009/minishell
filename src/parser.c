@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/01/15 15:48:33 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/01/17 15:14:06 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,30 +43,32 @@ t_node *new_node(t_token *axis, t_token *left_token, t_token *right_token)
 
 // 最高層のノードの左側のトークンを切断する
 
-
 t_token *split_left_tokens(t_token *token)
 {
-    // printf("token->str: %s\n", token->prev->prev->str);
+    t_token *new_eof;
+
     if (token->prev != NULL)
-    {
-        token = token->prev;    // 最高層ノードの左側のトークンに移動する
-    }
-    token->next = new_token(NULL, TK_EOF);
-    while(token->prev != NULL )
-    {
-        token = token->prev;
-    }
-    return (token);
+        token = token->prev; // 最高層ノードの左側のトークンに移動する
+    new_eof = new_token(NULL, TK_EOF);
+    new_eof->prev = token->prev; // 新しいEOFトークンのprevを設定する
+    token->next = new_eof;
+    // printf("left token: %s\n", token->str);
+    while (token->prev != NULL )
+    token = token->prev;
+    return token;
 }
 
 // 最高層のノードの右側のトークンを切断する
 
 t_token *split_right_tokens(t_token *token)
 {
+    t_token *prev_token;
     if(token->next->kind == TK_EOF)
         return (new_token(NULL, TK_EOF));   // もし最高層ノードの右側にトークンがなかったらEOFトークンだけ入れる
     token = token->next;
-    token->prev = new_token(NULL, TK_EOF);
+    prev_token = (t_token *)ft_calloc(1, sizeof(t_token));
+    prev_token = NULL;
+    token->prev = prev_token;
     return (token);
 }
 

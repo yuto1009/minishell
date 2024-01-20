@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/15 12:41:04 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/01/20 15:58:14 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ t_token *tokenize(char *line)
     if (new != NULL) {  // ここでnewがNULLでないことを確認
         if (head == NULL) {
             head = new;
-            head->prev = NULL;  // 新しいヘッドのprevをNULLに設定
+            head->prev = new_token(NULL,TK_EOF);  // 新しいヘッドのprevをNULLに設定
             current = new;
         } else {
             current->next = new;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/16 16:18:35 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/01/20 16:43:54 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,8 +137,13 @@ int interpret(char *line)
     node->token = token;
     node->left = NULL;
     node->right = NULL;
-    parser(node);
-    return (0);
+    
+    node = parser(node);
+    node  = node->right;
+      printf("node->str : %s\n",node->token->str);
+    printf("node->right : %s\n",node->right->token->str);
+    printf("node->left : %s\n",node->left->token->str);
+        return (0);
     // char **argv = token_to_argv(token);
     
     //ここからとりあえずbuiltinを実装 comment by kyoshida

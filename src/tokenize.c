@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/12/31 19:56:15 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/01/20 15:58:14 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,17 @@
 
 bool is_operator(char *line)
 {
-    const char *operators[] = {"||", "&&", "&", ";", ";;", "(", ")", "|", "\n"};
+    //operatorに<>追加しました　by kyoshida
+    const char *operators[] = {"||", "&&", "&", ";", ";;", "(", ")", "|", "<",">","\n"};
 
     size_t i = 0;
     while (i < sizeof(operators) / sizeof(*operators))//comment by kyoshida iを配列の要素数より小さいだけ回している？
     {
-       if (ft_strncmp(line, operators[i], ft_strlen(operators[i])) == 0) 
-       {
+        if (ft_strncmp(line, operators[i], ft_strlen(operators[i])) == 0) 
+        {
             return (true);
-       }
-       i++;
+        }
+        i++;
     }
     return (false);
 }
@@ -53,13 +54,14 @@ t_token *new_token(char *str, token_kind kind)
         fatal_error("malloc error");
     token->str = str;
     token->kind = kind;
+    token->prev = NULL;
     token->next = NULL;
     return (token);
 }
 
 t_token *tokenize_operator(char **line)
 {
-    const char *operators[] = {"||", "&&", ";;", "&", ";", "(", ")", "|", "\n"};
+    const char *operators[] = {"||", "&&", ";;", "&", ";", "(", ")", "|", "<",">","\n"};
     char *operator;
     size_t i;
 
@@ -67,11 +69,11 @@ t_token *tokenize_operator(char **line)
     i = 0;
     while (i < sizeof(operators) / sizeof(*operators))
     {
-       if (ft_strncmp(*line, operators[i], ft_strlen(operators[i])) == 0) 
-       {
+        if (ft_strncmp(*line, operators[i], ft_strlen(operators[i])) == 0) 
+        {
             break;
-       }
-       i++;
+        }
+        i++;
     }
     operator = ft_substr(*line, 0, ft_strlen(operators[i]));
     if (operator == NULL)
@@ -131,36 +133,38 @@ t_token *tokenize(char *line)
 
     head = NULL;
     current = NULL;
+    new = NULL;
     while (*line != '\0')
-    {
-        if (is_blank(*line) == true)
-            line++;
-        else
-        {
-            if (is_operator(line))
-            {
-                new = tokenize_operator(&line);
-            }
-            else
-            {
-                new = tokenize_word(&line);
-            }
-        }
-        if (head == NULL)
-        {
+{
+    if (is_blank(*line) == true) {
+        line++;
+        continue;  // 空白文字の後、次のトークンへ進む
+    }
+    if (is_operator(line)) {
+        new = tokenize_operator(&line);
+    } else {
+        new = tokenize_word(&line);
+    }
+    if (new != NULL) {  // ここでnewがNULLでないことを確認
+        if (head == NULL) {
             head = new;
+            head->prev = new_token(NULL,TK_EOF);  // 新しいヘッドのprevをNULLに設定
+            current = new;
+        } else {
+            current->next = new;
+            new->prev = current;
             current = new;
         }
-        else
-        {
-            current->next = new;
-            current = current->next;
-        }
     }
+}
+
     if (head == NULL)
         head = new_token(NULL, TK_EOF);
     else
+    {
         current->next = new_token(NULL, TK_EOF);
+        current->next->prev = current;
+    }
     return (head);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/09 14:58:07 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/01/20 18:33:19 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,24 +115,68 @@ int execute(char **argv)
     return (WEXITSTATUS(wstatus));
 }
 
+// void TEST_print_token(t_token *token)
+// {
+//     while (token->kind != TK_EOF)
+//     {
+//         printf("%s : ", token->str);
+//         if (token->kind == TK_WORD)
+//             printf("WORD\n");
+//         else if (token->kind == TK_OPERATOR)
+//             printf("OPERATOR\n");
+//         else 
+//             printf("PRESERVED\n");
+//         token = token->next;
+//     }
+// }
+void TEST_PRINT_NODE(t_node *node) {
+    if (node == NULL) {
+        return; // Handle NULL pointer
+    }
+
+    // Check for EOF token and print if it's not EOF
+    if (node->token->kind != TK_EOF && node->left != NULL && node->right != NULL) {
+        printf("str: %s\n", node->token->str); // Added newline for readability
+        printf("right: %s\n", node->right->token->str);
+        printf("left: %s\n", node->left->token->str);
+    }
+
+    // Recursive calls with NULL check
+    TEST_PRINT_NODE(node->left);
+    TEST_PRINT_NODE(node->right);
+}
+
 int interpret(char *line)
 {
+    struct s_node *node = (struct s_node *)malloc(sizeof(struct s_node));      
     t_token *token = tokenize(line);
-    char **argv = token_to_argv(token);
+    node->token = token;
+    node->left = NULL;
+    node->right = NULL;
+    
+    // node = parser(node);
+    node = parser(token);
+    TEST_PRINT_NODE(node);    
+    // node  = node->left;
+        return (0);
+    // char **argv = token_to_argv(token);
+    
     //ここからとりあえずbuiltinを実装 comment by kyoshida
     // if(ft_strncmp(argv[0], "exit",4) == 0)
     //   return mini_exit(argv);
     // else if(ft_strncmp(argv[0],"env",3) == 0)
     //   return mini_env(argv);
+    //ここまで
+    
     // int i = 0;
     // while(argv[i])
     // {
     //     printf("argv: %s\n", argv[i]);
     //     i++;
     // }
-    int status = execute(argv);
+    // int status = execute(argv);
     // printf("status: %d\n", status);
-    return (status);
+    // return (status);
 }
 
 // __attribute__((destructor))

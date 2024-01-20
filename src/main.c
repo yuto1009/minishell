@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/20 16:43:54 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/01/20 18:33:19 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,22 @@ int execute(char **argv)
 //         token = token->next;
 //     }
 // }
+void TEST_PRINT_NODE(t_node *node) {
+    if (node == NULL) {
+        return; // Handle NULL pointer
+    }
+
+    // Check for EOF token and print if it's not EOF
+    if (node->token->kind != TK_EOF && node->left != NULL && node->right != NULL) {
+        printf("str: %s\n", node->token->str); // Added newline for readability
+        printf("right: %s\n", node->right->token->str);
+        printf("left: %s\n", node->left->token->str);
+    }
+
+    // Recursive calls with NULL check
+    TEST_PRINT_NODE(node->left);
+    TEST_PRINT_NODE(node->right);
+}
 
 int interpret(char *line)
 {
@@ -138,11 +154,10 @@ int interpret(char *line)
     node->left = NULL;
     node->right = NULL;
     
-    node = parser(node);
-    node  = node->right;
-      printf("node->str : %s\n",node->token->str);
-    printf("node->right : %s\n",node->right->token->str);
-    printf("node->left : %s\n",node->left->token->str);
+    // node = parser(node);
+    node = parser(token);
+    TEST_PRINT_NODE(node);    
+    // node  = node->left;
         return (0);
     // char **argv = token_to_argv(token);
     

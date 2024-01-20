@@ -6,38 +6,33 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/01/20 16:43:35 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/01/20 18:34:21 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../include/minishell.h"
 #include "../include/minishell.h"
-// typedef struct s_token t_token;
-// typedef struct s_node t_node;
 
-// struct s_node {
-//     t_token *token;
-//     t_node *left;
-//     t_node *right;
-// };
-
-// 見つけた最高層のノードを軸に子ノードを格納する
-t_node *new_node(t_token *axis, t_token *left_token, t_token *right_token)
+static t_node *new_node(t_token *axis_token, t_node *left_node, t_node *right_node)
 {
     t_node *node;
 
     node = (t_node *)ft_calloc(1, sizeof(t_node));
     if (node == NULL)
         fatal_error("malloc error");
-    node->token = axis;
-    if (left_token != NULL)
-        node->left = new_node(left_token, NULL, NULL);
+    if (axis_token != NULL)
+        node->token = axis_token;
+    else
+        node->token = new_token(NULL, TK_EOF);
+    
+    if (left_node != NULL)
+        node->left = left_node;
     else
         node->left = NULL;
-    if (right_token != NULL)
-        node->right = new_node(right_token, NULL, NULL);
+    if (right_node != NULL)
+        node->right = right_node;
     else
         node->right = NULL;
+    
     return (node);
 }
 
@@ -52,7 +47,7 @@ t_token *split_left_tokens(t_token *token)
     new_eof = new_token(NULL, TK_EOF);
     new_eof->prev = token; // 新しいEOFトークンのprevを設定する
     token->next = new_eof;
-    // printf("left token: %s\n", token->str);
+
     while (token->prev->kind != TK_EOF)
     token = token->prev;
     return token;
@@ -95,40 +90,31 @@ t_token *find_axis_token(t_token *token)
     return axis;
 }
 
-
-// 色んな関数のまとめ？
-t_node *parser(t_node *node)
+t_node *parser(t_token *token)
 {
     t_token *axis_token;
     t_token *left_token;
     t_token *right_token;
-    
-    axis_token = find_axis_token(node->token);
-    // if(axis_token == NULL)
-    if(axis_token->kind == TK_EOF)
-        return NULL;
-    printf("axis_token: %s\n", axis_token->str);
+    t_node *left_subnode;
+    t_node *right_subnode;
+    t_node *new_node_instance;
+
+    if (token == NULL || token->kind == TK_EOF)
+        return NULL;                                                                                                                    
+    axis_token = find_axis_token(token);
+    if(axis_token == NULL || axis_token->kind == TK_EOF)
+    {
+        return new_node(token, NULL, NULL);
+    }
+
     right_token = split_right_tokens(axis_token);
-    printf("after split right token: %s\n", right_token->str);
     left_token = split_left_tokens(axis_token);
-    printf("after split left token: %s\n", left_token->str);
-    node = new_node(axis_token, right_token, left_token);
-    // printf("node->str : %s\n",node->token->str);
-    // printf("node->right : %s\n",node->right->token->str);
-    // printf("node->left : %s\n",node->left->token->str);
-    printf("\n");
-    parser(node->right);
-    parser(node->left);
-    return node;
+
     
+    
+    right_subnode = parser(right_token);
+    left_subnode = parser(left_token);
+    new_node_instance = new_node(axis_token, left_subnode, right_subnode);
+
+    return (new_node_instance);
 }
-
-
-// int main(void)
-// {
-//     t_node *node;
-//     node->token->str = 
-//     node->token->kind = 
-//    parser(node);
-
-// }

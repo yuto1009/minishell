@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/20 15:58:14 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/01/20 19:18:48 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 bool is_operator(char *line)
 {
-    //operatorに<>追加しました　by kyoshida
     const char *operators[] = {"||", "&&", "&", ";", ";;", "(", ")", "|", "<",">","\n"};
 
     size_t i = 0;
@@ -99,7 +98,7 @@ t_token *tokenize_word(char **line)
         if ((*line)[i] == SINGLE_QUOTE || (*line)[i] == DOUBLE_QUOTE)
         {
             const char current_quote = (*line)[i];
-            i++;    // クオートをスキップ
+            i++;    
             while ((*line)[i] != '\0' && (*line)[i] != current_quote)
             {
                 word[j] = (*line)[i];
@@ -111,7 +110,7 @@ t_token *tokenize_word(char **line)
                 free(word);
                 minishell_error("unclosed quote");
             }
-            i++;    // 閉じクオートスキップ
+            i++;   
         }
         else
         {
@@ -121,7 +120,7 @@ t_token *tokenize_word(char **line)
         }
     }
     word[j] = '\0';
-    *line += i;   // 入力から得た文字列をインクリメント
+    *line += i; 
     return (new_token(word, TK_WORD));
 }
 
@@ -138,17 +137,17 @@ t_token *tokenize(char *line)
 {
     if (is_blank(*line) == true) {
         line++;
-        continue;  // 空白文字の後、次のトークンへ進む
+        continue;  
     }
     if (is_operator(line)) {
         new = tokenize_operator(&line);
     } else {
         new = tokenize_word(&line);
     }
-    if (new != NULL) {  // ここでnewがNULLでないことを確認
+    if (new != NULL) {  
         if (head == NULL) {
             head = new;
-            head->prev = new_token(NULL,TK_EOF);  // 新しいヘッドのprevをNULLに設定
+            head->prev = new_token(NULL,TK_EOF);  
             current = new;
         } else {
             current->next = new;

@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/01/20 18:34:21 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/01/20 19:17:23 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,14 @@ static t_node *new_node(t_token *axis_token, t_node *left_node, t_node *right_no
     return (node);
 }
 
-// 最高層のノードの左側のトークンを切断する
-
 t_token *split_left_tokens(t_token *token)
 {
     t_token *new_eof;
 
     if (token->prev != NULL)
-        token = token->prev; // 最高層ノードの左側のトークンに移動する
+        token = token->prev; 
     new_eof = new_token(NULL, TK_EOF);
-    new_eof->prev = token; // 新しいEOFトークンのprevを設定する
+    new_eof->prev = token;
     token->next = new_eof;
 
     while (token->prev->kind != TK_EOF)
@@ -53,14 +51,12 @@ t_token *split_left_tokens(t_token *token)
     return token;
 }
 
-// 最高層のノードの右側のトークンを切断する
-
 t_token *split_right_tokens(t_token *token)
 {
     t_token *prev_token;
     if(token->next->kind == TK_EOF)
-        return (new_token(NULL, TK_EOF));   // もし最高層ノードの右側にトークンがなかったらEOFトークンだけ入れる
-    token = token->next;    // axisの次のトークンを参照する
+        return (new_token(NULL, TK_EOF));   
+    token = token->next;   
     // prev_token = (t_token *)ft_calloc(1, sizeof(t_token));
     prev_token = new_token(NULL, TK_EOF);   // 
     prev_token->next = token;   // 
@@ -71,12 +67,9 @@ t_token *split_right_tokens(t_token *token)
 t_token *find_axis_token(t_token *token)
 {
     t_token *axis;
-    // printf("ok\n");
     axis = NULL;
-    // while ((token != NULL && token->next != NULL) || token->kind != TK_EOF)
     while (token != NULL && token->kind != TK_EOF)
     {
-    // printf("token->str: %s\n", token->str);
         if (ft_strncmp(token->str, ";", 1) == 0)
             axis = token;
         else if (axis != NULL && ft_strncmp(axis->str, ";", 1) != 0 && ft_strncmp(token->str, "|", 1) == 0)

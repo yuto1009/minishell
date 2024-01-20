@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/20 18:33:19 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/01/20 19:17:44 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,20 +115,20 @@ int execute(char **argv)
     return (WEXITSTATUS(wstatus));
 }
 
-// void TEST_print_token(t_token *token)
-// {
-//     while (token->kind != TK_EOF)
-//     {
-//         printf("%s : ", token->str);
-//         if (token->kind == TK_WORD)
-//             printf("WORD\n");
-//         else if (token->kind == TK_OPERATOR)
-//             printf("OPERATOR\n");
-//         else 
-//             printf("PRESERVED\n");
-//         token = token->next;
-//     }
-// }
+void TEST_print_token(t_token *token)
+{
+    while (token->kind != TK_EOF)
+    {
+        printf("%s : ", token->str);
+        if (token->kind == TK_WORD)
+            printf("WORD\n");
+        else if (token->kind == TK_OPERATOR)
+            printf("OPERATOR\n");
+        else 
+            printf("PRESERVED\n");
+        token = token->next;
+    }
+}
 void TEST_PRINT_NODE(t_node *node) {
     if (node == NULL) {
         return; // Handle NULL pointer

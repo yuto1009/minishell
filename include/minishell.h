@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/20 16:48:21 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:19:24 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 #include <stdio.h> // DEBUG
 #include <errno.h> // errno
 #include <string.h> // strerror
-
+#include <fcntl.h>
 // #include <limits.h>
 
 # define MINISHELL_ERROR 255
@@ -70,7 +70,8 @@ t_node *parser(t_token *token);
 
 # define TK_WORD 0
 # define TK_OPERATOR 1
-# define TK_EOF 2
+# define TK_REDIRECTION 2
+# define TK_EOF 3
 
 # define SINGLE_QUOTE '\''
 # define DOUBLE_QUOTE '\"'

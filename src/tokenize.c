@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/26 19:02:56 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/01/27 19:55:35 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool is_operator(char *line)
 {
     //operatorに<>追加しました　by kyoshida
-    const char *operators[] = {"||", "&&", "&", ";", ";;", "(", ")", "|","\n"};
+    const char *operators[] = {">|", "|>", "<|", "|<", "||", "&&", "&", ";", ";;", "(", ")", "|", "<",">","\n"};
 
     size_t i = 0;
     while (i < sizeof(operators) / sizeof(*operators))//comment by kyoshida iを配列の要素数より小さいだけ回している？
@@ -76,7 +76,7 @@ t_token *new_token(char *str, token_kind kind)
 
 t_token *tokenize_operator(char **line)
 {
-    const char *operators[] = {"||", "&&", ";;", "&", ";", "(", ")", "|","\n"};
+    const char *operators[] = {">|", "|>", "<|", "|<", "||", "&&", ";;", "&", ";", "(", ")", "|", "<",">","\n"};
     char *operator;
     size_t i;
 

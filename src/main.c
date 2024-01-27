@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/26 18:25:17 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/01/27 19:54:10 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int execute(char **argv)
             executable = argv[0];
         }
         execve(executable, argv, environ);
-        error_exit(executable, "command not found", 127);
+        cmd_error_exit(executable, "command not found", 127);
     }
     else 
     {
@@ -148,10 +148,28 @@ void TEST_PRINT_NODE(t_node *node) {
     TEST_PRINT_NODE(node->right);
 }
 
+
+void tokenize_error(t_token *token)
+{
+    while(token->next->kind!=TK_EOF)
+    {
+        if(token->kind == TK_OPERATOR && token->next->kind == TK_OPERATOR)
+        {
+            syntax_error_exit(token->next->str);            
+        }
+        else if(token->kind == TK_REDIRECTION && token->next->str == TK_REDIRECTION)
+        {
+            syntax_error_exit(token->next->str);
+        }
+        token = token->next;
+    }
+}
+
 int interpret(char *line)
 {
     struct s_node *node = (struct s_node *)malloc(sizeof(struct s_node));      
     t_token *token = tokenize(line);
+    tokenize_error(token);
     node->token = token;
     node->left = NULL;
     node->right = NULL;

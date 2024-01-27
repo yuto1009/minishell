@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/26 18:19:24 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/01/27 19:56:11 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 // #include <limits.h>
 
 # define MINISHELL_ERROR 255
+# define SYNTAX_ERROR 258
 
 typedef int token_kind;
 typedef struct s_token t_token;
@@ -51,7 +52,8 @@ struct s_node {
 void set_output_destination(FILE *dst);
 void fatal_error(char *message);
 void minishell_error(char *message);
-void error_exit(char *location, char *message, int exit_status);
+void cmd_error_exit(char *location, char *message, int exit_status);
+void syntax_error_exit(char *token_str);
 
 // tokenize.c
 bool is_operator(char *line);

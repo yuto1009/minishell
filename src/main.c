@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/27 19:43:25 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/01/27 19:54:10 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,20 +115,22 @@ int execute(char **argv)
     return (WEXITSTATUS(wstatus));
 }
 
-// void TEST_print_token(t_token *token)
-// {
-//     while (token->kind != TK_EOF)
-//     {
-//         printf("%s : ", token->str);
-//         if (token->kind == TK_WORD)
-//             printf("WORD\n");
-//         else if (token->kind == TK_OPERATOR)
-//             printf("OPERATOR\n");
-//         else 
-//             printf("PRESERVED\n");
-//         token = token->next;
-//     }
-// }
+void TEST_print_token(t_token *token)
+{
+    while (token->kind != TK_EOF)
+    {
+        printf("%s : ", token->str);
+        if (token->kind == TK_WORD)
+            printf("WORD\n");
+        else if (token->kind == TK_OPERATOR)
+            printf("OPERATOR\n");
+        else if (token->kind == TK_REDIRECTION)
+            printf("REDIRECTION\n");
+        else 
+            printf("PRESERVED\n");
+        token = token->next;
+    }
+}
 void TEST_PRINT_NODE(t_node *node) {
     if (node == NULL) {
         return; // Handle NULL pointer
@@ -173,10 +175,11 @@ int interpret(char *line)
     node->right = NULL;
     
     // node = parser(node);
+    TEST_print_token(token);   
     node = parser(token);
-    // parse_error(node);
-    TEST_PRINT_NODE(node);    
+    // TEST_PRINT_NODE(node); 
     // node  = node->left;
+    node = node->right;
         return (0);
     // char **argv = token_to_argv(token);
     

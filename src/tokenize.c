@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/27 19:55:35 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/01/27 20:13:14 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool is_operator(char *line)
 {
     //operatorに<>追加しました　by kyoshida
-    const char *operators[] = {">|", "|>", "<|", "|<", "||", "&&", "&", ";", ";;", "(", ")", "|", "<",">","\n"};
+    const char *operators[] = { "||", "&&", "&", ";", ";;", "(", ")", "|", "\n"};
 
     size_t i = 0;
     while (i < sizeof(operators) / sizeof(*operators))//comment by kyoshida iを配列の要素数より小さいだけ回している？
@@ -30,7 +30,7 @@ bool is_operator(char *line)
 }
 bool is_redirection_operator(char *line)
 {
-    const char *operators[] = {"<",">",">>","<<"};
+    const char *operators[] = {">|", "|>", "<|", "|<",">>","<<","<>","<",">"};
 
     size_t i = 0;
     while (i < sizeof(operators) / sizeof(*operators))//comment by kyoshida iを配列の要素数より小さいだけ回している？
@@ -76,7 +76,7 @@ t_token *new_token(char *str, token_kind kind)
 
 t_token *tokenize_operator(char **line)
 {
-    const char *operators[] = {">|", "|>", "<|", "|<", "||", "&&", ";;", "&", ";", "(", ")", "|", "<",">","\n"};
+    const char *operators[] = {"||", "&&", ";;", "&", ";", "(", ")", "|", "\n"};
     char *operator;
     size_t i;
 
@@ -99,7 +99,7 @@ t_token *tokenize_operator(char **line)
 
 t_token *tokenize_redirection_operator(char **line)
 {
-    const char *operators[] = {"<",">",">>","<<"};
+    const char *operators[] = {">|", "|>", "<|", "|<",">>","<<","<>","<",">"};
     char *operator;
     size_t i;
 

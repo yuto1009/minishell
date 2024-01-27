@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/27 19:54:10 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/01/27 20:00:51 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ void tokenize_error(t_token *token)
         {
             syntax_error_exit(token->next->str);            
         }
-        else if(token->kind == TK_REDIRECTION && token->next->str == TK_REDIRECTION)
+        else if(token->kind == TK_REDIRECTION && token->next->kind == TK_REDIRECTION)
         {
             syntax_error_exit(token->next->str);
         }

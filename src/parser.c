@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/01/20 18:34:21 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/01/25 10:26:39 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,8 @@ t_node *parser(t_token *token)
 
     
     
-    right_subnode = parser(right_token);
     left_subnode = parser(left_token);
+    right_subnode = parser(right_token);
     new_node_instance = new_node(axis_token, left_subnode, right_subnode);
 
     return (new_node_instance);

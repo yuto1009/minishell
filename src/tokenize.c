@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/20 15:58:14 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/01/26 19:02:56 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool is_operator(char *line)
 {
     //operatorに<>追加しました　by kyoshida
-    const char *operators[] = {"||", "&&", "&", ";", ";;", "(", ")", "|", "<",">","\n"};
+    const char *operators[] = {"||", "&&", "&", ";", ";;", "(", ")", "|","\n"};
 
     size_t i = 0;
     while (i < sizeof(operators) / sizeof(*operators))//comment by kyoshida iを配列の要素数より小さいだけ回している？
@@ -28,7 +28,22 @@ bool is_operator(char *line)
     }
     return (false);
 }
+bool is_redirection_operator(char *line)
+{
+    const char *operators[] = {"<",">",">>","<<"};
 
+    size_t i = 0;
+    while (i < sizeof(operators) / sizeof(*operators))//comment by kyoshida iを配列の要素数より小さいだけ回している？
+    {
+        if (ft_strncmp(line, operators[i], ft_strlen(operators[i])) == 0) 
+        {
+            return (true);
+        }
+        i++;
+    }
+    return (false);
+
+}
 int is_blank(char c) 
 {
     return (c == ' ' || c == '\t' || c == '\n');
@@ -61,7 +76,7 @@ t_token *new_token(char *str, token_kind kind)
 
 t_token *tokenize_operator(char **line)
 {
-    const char *operators[] = {"||", "&&", ";;", "&", ";", "(", ")", "|", "<",">","\n"};
+    const char *operators[] = {"||", "&&", ";;", "&", ";", "(", ")", "|","\n"};
     char *operator;
     size_t i;
 
@@ -81,6 +96,29 @@ t_token *tokenize_operator(char **line)
     *line += ft_strlen(operator);
     return (new_token(operator, TK_OPERATOR));
 } 
+
+t_token *tokenize_redirection_operator(char **line)
+{
+    const char *operators[] = {"<",">",">>","<<"};
+    char *operator;
+    size_t i;
+
+    operator = NULL;
+    i = 0;
+    while (i < sizeof(operators) / sizeof(*operators))
+    {
+        if (ft_strncmp(*line, operators[i], ft_strlen(operators[i])) == 0) 
+        {
+            break;
+        }
+        i++;
+    }
+    operator = ft_substr(*line, 0, ft_strlen(operators[i]));
+    if (operator == NULL)
+        fatal_error("malloc error");
+    *line += ft_strlen(operator);
+    return (new_token(operator, TK_REDIRECTION));
+}
 
 t_token *tokenize_word(char **line)
 {
@@ -142,9 +180,14 @@ t_token *tokenize(char *line)
     }
     if (is_operator(line)) {
         new = tokenize_operator(&line);
-    } else {
+    }
+    else if(is_redirection_operator(line)){
+        new = tokenize_redirection_operator(&line);
+    }
+    else{
         new = tokenize_word(&line);
     }
+    
     if (new != NULL) {  // ここでnewがNULLでないことを確認
         if (head == NULL) {
             head = new;

@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/20 16:48:21 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/01/27 19:35:36 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 // #include <limits.h>
 
 # define MINISHELL_ERROR 255
+# define SYNTAX_ERROR 258
 
 typedef int token_kind;
 typedef struct s_token t_token;
@@ -51,7 +52,8 @@ struct s_node {
 void set_output_destination(FILE *dst);
 void fatal_error(char *message);
 void minishell_error(char *message);
-void error_exit(char *location, char *message, int exit_status);
+void cmd_error_exit(char *location, char *message, int exit_status);
+void syntax_error_exit(char *token_str);
 
 // tokenize.c
 bool is_operator(char *line);
@@ -70,7 +72,8 @@ t_node *parser(t_token *token);
 
 # define TK_WORD 0
 # define TK_OPERATOR 1
-# define TK_EOF 2
+# define TK_REDIRECTION 2
+# define TK_EOF 3
 
 # define SINGLE_QUOTE '\''
 # define DOUBLE_QUOTE '\"'

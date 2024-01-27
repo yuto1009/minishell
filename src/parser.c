@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/01/20 18:34:21 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/01/27 16:38:36 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,7 @@ t_node *parser(t_token *token)
 
     right_token = split_right_tokens(axis_token);
     left_token = split_left_tokens(axis_token);
-
-    
+    printf("axis : %s , right : %s , left : %s\n",axis_token->str,right_token->str , left_token->str);
     
     right_subnode = parser(right_token);
     left_subnode = parser(left_token);

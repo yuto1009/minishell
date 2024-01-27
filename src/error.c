@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 15:22:40 by yutoendo          #+#    #+#             */
-/*   Updated: 2023/11/07 13:09:21 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/01/27 19:16:33 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void minishell_error(char *message)
 
 // bashと同様の部分でエラーがある場合に呼び出す。
 // exit_statusもbashと同様の値を返す。
-void error_exit(char *location, char *message, int exit_status)
+void cmd_error_exit(char *location, char *message, int exit_status)
 {
     const char *location_message = ft_strjoin(location, ": ");
     ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -47,4 +47,14 @@ void error_exit(char *location, char *message, int exit_status)
     ft_putendl_fd(message, STDERR_FILENO);
     free((char *)location_message);
     exit(exit_status);
+}
+
+void syntax_error_exit(char *token_str)
+{
+    const char *join_str = ft_strjoin(token_str,"'");
+    ft_putstr_fd("minishell: ", STDERR_FILENO);    
+    ft_putstr_fd("syntax error near unexpected token '", STDERR_FILENO);
+    ft_putstr_fd((char *)join_str, STDERR_FILENO);
+    free((char *)join_str);
+    exit(SYNTAX_ERROR);
 }

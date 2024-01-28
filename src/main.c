@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/27 20:00:51 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/01/28 09:54:23 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,9 @@ void TEST_PRINT_NODE(t_node *node) {
 
 void tokenize_error(t_token *token)
 {
-    while(token->next->kind!=TK_EOF)
+    if(token == NULL)
+        return ;
+    while(token->kind!= TK_EOF && token->next->kind!=TK_EOF)
     {
         if(token->kind == TK_OPERATOR && token->next->kind == TK_OPERATOR)
         {
@@ -175,11 +177,9 @@ int interpret(char *line)
     node->right = NULL;
     
     // node = parser(node);
-    TEST_print_token(token);   
+    // TEST_print_token(token);   
     node = parser(token);
     // TEST_PRINT_NODE(node); 
-    // node  = node->left;
-    node = node->right;
         return (0);
     // char **argv = token_to_argv(token);
     

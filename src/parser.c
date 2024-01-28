@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/01/27 19:54:30 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/01/28 09:46:17 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ t_node *parser(t_token *token)
 
     right_token = split_right_tokens(axis_token);
     left_token = split_left_tokens(axis_token);
-    printf("axis : %s , right : %s , left : %s\n",axis_token->str,right_token->str , left_token->str);
+    // printf("axis : %s , right : %s , left : %s\n",axis_token->str,right_token->str , left_token->str);
     
     left_subnode = parser(left_token);
     right_subnode = parser(right_token);

@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/28 09:54:23 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/01/29 23:37:03 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,11 +148,25 @@ void TEST_PRINT_NODE(t_node *node) {
     TEST_PRINT_NODE(node->right);
 }
 
+int count_token_len(t_token *token)
+{
+    int i;
+
+    i = 0;
+    while(token!= NULL)
+    {
+        i++;
+        token = token->next;
+    }
+    return (i-1);
+}
 
 void tokenize_error(t_token *token)
 {
     if(token == NULL)
         return ;
+    if((token->kind == TK_OPERATOR || token->kind == TK_REDIRECTION)&& count_token_len(token) == 1)
+        syntax_error_exit("newline");
     while(token->kind!= TK_EOF && token->next->kind!=TK_EOF)
     {
         if(token->kind == TK_OPERATOR && token->next->kind == TK_OPERATOR)
@@ -171,13 +185,13 @@ int interpret(char *line)
 {
     struct s_node *node = (struct s_node *)malloc(sizeof(struct s_node));      
     t_token *token = tokenize(line);
+    // TEST_print_token(token);   
     tokenize_error(token);
     node->token = token;
     node->left = NULL;
     node->right = NULL;
     
     // node = parser(node);
-    // TEST_print_token(token);   
     node = parser(token);
     // TEST_PRINT_NODE(node); 
         return (0);

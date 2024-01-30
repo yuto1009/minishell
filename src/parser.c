@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/01/29 23:11:14 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/01/30 20:15:59 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ t_token *split_left_tokens(t_token *token)
     new_eof = new_token(NULL, TK_EOF);
     new_eof->prev = token; // 新しいEOFトークンのprevを設定する
     token->next = new_eof;
-
-    while (token->prev->kind != TK_EOF)
-    token = token->prev;
+    
+    while (token->prev!=NULL&&token->prev->kind != TK_EOF)
+        token = token->prev;
     return token;
 }
 
@@ -106,9 +106,9 @@ t_node *parser(t_token *token)
     {
         return new_node(token, NULL, NULL);
     }
-
     right_token = split_right_tokens(axis_token);
     left_token = split_left_tokens(axis_token);
+    
     // printf("axis : %s , right : %s , left : %s\n",axis_token->str,right_token->str , left_token->str);
     
     left_subnode = parser(left_token);

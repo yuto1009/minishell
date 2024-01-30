@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/29 23:37:03 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/01/30 20:16:43 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,17 +179,19 @@ void tokenize_error(t_token *token)
         }
         token = token->next;
     }
+    if(token->kind == TK_REDIRECTION&&token->next->kind == TK_EOF)
+        syntax_error_exit("newline");
 }
 
 int interpret(char *line)
 {
     struct s_node *node = (struct s_node *)malloc(sizeof(struct s_node));      
     t_token *token = tokenize(line);
-    // TEST_print_token(token);   
     tokenize_error(token);
     node->token = token;
     node->left = NULL;
     node->right = NULL;
+    // TEST_print_token(token);   
     
     // node = parser(node);
     node = parser(token);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/30 20:16:43 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/01 16:39:32 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,19 +185,18 @@ void tokenize_error(t_token *token)
 
 int interpret(char *line)
 {
-    struct s_node *node = (struct s_node *)malloc(sizeof(struct s_node));      
+    // struct s_node *node = (struct s_node *)malloc(sizeof(struct s_node));      
     t_token *token = tokenize(line);
-    tokenize_error(token);
-    node->token = token;
-    node->left = NULL;
-    node->right = NULL;
-    // TEST_print_token(token);   
+    // tokenize_error(token);
+    // node->left = NULL;
+    // node->right = NULL;
     
     // node = parser(node);
-    node = parser(token);
+    // node = parser(token);
+    // TEST_print_token(token);   
+    // node->token = token;
     // TEST_PRINT_NODE(node); 
-        return (0);
-    // char **argv = token_to_argv(token);
+    char **argv = token_to_argv(token);
     
     //ここからとりあえずbuiltinを実装 comment by kyoshida
     // if(ft_strncmp(argv[0], "exit",4) == 0)
@@ -206,15 +205,9 @@ int interpret(char *line)
     //   return mini_env(argv);
     //ここまで
     
-    // int i = 0;
-    // while(argv[i])
-    // {
-    //     printf("argv: %s\n", argv[i]);
-    //     i++;
-    // }
-    // int status = execute(argv);
+    int status = execute(argv);
     // printf("status: %d\n", status);
-    // return (status);
+    return (status);
 }
 
 // __attribute__((destructor))

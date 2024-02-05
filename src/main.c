@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/05 15:44:02 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/05 19:51:07 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ void TEST_PRINT_NODE(t_node *node) {
         printf("left: %s\n", node->left->token->str);
     }
     if(node->redirection)
-    printf("ok\n");
+    printf("prev :%s \n",node->redirection->token->str);
     // Recursive calls with NULL check
     TEST_PRINT_NODE(node->left);
     TEST_PRINT_NODE(node->right);
@@ -205,10 +205,11 @@ int interpret(char *line)
     
     // node = parser(node);
     node = parser(token);
-    exec_cmd(node);
+    // printf("prev : %s\n",node->left->prev->token->str);
     
-    todo("redireciton_do");
-    // TEST_PRINT_NODE(node); 
+    // exec_cmd(node);
+    // todo("redireciton_do");
+    TEST_PRINT_NODE(node); 
         return (0);
     // char **argv = token_to_argv(token);
     

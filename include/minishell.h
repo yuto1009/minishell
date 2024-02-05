@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/05 13:23:37 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:29:34 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ struct s_node {
     t_token *token;
     t_node *left;
     t_node *right;
+    t_node *prev;
     t_node *redirection;
     int current_fd; // 現在のfd初期値はSTDIN
     int redir_fd;

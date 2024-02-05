@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/02/05 13:24:58 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/05 19:14:15 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,27 @@
 static t_node *new_node(t_token *axis_token, t_node *left_node, t_node *right_node)
 {
     t_node *node;
-
+    t_node *tmp;
     node = (t_node *)ft_calloc(1, sizeof(t_node));
     if (node == NULL)
         fatal_error("malloc error");
-    if (axis_token != NULL)
+    if (axis_token != NULL){
         node->token = axis_token;
+        tmp = node;
+    }
     else
         node->token = new_token(NULL, TK_EOF);
     
-    if (left_node != NULL)
+    if (left_node != NULL){
         node->left = left_node;
+        // node->left->prev = tmp;
+    }
     else
         node->left = NULL;
-    if (right_node != NULL)
+    if (right_node != NULL){
         node->right = right_node;
+        // node->right->prev = tmp;
+    }
     else
         node->right = NULL;
     
@@ -138,6 +144,7 @@ t_node *parse_redirection(t_token * token)
         // node->token->next;
     return (new_node_instance);
 }
+
 t_node *parser(t_token *token)
 {
     t_token *axis_token;
@@ -153,14 +160,14 @@ t_node *parser(t_token *token)
     if(axis_token == NULL || axis_token->kind == TK_EOF)
     {
         return_node = new_node(token , NULL ,NULL);
-        if(is_redirection(return_node))
-        {
-            return_node->redirection = parse_redirection(return_node->token);
-
-            printf("axis : %s\nleft : %s\n",return_node->redirection->token->str , return_node->redirection->left->token->str);
-        }
-        else 
-            return_node->redirection = NULL;
+        // if(is_redirection(return_node))
+        // {
+        //     return_node->redirection = parse_redirection(return_node->token);
+            
+        //     // printf("axis : %s\nleft : %s\n",return_node->redirection->token->str , return_node->redirection->left->token->str);
+        // }
+        // else 
+        //     return_node->redirection = NULL;
             
             return return_node;
     }

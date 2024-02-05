@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/05 13:12:02 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/05 15:44:02 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,15 @@ void tokenize_error(t_token *token)
         syntax_error_exit("newline");
 }
 
+void exec_cmd(t_node *node)
+{
+    if(node->token == NULL || node->token->kind == TK_EOF)
+        return;
+    
+    exec_cmd(node->left);
+    exec_cmd(node->right);
+    
+}
 int interpret(char *line)
 {
     struct s_node *node = (struct s_node *)malloc(sizeof(struct s_node));      
@@ -196,6 +205,8 @@ int interpret(char *line)
     
     // node = parser(node);
     node = parser(token);
+    exec_cmd(node);
+    
     todo("redireciton_do");
     // TEST_PRINT_NODE(node); 
         return (0);

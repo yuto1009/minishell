@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/27 19:56:11 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/02/05 13:23:37 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 #include <errno.h> // errno
 #include <string.h> // strerror
 #include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 // #include <limits.h>
 
 # define MINISHELL_ERROR 255
@@ -46,6 +48,10 @@ struct s_node {
     t_token *token;
     t_node *left;
     t_node *right;
+    t_node *redirection;
+    int current_fd; // 現在のfd初期値はSTDIN
+    int redir_fd;
+
 };
 
 // error.c

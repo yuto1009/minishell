@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/02/05 19:14:15 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/05 21:55:31 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,20 @@ static t_node *new_node(t_token *axis_token, t_node *left_node, t_node *right_no
     if (axis_token != NULL){
         node->token = axis_token;
         tmp = node;
+        node->prev = NULL;
     }
     else
         node->token = new_token(NULL, TK_EOF);
     
     if (left_node != NULL){
         node->left = left_node;
-        // node->left->prev = tmp;
+        node->left->prev = tmp;
     }
     else
         node->left = NULL;
     if (right_node != NULL){
         node->right = right_node;
-        // node->right->prev = tmp;
+        node->right->prev = tmp;
     }
     else
         node->right = NULL;

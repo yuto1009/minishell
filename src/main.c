@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/05 19:51:07 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/07 17:59:37 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,15 +184,73 @@ void tokenize_error(t_token *token)
         syntax_error_exit("newline");
 }
 
-void exec_cmd(t_node *node)
+bool is_redirection_out(t_token *token)
 {
-    if(node->token == NULL || node->token->kind == TK_EOF)
-        return;
-    
-    exec_cmd(node->left);
-    exec_cmd(node->right);
+    // while(token->kind !=TK_EOF)
+    // {
+        if(token->kind == TK_REDIRECTION && ft_strncmp(token->str,">",1) ==0)
+            return true;
+        // token = token->next;
+    // }
+    return false;
+        // printf("left token : %s\n right token %s\n",node->token->str);
     
 }
+t_node *start_node(t_node*node)
+{
+    while(node->left!=NULL)
+        node = node->left;
+    return node;
+}
+
+void open_file(t_node *node)
+{
+    char *filename;
+    // int filefd;
+    while(node->token->kind!=TK_REDIRECTION)
+        node->token = node->token->next;
+    filename = node->token->next->str;
+    node->redir_fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    // if(node->redir_fd == -1)
+        // todo("ファイルが存在しません");
+    
+        
+    // return node;
+}
+
+
+
+void exec(t_node *node)
+{
+    char **token2argv;
+    int len ,i =0 ;
+    len = count_token_len(node->token);
+    token2argv = (char **)ft_calloc(len+1,sizeof(char *));
+    while(node!=NULL)
+    {
+        while(node->token->kind !=TK_EOF)
+        {
+            if(is_redirection_out(node->token))
+            {
+                open_file(node);
+                // printf("token ; %s\n",node->token->str);
+                node->token = node->token->next;
+            }
+            else{
+            token2argv[i] = node->token->str;
+            printf("argv : %s\n",token2argv[i]);
+            i++;
+                
+            }
+            node->token = node->token->next;
+        }
+                // printf("%d\n",node->redir_fd);
+        dup2(node->redir_fd,1);
+        execute(token2argv);
+            node = node->prev;
+    }
+}
+
 int interpret(char *line)
 {
     struct s_node *node = (struct s_node *)malloc(sizeof(struct s_node));      
@@ -205,14 +263,15 @@ int interpret(char *line)
     
     // node = parser(node);
     node = parser(token);
+    node = start_node(node);
+    exec(node);
     // printf("prev : %s\n",node->left->prev->token->str);
-    
     // exec_cmd(node);
     // todo("redireciton_do");
     TEST_PRINT_NODE(node); 
         return (0);
-    // char **argv = token_to_argv(token);
     
+    // char **argv = token_to_argv(token);
     //ここからとりあえずbuiltinを実装 comment by kyoshida
     // if(ft_strncmp(argv[0], "exit",4) == 0)
     //   return mini_exit(argv);

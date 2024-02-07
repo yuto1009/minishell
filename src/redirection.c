@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:45:51 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/02/01 19:04:30 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/07 13:44:05 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void redirect_output(int targetfd, char *filename)
     extern char **environ;
 	// 1. Redirect先のfdをopenする
 	filefd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    
 	filefd = stashfd(filefd); // filefdを退避させる
 
 	// 2. Redirectする

@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/08 14:13:13 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/08 14:29:07 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,6 +220,7 @@ void open_file(t_node *node)
 int	stashfd(int fd)
 {
 	int	stashfd;
+//fcntlは使用不可
 
 	stashfd = fcntl(fd, F_DUPFD, 10);
 	// if (stashfd < 0)
@@ -267,21 +268,20 @@ void exec(t_node *node)
             if(is_redirection_out(node->token))
             {
                 open_file(node);
-                // printf("token ; %s\n",node->token->str);
                 node->token = node->token->next;
             }
-            else{
-            token2argv[i] = node->token->str;
-            i++;
+            else
+            {
+                token2argv[i] = node->token->str;
+                i++;
             }
             node->token = node->token->next;
         }
-                // printf("%d\n",node->redir_fd);
-                node->current_fd = 1;
+        node->current_fd = 1;
         redirect(node ,token2argv);
         // dup2(node->redir_fd,1);
         // execute(token2argv);
-            node = node->prev;
+        node = node->prev;
     }
 }
 
@@ -302,7 +302,7 @@ int interpret(char *line)
     // exec_cmd(node);
     // todo("redireciton_do");
     // TEST_PRINT_NODE(node); 
-        return (0);
+    return (0);
     
     // char **argv = token_to_argv(token);
     //ここからとりあえずbuiltinを実装 comment by kyoshida

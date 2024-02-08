@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/08 17:08:08 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/02/08 18:21:33 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,14 +237,45 @@ void redirect(t_node *node, char **token2argv)
 	dup2(stashed_targetfd, node->current_fd); // 退避していたstashed_targetfdをtargetfdに複製する（元々のtargetfd）
 }
 
+// ここのロジックでノードを上に登る
 t_node *get_upper_node(t_node *node)
 {
-    while(node->right == NULL)
-    {
-        node = node->prev;
-    }
-    return node->right;
+    if (node->prev->token->kind != TK_EOF)
+        return node->prev;
+    else if (node->prev->token->kind != TK_EOF)
+        return NULL;
 }
+
+// void exec(t_node *node)
+// {
+//     char **token2argv;
+//     int len ,i =0 ;
+//     len = count_token_len(node->token);
+//     token2argv = (char **)ft_calloc(len+1,sizeof(char *));
+//     //node がまだうまく登れていない
+//     while(node != NULL)
+//     {
+//         t_token *token = node->token;
+//         while(token->kind != TK_EOF)
+//         {
+//             if(is_redirection_out(token))
+//             {
+//                 open_file(node);
+//                 token = token->next;
+//             }
+//             else
+//             {
+//                 token2argv[i] = token->str;
+//                 i++;
+//             }
+//             token = token->next;
+//         }
+//         node->current_fd = 1;
+//         redirect(node ,token2argv);
+//         node = get_upper_node(node);
+//         printf("OK\n");
+//     }
+// }
 
 void exec(t_node *node)
 {
@@ -253,27 +284,28 @@ void exec(t_node *node)
     len = count_token_len(node->token);
     token2argv = (char **)ft_calloc(len+1,sizeof(char *));
     //node がまだうまく登れていない
-    while(node != NULL)
+    while(node->token->kind != TK_EOF)
     {
-        t_token *token = node->token;
-        while(token->kind != TK_EOF)
+        while(node->token->kind !=TK_EOF)
         {
-            if(is_redirection_out(token))
+            if(is_redirection_out(node->token))
             {
                 open_file(node);
-                token = token->next;
+                node->token = node->token->next;
             }
             else
             {
-                token2argv[i] = token->str;
+                token2argv[i] = node->token->str;
                 i++;
             }
-            token = token->next;
+            node->token = node->token->next;
         }
         node->current_fd = 1;
         redirect(node ,token2argv);
+        // dup2(node->redir_fd,1);
+        // execute(token2argv);
+        // node = node->prev;
         node = get_upper_node(node);
-        printf("OK\n");
     }
 }
 

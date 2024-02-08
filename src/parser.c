@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/02/05 21:55:31 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/08 16:23:02 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ t_node *parse_redirection(t_token * token)
     left_subnode = parse_redirection(left_token);
     right_subnode = parse_redirection(right_token);
     new_node_instance = new_node(redir_op, left_subnode, right_subnode);
-    new_node_instance->current_fd = STDIN_FILENO;
+    // new_node_instance->current_fd = STDIN_FILENO;
         // node->token->next;
     return (new_node_instance);
 }

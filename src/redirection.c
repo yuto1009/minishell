@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 13:45:51 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/02/08 13:53:22 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/08 15:43:12 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,24 +53,25 @@ int	stashfd(int fd)
 }
 
 
-void redirect_input(char *command ,char *filename)
+void redirect_input(int fd ,char *filename)
 {
 	extern char **environ;
 	int filefd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if(command)
-		;
-	dup2(filefd,0);
+	dup2(filefd,fd);
 	char *argv[2];
 	argv[0] = "cat";
 	argv[1]=NULL;
-	execve("/bin/cat",argv , environ);
+	execute(argv);
+	// execve("/bin/echo",argv , environ);
 }
 
 void redirect_output(t_node *node, char **token2argv)
 {
 	int filefd, stashed_targetfd;
-    char *argv[3];
+    // char *argv[3];
     extern char **environ;
+	if(token2argv)
+	;
 	// 1. Redirect先のfdをopenする
 	// filefd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
     filefd = node->redir_fd;
@@ -83,7 +84,7 @@ void redirect_output(t_node *node, char **token2argv)
 		dup2(filefd, node->current_fd); // filefdをtargetfdに複製する（元々のtargetfdは閉じられる）
 		close(filefd);
 	}
-	execute(token2argv);
+	// execute(token2argv);
 	// 3. コマンドを実行する
     // argv[0] = "echo";
     // argv[1] = "hello";
@@ -96,6 +97,6 @@ void redirect_output(t_node *node, char **token2argv)
 int main(void)
 {
     // redirect_output(1,"text.txt");
-	redirect_input("cat","text.txt");
+	redirect_input(0,"text.txt");
     return 0;
 }

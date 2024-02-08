@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/07 17:59:37 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/08 14:13:13 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,40 @@ void open_file(t_node *node)
         
     // return node;
 }
+int	stashfd(int fd)
+{
+	int	stashfd;
 
+	stashfd = fcntl(fd, F_DUPFD, 10);
+	// if (stashfd < 0)
+	// 	fatal_error("fcntl");
+	// if (close(fd) < 0)
+	// 	fatal_error("close");
+	return (stashfd);
+}
+
+
+void redirect(t_node *node, char **token2argv)
+{
+	int filefd, stashed_targetfd;
+    extern char **environ;
+	// 1. Redirect先のfdをopenする
+	// filefd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    filefd = node->redir_fd;
+	filefd = stashfd(filefd); // filefdを退避させる
+
+	// 2. Redirectする
+	stashed_targetfd = stashfd(node->current_fd); // targetfdを退避させる
+	if (filefd != node->current_fd)
+	{
+		dup2(filefd, node->current_fd); // filefdをtargetfdに複製する（元々のtargetfdは閉じられる）
+		close(filefd);
+	}
+	// 3. コマンドを実行する
+	execute(token2argv);
+	// 4. Redirectしていたのを元に戻す
+	dup2(stashed_targetfd, node->current_fd); // 退避していたstashed_targetfdをtargetfdに複製する（元々のtargetfd）
+}
 
 
 void exec(t_node *node)
@@ -226,6 +259,7 @@ void exec(t_node *node)
     int len ,i =0 ;
     len = count_token_len(node->token);
     token2argv = (char **)ft_calloc(len+1,sizeof(char *));
+    //node がまだうまく登れていない
     while(node!=NULL)
     {
         while(node->token->kind !=TK_EOF)
@@ -238,15 +272,15 @@ void exec(t_node *node)
             }
             else{
             token2argv[i] = node->token->str;
-            printf("argv : %s\n",token2argv[i]);
             i++;
-                
             }
             node->token = node->token->next;
         }
                 // printf("%d\n",node->redir_fd);
-        dup2(node->redir_fd,1);
-        execute(token2argv);
+                node->current_fd = 1;
+        redirect(node ,token2argv);
+        // dup2(node->redir_fd,1);
+        // execute(token2argv);
             node = node->prev;
     }
 }
@@ -260,7 +294,6 @@ int interpret(char *line)
     node->left = NULL;
     node->right = NULL;
     // TEST_print_token(token);   
-    
     // node = parser(node);
     node = parser(token);
     node = start_node(node);
@@ -268,7 +301,7 @@ int interpret(char *line)
     // printf("prev : %s\n",node->left->prev->token->str);
     // exec_cmd(node);
     // todo("redireciton_do");
-    TEST_PRINT_NODE(node); 
+    // TEST_PRINT_NODE(node); 
         return (0);
     
     // char **argv = token_to_argv(token);

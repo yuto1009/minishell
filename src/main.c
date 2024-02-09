@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/08 14:29:07 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/08 18:06:30 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,19 @@ bool is_redirection_out(t_token *token)
         // printf("left token : %s\n right token %s\n",node->token->str);
     
 }
+
+bool is_redirection_in(t_token *token)
+{
+    // while(token->kind !=TK_EOF)
+    // {
+        if(token->kind == TK_REDIRECTION && ft_strncmp(token->str,"<",1) ==0)
+            return true;
+        // token = token->next;
+    // }
+    return false;
+        // printf("left token : %s\n right token %s\n",node->token->str);
+    
+}
 t_node *start_node(t_node*node)
 {
     while(node->left!=NULL)
@@ -207,10 +220,19 @@ void open_file(t_node *node)
 {
     char *filename;
     // int filefd;
-    while(node->token->kind!=TK_REDIRECTION)
-        node->token = node->token->next;
+
     filename = node->token->next->str;
-    node->redir_fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    if(ft_strncmp(node->token->str , ">",1) == 0 )
+    {
+        node->redirout_fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    }
+    else if(ft_strncmp(node->token->str , "<",1) == 0)
+    {
+        node->redirin_fd = open(filename,O_RDONLY);   
+        if(node->redirin_fd == -1)
+            printf("no such file or directory\n");
+            // todo(ここにdup？）)
+    }
     // if(node->redir_fd == -1)
         // todo("ファイルが存在しません");
     
@@ -233,24 +255,34 @@ int	stashfd(int fd)
 
 void redirect(t_node *node, char **token2argv)
 {
-	int filefd, stashed_targetfd;
+	int fileoutfd, stashedout_targetfd = 0,stashedin_targetfd,fileinfd;
     extern char **environ;
 	// 1. Redirect先のfdをopenする
-	// filefd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-    filefd = node->redir_fd;
-	filefd = stashfd(filefd); // filefdを退避させる
-
+	// fileoutfd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    fileoutfd = node->redirout_fd;
+	fileoutfd = stashfd(fileoutfd); // filefdを退避させる
+    fileinfd = node->redirin_fd;
+    // printf("fileinfd : %d\n fileoutfd : %d\n",fileinfd,fileoutfd);
+    
 	// 2. Redirectする
-	stashed_targetfd = stashfd(node->current_fd); // targetfdを退避させる
-	if (filefd != node->current_fd)
+    stashedin_targetfd = stashfd(node->currentin_fd); // targetfdを退避させる
+	stashedout_targetfd = stashfd(node->currentout_fd); // targetfdを退避させる
+	if (fileoutfd != node->currentout_fd)
 	{
-		dup2(filefd, node->current_fd); // filefdをtargetfdに複製する（元々のtargetfdは閉じられる）
-		close(filefd);
+		dup2(fileoutfd, node->currentout_fd); // filefdをtargetfdに複製する（元々のtargetfdは閉じられる）
+		close(fileoutfd);
 	}
+    if(fileinfd != node->currentin_fd)
+    {
+        dup2(fileinfd, node->currentin_fd);
+        close(fileinfd);
+    }
 	// 3. コマンドを実行する
 	execute(token2argv);
 	// 4. Redirectしていたのを元に戻す
-	dup2(stashed_targetfd, node->current_fd); // 退避していたstashed_targetfdをtargetfdに複製する（元々のtargetfd）
+	dup2(stashedout_targetfd, node->currentout_fd); // 退避していたstashed_targetfdをtargetfdに複製する（元々のtargetfd）
+    dup2(stashedin_targetfd, node->currentin_fd);
+    
 }
 
 
@@ -265,7 +297,7 @@ void exec(t_node *node)
     {
         while(node->token->kind !=TK_EOF)
         {
-            if(is_redirection_out(node->token))
+            if(node->token->kind == TK_REDIRECTION)
             {
                 open_file(node);
                 node->token = node->token->next;
@@ -277,7 +309,8 @@ void exec(t_node *node)
             }
             node->token = node->token->next;
         }
-        node->current_fd = 1;
+        node->currentout_fd = 1;
+        node->currentin_fd = 0;
         redirect(node ,token2argv);
         // dup2(node->redir_fd,1);
         // execute(token2argv);

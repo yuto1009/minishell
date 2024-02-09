@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/08 18:06:30 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/09 15:16:15 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,10 +222,10 @@ void open_file(t_node *node)
     // int filefd;
 
     filename = node->token->next->str;
-    if(ft_strncmp(node->token->str , ">",1) == 0 )
-    {
+    if(ft_strncmp(node->token->str , ">>",2) == 0)
+        node->redirout_fd = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
+    else if(ft_strncmp(node->token->str , ">",1) == 0 )
         node->redirout_fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-    }
     else if(ft_strncmp(node->token->str , "<",1) == 0)
     {
         node->redirin_fd = open(filename,O_RDONLY);   

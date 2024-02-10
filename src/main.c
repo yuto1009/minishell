@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/09 15:16:15 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/10 17:40:43 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,44 @@ bool is_redirection_out(t_token *token)
     
 }
 
+int heredoc(char *delimiter)
+{
+    char	*line;
+	int		pfd[2];
+
+        pipe(pfd);
+    while (1)
+    {
+        line = readline("> ");
+        if (line == NULL)
+            break ;
+        if (strcmp(line, delimiter) == 0)
+        {
+            free(line);
+            break ;
+        }
+        
+        char *temp = line; // lineの値を保持
+        while(*temp != '\0') // tempを使って文字列を操作
+        {
+            write(pfd[1], temp, 1);
+            temp++;
+        }
+        write(pfd[1], "\n", 1);
+
+        free(line); // ここで安全にlineをfreeできる
+    }
+    
+	close(pfd[1]);
+    //    char buffer[1024];
+    // int nbytes;
+
+    // while ((nbytes = read(pfd[0], buffer, sizeof(buffer))) > 0) {
+    //     write(STDOUT_FILENO, buffer, nbytes);
+    // }
+    return pfd[0];
+}
+
 bool is_redirection_in(t_token *token)
 {
     // while(token->kind !=TK_EOF)
@@ -224,6 +262,8 @@ void open_file(t_node *node)
     filename = node->token->next->str;
     if(ft_strncmp(node->token->str , ">>",2) == 0)
         node->redirout_fd = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
+    else if(ft_strncmp(node->token->str , "<<",2) == 0)
+        node->redirin_fd  = heredoc(filename);
     else if(ft_strncmp(node->token->str , ">",1) == 0 )
         node->redirout_fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
     else if(ft_strncmp(node->token->str , "<",1) == 0)

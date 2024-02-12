@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/08 18:21:33 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/02/12 13:46:43 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,12 +238,22 @@ void redirect(t_node *node, char **token2argv)
 }
 
 // ここのロジックでノードを上に登る
-t_node *get_upper_node(t_node *node)
+t_node *get_next_node(t_node *node)
 {
-    if (node->prev->token->kind != TK_EOF)
-        return node->prev;
-    else if (node->prev->token->kind != TK_EOF)
-        return NULL;
+    if (node == NULL) return NULL;
+
+    // 右の子がいれば、その最も左の子を探す && 今いるnodeが右の子じゃない
+    if (node->prev->right != NULL && node != node->prev->right)
+    {
+        node = node->prev->right;
+        while (node->left != NULL)
+            node = node->left;
+        return node;
+    }
+    // 右の子がいなければ、親を辿って適切なノードを探す
+    if (node->prev != NULL && node == node->prev->right)
+        node = node->prev;
+    return node;
 }
 
 // void exec(t_node *node)
@@ -284,7 +294,7 @@ void exec(t_node *node)
     len = count_token_len(node->token);
     token2argv = (char **)ft_calloc(len+1,sizeof(char *));
     //node がまだうまく登れていない
-    while(node->token->kind != TK_EOF)
+    while(node != NULL && node->token->kind != TK_EOF)
     {
         while(node->token->kind !=TK_EOF)
         {
@@ -305,7 +315,7 @@ void exec(t_node *node)
         // dup2(node->redir_fd,1);
         // execute(token2argv);
         // node = node->prev;
-        node = get_upper_node(node);
+        node = get_next_node(node);
     }
 }
 

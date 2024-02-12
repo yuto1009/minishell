@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/02/12 12:54:38 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/02/12 16:30:33 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,10 @@ t_token *split_right_tokens(t_token *token)
 t_token *find_axis_token(t_token *token)
 {
     t_token *axis;
-    // printf("ok\n");
+    
     axis = NULL;
-    // while ((token != NULL && token->next != NULL) || token->kind != TK_EOF)
     while (token != NULL && token->kind != TK_EOF)
     {
-    // printf("token->str: %s\n", token->str);
         if (ft_strncmp(token->str, ";", 1) == 0)
             axis = token;
         else if (axis != NULL && ft_strncmp(axis->str, ";", 1) != 0 && ft_strncmp(token->str, "|", 1) == 0)
@@ -92,7 +90,7 @@ t_token *find_axis_token(t_token *token)
             axis = token;
         token = token->next;
     }
-    if (axis == NULL)
+    if (axis == NULL)   // もし基軸となるトークンが見つからなれけば、NULLを返した方が利口かもしれない(要検討)
         axis = new_token(NULL, TK_EOF);
     return axis;
 }
@@ -106,8 +104,6 @@ bool is_redirection(t_node *node)
         node->token = node->token->next;
     }
     return false;
-        // printf("left token : %s\n right token %s\n",node->token->str);
-    
 }
 
 t_token *find_redir_token(t_token *token)
@@ -137,12 +133,10 @@ t_node *parse_redirection(t_token * token)
         return new_node(token , NULL ,NULL);
     right_token = split_right_tokens(redir_op);
     left_token = split_left_tokens(redir_op);
-    // printf("left :%s\n right : %s\n" , left_token->str ,right_token->str );
     left_subnode = parse_redirection(left_token);
     right_subnode = parse_redirection(right_token);
     new_node_instance = new_node(redir_op, left_subnode, right_subnode);
     new_node_instance->current_fd = STDIN_FILENO;
-        // node->token->next;
     return (new_node_instance);
 }
 
@@ -161,21 +155,10 @@ t_node *parser(t_token *token)
     if(axis_token == NULL || axis_token->kind == TK_EOF)
     {
         return_node = new_node(token , NULL ,NULL);
-        // if(is_redirection(return_node))
-        // {
-        //     return_node->redirection = parse_redirection(return_node->token);
-            
-        //     // printf("axis : %s\nleft : %s\n",return_node->redirection->token->str , return_node->redirection->left->token->str);
-        // }
-        // else 
-        //     return_node->redirection = NULL;
-            
-            return return_node;
+        return return_node;
     }
     right_token = split_right_tokens(axis_token);
     left_token = split_left_tokens(axis_token);
-    
-    // printf("axis : %s , right : %s , left : %s\n",axis_token->str,right_token->str , left_token->str);
     
     left_subnode = parser(left_token);
     right_subnode = parser(right_token);

@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/12 13:46:43 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/02/12 16:48:02 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,8 +186,8 @@ void tokenize_error(t_token *token)
 
 bool is_redirection_out(t_token *token)
 {
-        if(token->kind == TK_REDIRECTION && ft_strncmp(token->str,">",1) ==0)
-            return true;
+    if(token->kind == TK_REDIRECTION && ft_strncmp(token->str,">",1) ==0)
+        return true;
     return false;
     
 }
@@ -239,8 +239,11 @@ void redirect(t_node *node, char **token2argv)
 
 // ここのロジックでノードを上に登る
 t_node *get_next_node(t_node *node)
-{
+{   
+    // printf("DEBUG\n");
     if (node == NULL) return NULL;
+
+    if (node->prev == NULL) return NULL;
 
     // 右の子がいれば、その最も左の子を探す && 今いるnodeが右の子じゃない
     if (node->prev->right != NULL && node != node->prev->right)
@@ -256,45 +259,14 @@ t_node *get_next_node(t_node *node)
     return node;
 }
 
-// void exec(t_node *node)
-// {
-//     char **token2argv;
-//     int len ,i =0 ;
-//     len = count_token_len(node->token);
-//     token2argv = (char **)ft_calloc(len+1,sizeof(char *));
-//     //node がまだうまく登れていない
-//     while(node != NULL)
-//     {
-//         t_token *token = node->token;
-//         while(token->kind != TK_EOF)
-//         {
-//             if(is_redirection_out(token))
-//             {
-//                 open_file(node);
-//                 token = token->next;
-//             }
-//             else
-//             {
-//                 token2argv[i] = token->str;
-//                 i++;
-//             }
-//             token = token->next;
-//         }
-//         node->current_fd = 1;
-//         redirect(node ,token2argv);
-//         node = get_upper_node(node);
-//         printf("OK\n");
-//     }
-// }
-
 void exec(t_node *node)
 {
     char **token2argv;
     int len ,i =0 ;
     len = count_token_len(node->token);
     token2argv = (char **)ft_calloc(len+1,sizeof(char *));
-    //node がまだうまく登れていない
-    while(node != NULL && node->token->kind != TK_EOF)
+
+    while(node != NULL)
     {
         while(node->token->kind !=TK_EOF)
         {
@@ -312,9 +284,6 @@ void exec(t_node *node)
         }
         node->current_fd = 1;
         redirect(node ,token2argv);
-        // dup2(node->redir_fd,1);
-        // execute(token2argv);
-        // node = node->prev;
         node = get_next_node(node);
     }
 }

@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/10 17:40:43 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/12 11:18:36 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -352,8 +352,6 @@ void exec(t_node *node)
         node->currentout_fd = 1;
         node->currentin_fd = 0;
         redirect(node ,token2argv);
-        // dup2(node->redir_fd,1);
-        // execute(token2argv);
         node = node->prev;
     }
 }

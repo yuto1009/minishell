@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/02/15 15:36:41 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/02/15 17:23:03 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ t_token *split_right_tokens(t_token *token)
     if(token->next->kind == TK_EOF)
         return (new_token(NULL, TK_EOF));   // もし最高層ノードの右側にトークンがなかったらEOFトークンだけ入れる
     token = token->next;    // axisの次のトークンを参照する
-    // prev_token = (t_token *)ft_calloc(1, sizeof(t_token));
     prev_token = new_token(NULL, TK_EOF);   // 
     prev_token->next = token;   // 
     token->prev = prev_token;

@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/15 15:35:46 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/02/15 15:50:40 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,9 +332,7 @@ t_node *get_next_node(t_node *node)
         return node;
     }
     // 右の子がいなければ、親を辿って適切なノードを探す
-    if (node->prev != NULL && node == node->prev->right)
-        node = node->prev;
-    return node;
+    return node->prev;
 }
 
 void exec(t_node *node)

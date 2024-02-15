@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/15 15:30:29 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/15 15:45:26 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,14 +186,9 @@ void tokenize_error(t_token *token)
 
 bool is_redirection_out(t_token *token)
 {
-    // while(token->kind !=TK_EOF)
-    // {
-        if(token->kind == TK_REDIRECTION && ft_strncmp(token->str,">",1) ==0)
-            return true;
-        // token = token->next;
-    // }
+    if(token->kind == TK_REDIRECTION && ft_strncmp(token->str,">",1) ==0)
+        return true;
     return false;
-        // printf("left token : %s\n right token %s\n",node->token->str);
     
 }
 
@@ -257,8 +252,8 @@ t_node *start_node(t_node*node)
 void open_file(t_node *node)
 {
     char *filename;
-    // int filefd;
 
+    // int filefd;
     filename = node->token->next->str;
     if(ft_strncmp(node->token->str , ">>",2) == 0)
         node->redirout_fd = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
@@ -282,13 +277,9 @@ void open_file(t_node *node)
 int	stashfd(int fd)
 {
 	int	stashfd;
-//fcntlは使用不可
+    //fcntlは使用不可
 
 	stashfd = fcntl(fd, F_DUPFD, 10);
-	// if (stashfd < 0)
-	// 	fatal_error("fcntl");
-	// if (close(fd) < 0)
-	// 	fatal_error("close");
 	return (stashfd);
 }
 
@@ -303,7 +294,6 @@ void redirect(t_node *node, char **token2argv)
 	fileoutfd = stashfd(fileoutfd); // filefdを退避させる
     fileinfd = node->redirin_fd;
     // printf("fileinfd : %d\n fileoutfd : %d\n",fileinfd,fileoutfd);
-    
 	// 2. Redirectする
     stashedin_targetfd = stashfd(node->currentin_fd); // targetfdを退避させる
 	stashedout_targetfd = stashfd(node->currentout_fd); // targetfdを退避させる
@@ -325,14 +315,17 @@ void redirect(t_node *node, char **token2argv)
     
 }
 
+
+// ここのロジックでノードを上に登る
 t_node *get_next_node(t_node *node)
 {   
-    // printf("DEBUG\n");
+    printf("DEBUG\n");
+
     if (node == NULL) return NULL;
 
     if (node->prev == NULL) return NULL;
 
-    // if(node->prev->prev == NULL) return NULL;
+
 
     // 右の子がいれば、その最も左の子を探す && 今いるnodeが右の子じゃない
     if (node->prev->right != NULL && node != node->prev->right)
@@ -351,14 +344,15 @@ t_node *get_next_node(t_node *node)
 }
 
 
+
 void exec(t_node *node)
 {
     char **token2argv;
     int len ,i =0 ;
     len = count_token_len(node->token);
     token2argv = (char **)ft_calloc(len+1,sizeof(char *));
-    //node がまだうまく登れていない
-    while(node!=NULL)
+
+    while(node != NULL)
     {
         // if(node->token->kind!= TK_OPERATOR && fork()==0)
         while(node->token->kind !=TK_EOF)
@@ -390,33 +384,13 @@ int interpret(char *line)
     node->token = token;
     node->left = NULL;
     node->right = NULL;
-    // TEST_print_token(token);   
-    // node = parser(node);
     node = parser(token);
     node = start_node(node);
     exec(node);
-    // printf("prev : %s\n",node->left->prev->token->str);
-    // exec_cmd(node);
-    // todo("redireciton_do");
-    // TEST_PRINT_NODE(node); 
-    return (0);
-    
-    // char **argv = token_to_argv(token);
-    //ここからとりあえずbuiltinを実装 comment by kyoshidaz
-    // if(ft_strncmp(argv[0], "exit",4) == 0)
-    //   return mini_exit(argv);
-    // else if(ft_strncmp(argv[0],"env",3) == 0)
-    //   return mini_env(argv);
-    //ここまで
-    
-    // int i = 0;
-    // while(argv[i])
-    // {
-    //     printf("argv: %s\n", argv[i]);
-    //     i++;
-    // }
+
+    return (0); // 仮
+
     // int status = execute(argv);
-    // printf("status: %d\n", status);
     // return (status);
 }
 

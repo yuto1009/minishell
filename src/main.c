@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/14 20:10:53 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/15 15:30:29 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -325,6 +325,31 @@ void redirect(t_node *node, char **token2argv)
     
 }
 
+t_node *get_next_node(t_node *node)
+{   
+    // printf("DEBUG\n");
+    if (node == NULL) return NULL;
+
+    if (node->prev == NULL) return NULL;
+
+    // if(node->prev->prev == NULL) return NULL;
+
+    // 右の子がいれば、その最も左の子を探す && 今いるnodeが右の子じゃない
+    if (node->prev->right != NULL && node != node->prev->right)
+    {
+        node = node->prev->right;
+        while (node->left != NULL)
+            node = node->left;
+        return node;
+    }
+    // 右の子がいなければ、親を辿って適切なノードを探す
+    if (node->prev != NULL && node == node->prev->right){
+        node = node->prev;
+        return node;
+    }
+    return node->prev;
+}
+
 
 void exec(t_node *node)
 {
@@ -353,7 +378,7 @@ void exec(t_node *node)
         node->currentout_fd = 1;
         node->currentin_fd = 0;
         redirect(node ,token2argv);
-        node = node->prev;
+        node = get_next_node(node);
     }
 }
 

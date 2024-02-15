@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/12 11:18:36 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/14 20:10:53 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,6 +335,7 @@ void exec(t_node *node)
     //node がまだうまく登れていない
     while(node!=NULL)
     {
+        // if(node->token->kind!= TK_OPERATOR && fork()==0)
         while(node->token->kind !=TK_EOF)
         {
             if(node->token->kind == TK_REDIRECTION)
@@ -376,7 +377,7 @@ int interpret(char *line)
     return (0);
     
     // char **argv = token_to_argv(token);
-    //ここからとりあえずbuiltinを実装 comment by kyoshida
+    //ここからとりあえずbuiltinを実装 comment by kyoshidaz
     // if(ft_strncmp(argv[0], "exit",4) == 0)
     //   return mini_exit(argv);
     // else if(ft_strncmp(argv[0],"env",3) == 0)

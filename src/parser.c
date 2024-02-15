@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/02/15 13:57:15 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/02/15 15:36:41 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,6 @@ t_node *parse_redirection(t_token * token)
     left_subnode = parse_redirection(left_token);
     right_subnode = parse_redirection(right_token);
     new_node_instance = new_node(redir_op, left_subnode, right_subnode);
-    new_node_instance->current_fd = STDIN_FILENO;
     return (new_node_instance);
 }
 

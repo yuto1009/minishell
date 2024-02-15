@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/12 16:48:02 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:45:55 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,7 +240,7 @@ void redirect(t_node *node, char **token2argv)
 // ここのロジックでノードを上に登る
 t_node *get_next_node(t_node *node)
 {   
-    // printf("DEBUG\n");
+    printf("DEBUG\n");
     if (node == NULL) return NULL;
 
     if (node->prev == NULL) return NULL;
@@ -283,8 +283,9 @@ void exec(t_node *node)
             node->token = node->token->next;
         }
         node->current_fd = 1;
-        redirect(node ,token2argv);
+        // redirect(node ,token2argv);
         node = get_next_node(node);
+        printf("node : %s\n", node->token->str);
     }
 }
 

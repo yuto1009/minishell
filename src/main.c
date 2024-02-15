@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/15 15:51:39 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/02/15 18:09:35 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,40 +113,6 @@ int execute(char **argv)
         return (WEXITSTATUS(wstatus));
     }
     return (WEXITSTATUS(wstatus));
-}
-
-void TEST_print_token(t_token *token)
-{
-    while (token->kind != TK_EOF)
-    {
-        printf("%s : ", token->str);
-        if (token->kind == TK_WORD)
-            printf("WORD\n");
-        else if (token->kind == TK_OPERATOR)
-            printf("OPERATOR\n");
-        else if (token->kind == TK_REDIRECTION)
-            printf("REDIRECTION\n");
-        else 
-            printf("PRESERVED\n");
-        token = token->next;
-    }
-}
-void TEST_PRINT_NODE(t_node *node) {
-    if (node == NULL) {
-        return; // Handle NULL pointer
-    }
-
-    // Check for EOF token and print if it's not EOF
-    if (node->token->kind != TK_EOF && node->left != NULL && node->right != NULL) {
-        printf("str: %s\n", node->token->str); // Added newline for readability
-        printf("right: %s\n", node->right->token->str);
-        printf("left: %s\n", node->left->token->str);
-    }
-    if(node->redirection)
-    printf("prev :%s \n",node->redirection->token->str);
-    // Recursive calls with NULL check
-    TEST_PRINT_NODE(node->left);
-    TEST_PRINT_NODE(node->right);
 }
 
 int count_token_len(t_token *token)
@@ -342,7 +308,7 @@ void exec(t_node *node)
     token2argv = (char **)ft_calloc(len+1,sizeof(char *));
 
     while(node != NULL)
-    {
+    {   
         while(node->token->kind !=TK_EOF)
         {
             if(node->token->kind == TK_REDIRECTION)

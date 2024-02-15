@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/02/15 17:23:03 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/02/15 17:42:27 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,18 +81,34 @@ t_token *find_axis_token(t_token *token)
     axis = NULL;
     while (token != NULL && token->kind != TK_EOF)
     {
-        if (ft_strncmp(token->str, ";", 1) == 0)
-            axis = token;
-        else if (axis != NULL && ft_strncmp(axis->str, ";", 1) != 0 && ft_strncmp(token->str, "|", 1) == 0)
-            axis = token;
-        else if(axis == NULL && ft_strncmp(token->str, "|", 1) == 0)
+        if(axis == NULL && ft_strncmp(token->str, "|", 1) == 0)
             axis = token;
         token = token->next;
     }
-    if (axis == NULL)   // もし基軸となるトークンが見つからなれけば、NULLを返した方が利口かもしれない(要検討)
+    if (axis == NULL)
         axis = new_token(NULL, TK_EOF);
     return axis;
 }
+
+// t_token *find_axis_token(t_token *token)
+// {
+//     t_token *axis;
+    
+//     axis = NULL;
+//     while (token != NULL && token->kind != TK_EOF)
+//     {
+//         if (ft_strncmp(token->str, ";", 1) == 0)
+//             axis = token;
+//         else if (axis != NULL && ft_strncmp(axis->str, ";", 1) != 0 && ft_strncmp(token->str, "|", 1) == 0)
+//             axis = token;
+//         else if(axis == NULL && ft_strncmp(token->str, "|", 1) == 0)
+//             axis = token;
+//         token = token->next;
+//     }
+//     if (axis == NULL)
+//         axis = new_token(NULL, TK_EOF);
+//     return axis;
+// }
 
 bool is_redirection(t_node *node)
 {

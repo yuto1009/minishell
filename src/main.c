@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/15 15:45:26 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/15 18:49:50 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,15 @@ char *search_path(char *filename)
     return (NULL);
 }
 
-int execute(char **argv)
+int execute(char **argv,t_node *node)
 {
     int wstatus;
     extern char **environ;
     char *executable;
     pid_t pid = fork();
-    
+    int pfd[2];
+
+    pipe(pfd);
     if (pid < 0)
         fatal_error("fork");
     if (pid == 0)
@@ -103,13 +105,16 @@ int execute(char **argv)
         {
             executable = argv[0];
         }
+        dup2(pfd[1], 1);
         execve(executable, argv, environ);
         cmd_error_exit(executable, "command not found", 127);
+        
     }
     else 
     {
         // 親プロセス
         wait(&wstatus);
+        node->currentin_fd = pfd[0];
         return (WEXITSTATUS(wstatus));
     }
     return (WEXITSTATUS(wstatus));
@@ -286,7 +291,8 @@ int	stashfd(int fd)
 
 void redirect(t_node *node, char **token2argv)
 {
-	int fileoutfd, stashedout_targetfd = 0,stashedin_targetfd,fileinfd;
+	int fileoutfd,stashedout_targetfd = 0,stashedin_targetfd;
+    int fileinfd;
     extern char **environ;
 	// 1. Redirect先のfdをopenする
 	// fileoutfd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
@@ -308,7 +314,7 @@ void redirect(t_node *node, char **token2argv)
         close(fileinfd);
     }
 	// 3. コマンドを実行する
-	execute(token2argv);
+	execute(token2argv,node);
 	// 4. Redirectしていたのを元に戻す
 	dup2(stashedout_targetfd, node->currentout_fd); // 退避していたstashed_targetfdをtargetfdに複製する（元々のtargetfd）
     dup2(stashedin_targetfd, node->currentin_fd);
@@ -319,28 +325,23 @@ void redirect(t_node *node, char **token2argv)
 // ここのロジックでノードを上に登る
 t_node *get_next_node(t_node *node)
 {   
-    printf("DEBUG\n");
-
+    t_node *current_node;
     if (node == NULL) return NULL;
 
     if (node->prev == NULL) return NULL;
-
-
+    
+    current_node = node;
 
     // 右の子がいれば、その最も左の子を探す && 今いるnodeが右の子じゃない
-    if (node->prev->right != NULL && node != node->prev->right)
+    if (current_node->prev->right != NULL && current_node != current_node->prev->right)
     {
         node = node->prev->right;
         while (node->left != NULL)
             node = node->left;
+        
         return node;
     }
-    // 右の子がいなければ、親を辿って適切なノードを探す
-    if (node->prev != NULL && node == node->prev->right){
-        node = node->prev;
-        return node;
-    }
-    return node->prev;
+    return current_node->prev;
 }
 
 
@@ -350,11 +351,10 @@ void exec(t_node *node)
     char **token2argv;
     int len ,i =0 ;
     len = count_token_len(node->token);
-    token2argv = (char **)ft_calloc(len+1,sizeof(char *));
 
     while(node != NULL)
     {
-        // if(node->token->kind!= TK_OPERATOR && fork()==0)
+        token2argv = (char **)ft_calloc(len+1,sizeof(char *));
         while(node->token->kind !=TK_EOF)
         {
             if(node->token->kind == TK_REDIRECTION)
@@ -372,6 +372,7 @@ void exec(t_node *node)
         node->currentout_fd = 1;
         node->currentin_fd = 0;
         redirect(node ,token2argv);
+        free(token2argv);
         node = get_next_node(node);
     }
 }

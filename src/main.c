@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/15 15:50:40 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/02/15 15:51:39 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -318,7 +318,6 @@ void redirect(t_node *node, char **token2argv)
 // ここのロジックでノードを上に登る
 t_node *get_next_node(t_node *node)
 {   
-    printf("DEBUG\n");
     if (node == NULL) return NULL;
 
     if (node->prev == NULL) return NULL;

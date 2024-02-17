@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/15 18:09:35 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/02/17 18:50:12 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,7 +306,7 @@ void exec(t_node *node)
     int len ,i =0 ;
     len = count_token_len(node->token);
     token2argv = (char **)ft_calloc(len+1,sizeof(char *));
-
+    // NULL処理してない
     while(node != NULL)
     {   
         while(node->token->kind !=TK_EOF)
@@ -332,13 +332,15 @@ void exec(t_node *node)
 
 int interpret(char *line)
 {
-    struct s_node *node = (struct s_node *)malloc(sizeof(struct s_node));      
+    struct s_node *node = (struct s_node *)malloc(sizeof(struct s_node));   
+    // NULL処理してない   
     t_token *token = tokenize(line);
     tokenize_error(token);
     node->token = token;
     node->left = NULL;
     node->right = NULL;
     node = parser(token);
+    // expand(start_node(node));
     node = start_node(node);
     exec(node);
     return (0); // 仮

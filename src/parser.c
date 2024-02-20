@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/02/20 20:28:35 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/20 20:38:49 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,12 +196,12 @@ t_token* cutCommandTokens(t_token** current, t_token** nextCommandStart) {
     t_token* start = *current;
     t_token* end = start;
 
-    // パイプを見つけるまで、またはリストの終わりまで進む
+
     while (end->next!=NULL && end->next->kind!=TK_EOF && end->kind !=TK_OPERATOR) {
         end = end->next;
     }
     // printf("end : %s\n",end->str);
-    // 次のコマンドの開始トークンを設定
+
     if(end!=NULL&&end->kind==TK_OPERATOR)
     {
         *nextCommandStart = end->next;
@@ -211,8 +211,7 @@ t_token* cutCommandTokens(t_token** current, t_token** nextCommandStart) {
     else
     *nextCommandStart =NULL;
 
-    // 現在のコマンドの終わりをマーク
-    // if (end) end = NULL;
+
 
     return start;
 }
@@ -227,7 +226,6 @@ t_node* parser(t_token* tokens) {
     while (currentToken != NULL) {
         t_token* commandStart = cutCommandTokens(&currentToken, &nextCommandStart);
 
-        // 新しいコマンドノードを作成し、リストに追加
         t_node* newCommand = createCommandNode(commandStart);
         if (head == NULL) {
             head = newCommand;
@@ -237,7 +235,6 @@ t_node* parser(t_token* tokens) {
         }
         tail = newCommand;
 
-        // 次のコマンドの処理に移動
         currentToken = nextCommandStart;
     }
 

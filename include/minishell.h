@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/08 16:20:59 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/18 16:09:11 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ struct s_node {
     t_node *right;
     t_node *prev;
     t_node *redirection;
+    t_node *next;
     int currentout_fd; // 現在のfd初期値はSTDIN
     int currentin_fd; // 現在のfd初期値はSTDOUT
     int redirout_fd;

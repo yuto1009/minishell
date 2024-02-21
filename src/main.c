@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/21 21:02:59 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/21 22:20:28 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,12 +267,12 @@ void redirect(t_node *node)
 	// 2. Redirectする
     // stashedin_targetfd = stashfd(node->currentin_fd); // targetfdを退避させる
 	// stashedout_targetfd = stashfd(node->currentout_fd); // targetfdを退避させる
-	if (fileoutfd != node->currentout_fd)
+	if (fileoutfd != 1)
 	{
 		dup2(fileoutfd, node->currentout_fd); // filefdをtargetfdに複製する（元々のtargetfdは閉じられる）
 		close(fileoutfd);
 	}
-    if(fileinfd != node->currentin_fd)
+    if(fileinfd != 0)
     {
         dup2(fileinfd, node->currentin_fd);
         close(fileinfd);

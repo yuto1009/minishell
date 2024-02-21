@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/02/21 19:35:42 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/21 22:20:04 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,8 @@ t_node* createCommandNode(t_token* startToken,int index) {
     newNode->prev = NULL;
     newNode->currentin_fd = 0;
     newNode->currentout_fd = 1;
+    newNode->redirout_fd = 1;
+    newNode->redirin_fd = 0;
     newNode->index = index;
     return newNode;
 }

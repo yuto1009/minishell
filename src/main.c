@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/15 18:09:35 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/02/21 14:07:38 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -329,17 +329,31 @@ void exec(t_node *node)
         node = get_next_node(node);
     }
 }
-
+void printCommands(t_node* node) {
+    int i = 1;
+    while (node != NULL) {
+        t_token* token = node->token;
+        printf("node %d :",i);
+        while (token != NULL && token->kind!=TK_EOF) {
+            printf("%s ", token->str);
+            token = token->next;
+        }
+        printf("\n");
+        i++;
+        node = node->next;
+    }
+}
 int interpret(char *line)
 {
-    struct s_node *node = (struct s_node *)malloc(sizeof(struct s_node));      
+    // struct s_node *node = (struct s_node *)malloc(sizeof(struct s_node));    
+    struct s_node *node = NULL ;
     t_token *token = tokenize(line);
     tokenize_error(token);
-    node->token = token;
-    node->left = NULL;
-    node->right = NULL;
+    // argv =token_to_argv(token);
+    if(node)
+    ;
     node = parser(token);
-    node = start_node(node);
+    printCommands(node);
     exec(node);
     return (0); // 仮
     // int status = execute(argv);

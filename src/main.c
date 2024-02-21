@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/20 20:37:17 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/21 14:07:38 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -330,13 +330,16 @@ void exec(t_node *node)
     }
 }
 void printCommands(t_node* node) {
+    int i = 1;
     while (node != NULL) {
         t_token* token = node->token;
+        printf("node %d :",i);
         while (token != NULL && token->kind!=TK_EOF) {
             printf("%s ", token->str);
             token = token->next;
         }
         printf("\n");
+        i++;
         node = node->next;
     }
 }

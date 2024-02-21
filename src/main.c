@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/21 14:07:38 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/21 21:02:59 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,37 +83,7 @@ char *search_path(char *filename)
     return (NULL);
 }
 
-int execute(char **argv)
-{
-    int wstatus;
-    extern char **environ;
-    char *executable;
-    pid_t pid = fork();
-    
-    if (pid < 0)
-        fatal_error("fork");
-    if (pid == 0)
-    {
-        // // 子プロセス
-        if (ft_strchr(argv[0], '/') == NULL)
-        {
-            executable = search_path(argv[0]);
-        }
-        else
-        {
-            executable = argv[0];
-        }
-        execve(executable, argv, environ);
-        cmd_error_exit(executable, "command not found", 127);
-    }
-    else 
-    {
-        // 親プロセス
-        wait(&wstatus);
-        return (WEXITSTATUS(wstatus));
-    }
-    return (WEXITSTATUS(wstatus));
-}
+
 
 int count_token_len(t_token *token)
 {
@@ -248,21 +218,55 @@ int	stashfd(int fd)
 	stashfd = fcntl(fd, F_DUPFD, 10);
 	return (stashfd);
 }
-
-
-void redirect(t_node *node, char **token2argv)
+int execute(char **argv)
 {
-	int fileoutfd, stashedout_targetfd = 0,stashedin_targetfd,fileinfd;
+    int wstatus;
+    extern char **environ;
+    char *executable;
+    pid_t pid = fork();
+    
+    if (pid < 0)
+        fatal_error("fork");
+    if (pid == 0)
+    {
+        // // 子プロセス
+        if (ft_strchr(argv[0], '/') == NULL)
+        {
+            executable = search_path(argv[0]);
+        }
+        else
+        {
+            executable = argv[0];
+        }
+        execve(executable, argv, environ);
+        cmd_error_exit(executable, "command not found", 127);
+    }
+    else 
+    {
+        // 親プロセス
+        wait(&wstatus);
+        return (WEXITSTATUS(wstatus));
+    }
+    return (WEXITSTATUS(wstatus));
+}
+
+
+
+
+void redirect(t_node *node)
+{
+	int fileoutfd,fileinfd;
+    // int stashedout_targetfd = 0,stashedin_targetfd;
     extern char **environ;
 	// 1. Redirect先のfdをopenする
 	// fileoutfd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
     fileoutfd = node->redirout_fd;
-	fileoutfd = stashfd(fileoutfd); // filefdを退避させる
+	// fileoutfd = stashfd(fileoutfd); // filefdを退避させる
     fileinfd = node->redirin_fd;
     // printf("fileinfd : %d\n fileoutfd : %d\n",fileinfd,fileoutfd);
 	// 2. Redirectする
-    stashedin_targetfd = stashfd(node->currentin_fd); // targetfdを退避させる
-	stashedout_targetfd = stashfd(node->currentout_fd); // targetfdを退避させる
+    // stashedin_targetfd = stashfd(node->currentin_fd); // targetfdを退避させる
+	// stashedout_targetfd = stashfd(node->currentout_fd); // targetfdを退避させる
 	if (fileoutfd != node->currentout_fd)
 	{
 		dup2(fileoutfd, node->currentout_fd); // filefdをtargetfdに複製する（元々のtargetfdは閉じられる）
@@ -274,10 +278,10 @@ void redirect(t_node *node, char **token2argv)
         close(fileinfd);
     }
 	// 3. コマンドを実行する
-	execute(token2argv);
+	// execute(token2argv);
 	// 4. Redirectしていたのを元に戻す
-	dup2(stashedout_targetfd, node->currentout_fd); // 退避していたstashed_targetfdをtargetfdに複製する（元々のtargetfd）
-    dup2(stashedin_targetfd, node->currentin_fd);
+	// dup2(stashedout_targetfd, node->currentout_fd); // 退避していたstashed_targetfdをtargetfdに複製する（元々のtargetfd）
+    // dup2(stashedin_targetfd, node->currentin_fd);
     
 }
 
@@ -300,46 +304,127 @@ t_node *get_next_node(t_node *node)
     return node->prev;
 }
 
+
+
+void execute_pipe(char **argv,int output_fd,int input_fd)
+{
+    // int wstatus;
+    extern char **environ;
+    char *executable;
+
+        if(output_fd!=1){
+        dup2(output_fd,1);
+        close(output_fd);
+        }
+        if(input_fd!=0){
+        dup2(input_fd,0);
+        close(input_fd);
+        }
+        
+        // // 子プロセス
+        if (ft_strchr(argv[0], '/') == NULL)
+        {
+            executable = search_path(argv[0]);
+        }
+        else
+        {
+            executable = argv[0];
+        }
+        execve(executable, argv, environ);
+        cmd_error_exit(executable, "command not found", 127);
+        // exit(1);
+}
+
+// void do_pipe(t_node *node)
+// {
+    
+// }
+
+ int serch_endindex(t_node *node)
+{
+    t_node *tmp;
+    int count = 0;
+    tmp = node;
+    while(tmp!=NULL){
+        count++;
+        tmp = tmp->next;
+    }
+    return count;
+}
 void exec(t_node *node)
 {
     char **token2argv;
     int len ,i =0 ;
+        int pfd[2];
     len = count_token_len(node->token);
-    token2argv = (char **)ft_calloc(len+1,sizeof(char *));
-
+    // t_node *head;
+    // head = node;
+    int end_index;
+    // int status;
+    end_index = serch_endindex(node);
     while(node != NULL)
-    {   
-        while(node->token->kind !=TK_EOF)
-        {
-            if(node->token->kind == TK_REDIRECTION)
+    { 
+        if(end_index>1 && node->index!=end_index)
+            pipe(pfd);
+        // printf("pfd[0] : %d\npfd[1] : %d\n\n",pfd[0],pfd[1]);
+        if(fork() == 0){
+            token2argv = (char **)ft_calloc(len+1,sizeof(char *));
+            i = 0;
+            while(node->token->kind !=TK_EOF)
             {
-                open_file(node);
+                if(node->token->kind == TK_REDIRECTION)
+                {
+                    open_file(node);
+                    node->token = node->token->next;
+                }
+                else
+                {
+                    token2argv[i] = node->token->str;
+                    i++;
+                }
                 node->token = node->token->next;
+            }
+            if(node->index == 1){
+                node->currentout_fd = pfd[1];
+            }
+            else if(node->index == end_index){
+                node->currentin_fd =node->prev->pipe_in;
+                // node->currentout_fd = 1;
             }
             else
             {
-                token2argv[i] = node->token->str;
-                i++;
+                node->currentout_fd = pfd[1];
+                node->currentin_fd =node->prev->pipe_in;                
             }
-            node->token = node->token->next;
-        }
-        node->currentout_fd = 1;
-        node->currentin_fd = 0;
-        redirect(node ,token2argv);
-        node = get_next_node(node);
+            // printf("current_OUT : %d \ncurrent_IN: %d\n\n",node->currentout_fd,node->currentin_fd);
+            
+            redirect(node);
+            // printf("out : %d , \n in : %d\n",node->currentout_fd,node->currentin_fd);
+            // printf("argv : %s\n",token2argv[0]);
+            execute_pipe(token2argv,node->currentout_fd,node->currentin_fd);
     }
+    if(node->index!=end_index)
+        close(pfd[1]);
+        // printf("pfd[0] : %d\n",pfd[0]);
+    // if(node->index!=1)
+    node->pipe_in = pfd[0];
+    node = node->next;
+
+    }
+    close(pfd[0]);
+    close(pfd[1]);
+    for(int i = 0 ; i<end_index;i++)
+        wait(NULL);
 }
 void printCommands(t_node* node) {
-    int i = 1;
     while (node != NULL) {
         t_token* token = node->token;
-        printf("node %d :",i);
+        printf("nodeindex %d :",node->index);
         while (token != NULL && token->kind!=TK_EOF) {
             printf("%s ", token->str);
             token = token->next;
         }
         printf("\n");
-        i++;
         node = node->next;
     }
 }
@@ -353,7 +438,7 @@ int interpret(char *line)
     if(node)
     ;
     node = parser(token);
-    printCommands(node);
+    // printCommands(node);
     exec(node);
     return (0); // 仮
     // int status = execute(argv);

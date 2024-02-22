@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/18 16:09:11 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/21 19:35:30 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@ struct s_node {
     int currentin_fd; // 現在のfd初期値はSTDOUT
     int redirout_fd;
     int redirin_fd;
+    int pipe_in;
+    int pipe_out;
+    int index;
 
 };
 

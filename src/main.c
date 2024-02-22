@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/21 22:20:28 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/22 10:44:53 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -408,11 +408,14 @@ void exec(t_node *node)
         // printf("pfd[0] : %d\n",pfd[0]);
     // if(node->index!=1)
     node->pipe_in = pfd[0];
+    printf("out_fd :%d\n in_fd : %d \n",node->currentout_fd,node->currentin_fd);
     node = node->next;
 
     }
-    close(pfd[0]);
-    close(pfd[1]);
+    if(end_index>1){
+        close(pfd[0]);
+        close(pfd[1]);
+    }
     for(int i = 0 ; i<end_index;i++)
         wait(NULL);
 }

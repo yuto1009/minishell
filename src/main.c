@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/22 10:44:53 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/22 15:59:17 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,10 +335,20 @@ void execute_pipe(char **argv,int output_fd,int input_fd)
         // exit(1);
 }
 
-// void do_pipe(t_node *node)
-// {
-    
-// }
+void do_pipe(t_node *node,int outpfd , int end_index)
+{
+     if(node->index == 1){
+                node->currentout_fd = outpfd;
+            }
+            else if(node->index == end_index){
+                node->currentin_fd =node->prev->pipe_in;
+            }
+            else
+            {
+                node->currentout_fd = outpfd;
+                node->currentin_fd =node->prev->pipe_in;                
+            }
+}
 
  int serch_endindex(t_node *node)
 {
@@ -357,8 +367,6 @@ void exec(t_node *node)
     int len ,i =0 ;
         int pfd[2];
     len = count_token_len(node->token);
-    // t_node *head;
-    // head = node;
     int end_index;
     // int status;
     end_index = serch_endindex(node);
@@ -384,31 +392,20 @@ void exec(t_node *node)
                 }
                 node->token = node->token->next;
             }
-            if(node->index == 1){
-                node->currentout_fd = pfd[1];
-            }
-            else if(node->index == end_index){
-                node->currentin_fd =node->prev->pipe_in;
-                // node->currentout_fd = 1;
-            }
-            else
-            {
-                node->currentout_fd = pfd[1];
-                node->currentin_fd =node->prev->pipe_in;                
-            }
+           do_pipe(node,pfd[1],end_index);
             // printf("current_OUT : %d \ncurrent_IN: %d\n\n",node->currentout_fd,node->currentin_fd);
-            
             redirect(node);
-            // printf("out : %d , \n in : %d\n",node->currentout_fd,node->currentin_fd);
             // printf("argv : %s\n",token2argv[0]);
             execute_pipe(token2argv,node->currentout_fd,node->currentin_fd);
     }
+    if(node->index!=1)
+        close(node->prev->pipe_in);
     if(node->index!=end_index)
         close(pfd[1]);
         // printf("pfd[0] : %d\n",pfd[0]);
     // if(node->index!=1)
     node->pipe_in = pfd[0];
-    printf("out_fd :%d\n in_fd : %d \n",node->currentout_fd,node->currentin_fd);
+    // printf("out_fd :%d\n in_fd : %d \n",node->currentout_fd,node->currentin_fd);
     node = node->next;
 
     }
@@ -433,11 +430,9 @@ void printCommands(t_node* node) {
 }
 int interpret(char *line)
 {
-    // struct s_node *node = (struct s_node *)malloc(sizeof(struct s_node));    
     struct s_node *node = NULL ;
     t_token *token = tokenize(line);
     tokenize_error(token);
-    // argv =token_to_argv(token);
     if(node)
     ;
     node = parser(token);

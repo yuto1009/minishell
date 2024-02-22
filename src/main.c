@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/22 16:08:23 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/22 20:39:58 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -446,6 +446,16 @@ int interpret(char *line)
 // static void destructor() {
 //     system("leaks -q minishell");
 // }
+void handle_sigint(int sig) {
+    // ここで特定の処理を行う
+    // 例: プロンプトを再表示する、特定のクリーンアップ処理を行う等
+    // write(STDOUT_FILENO, "\nCustom prompt> ", 16);
+    // rl_replace_line("", 0);
+    printf("\n");
+    if(sig)
+    ;
+}
+
 
 int main(void)
 {
@@ -453,6 +463,8 @@ int main(void)
     int status;
 
     set_output_destination(stderr);
+    //  signal(SIGINT, handle_sigint);
+     signal(SIGQUIT, SIG_IGN);
     status = 0;
     while(1)
     {

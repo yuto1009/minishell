@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/17 17:16:23 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/02/22 17:45:45 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,10 @@ char **token_to_argv(t_token *token);
 //parser
 // t_node *parser(t_node *node); 
 t_node *parser(t_token *token);
+t_node *get_next_node(t_node *node);
+
+// expand.c
+void expand(t_node *node);
 
 
 # define TK_WORD 0

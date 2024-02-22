@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/08 15:17:42 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/22 17:08:46 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ t_token *tokenize_redirection_operator(char **line)
     return (new_token(operator, TK_REDIRECTION));
 }
 
-t_token *tokenize_word(char **line)
+t_token *tokenize_word(char **line) // クオート除去機能はexpand.cに移動しました　いつかこの関数のクオート除去機能は消さないといかない
 {
     const size_t word_size = ft_strlen(*line) + 1;
     char *word;

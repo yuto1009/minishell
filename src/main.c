@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/17 18:50:12 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/02/22 20:29:01 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ int execute(char **argv)
     extern char **environ;
     char *executable;
     pid_t pid = fork();
-    
     if (pid < 0)
         fatal_error("fork");
     if (pid == 0)
@@ -340,7 +339,9 @@ int interpret(char *line)
     node->left = NULL;
     node->right = NULL;
     node = parser(token);
-    // expand(start_node(node));
+    expand(start_node(node));
+    printf("node->token->str : %s\n",node->token->str);
+    // printf("DEBUG\n");
     node = start_node(node);
     exec(node);
     return (0); // 仮

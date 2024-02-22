@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/22 15:59:17 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:08:23 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,7 +308,6 @@ t_node *get_next_node(t_node *node)
 
 void execute_pipe(char **argv,int output_fd,int input_fd)
 {
-    // int wstatus;
     extern char **environ;
     char *executable;
 
@@ -374,7 +373,6 @@ void exec(t_node *node)
     { 
         if(end_index>1 && node->index!=end_index)
             pipe(pfd);
-        // printf("pfd[0] : %d\npfd[1] : %d\n\n",pfd[0],pfd[1]);
         if(fork() == 0){
             token2argv = (char **)ft_calloc(len+1,sizeof(char *));
             i = 0;
@@ -416,6 +414,7 @@ void exec(t_node *node)
     for(int i = 0 ; i<end_index;i++)
         wait(NULL);
 }
+
 void printCommands(t_node* node) {
     while (node != NULL) {
         t_token* token = node->token;

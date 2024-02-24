@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/02/24 12:03:57 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/02/24 12:08:12 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 //     // 古い文字列の解放忘れずに
 //     ft_strlcat(new_str, expanded_env, new_str_len);
 //     ft_strlcat(new_str, env + ft_strlen(env), new_str_len);
-//     return (new_str);
+//     return (new_str);e
 // }
 
 // static char *retrieve_expanded_variable(char *env)

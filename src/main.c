@@ -6,13 +6,11 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/24 14:58:25 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/02/24 15:05:54 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-#include <stdio.h> // DEBUG
 
 bool is_path_executable(const char *path)
 {
@@ -156,26 +154,14 @@ int heredoc(char *delimiter)
     }
     
 	close(pfd[1]);
-    //    char buffer[1024];
-    // int nbytes;
-
-    // while ((nbytes = read(pfd[0], buffer, sizeof(buffer))) > 0) {
-    //     write(STDOUT_FILENO, buffer, nbytes);
-    // }
     return pfd[0];
 }
 
 bool is_redirection_in(t_token *token)
 {
-    // while(token->kind !=TK_EOF)
-    // {
-        if(token->kind == TK_REDIRECTION && ft_strncmp(token->str,"<",1) ==0)
-            return true;
-        // token = token->next;
-    // }
+    if(token->kind == TK_REDIRECTION && ft_strncmp(token->str,"<",1) ==0)
+        return true;
     return false;
-        // printf("left token : %s\n right token %s\n",node->token->str);
-    
 }
 t_node *start_node(t_node*node)
 {
@@ -188,7 +174,6 @@ void open_file(t_node *node)
 {
     char *filename;
 
-    // int filefd;
     filename = node->token->next->str;
     if(ft_strncmp(node->token->str , ">>",2) == 0)
         node->redirout_fd = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
@@ -201,13 +186,7 @@ void open_file(t_node *node)
         node->redirin_fd = open(filename,O_RDONLY);   
         if(node->redirin_fd == -1)
             printf("no such file or directory\n");
-            // todo(ここにdup？）)
     }
-    // if(node->redir_fd == -1)
-        // todo("ファイルが存在しません");
-    
-        
-    // return node;
 }
 int	stashfd(int fd)
 {
@@ -249,23 +228,14 @@ int execute(char **argv)
     return (WEXITSTATUS(wstatus));
 }
 
-
-
-
 void redirect(t_node *node)
 {
 	int fileoutfd,fileinfd;
-    // int stashedout_targetfd = 0,stashedin_targetfd;
     extern char **environ;
 	// 1. Redirect先のfdをopenする
-	// fileoutfd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
     fileoutfd = node->redirout_fd;
-	// fileoutfd = stashfd(fileoutfd); // filefdを退避させる
     fileinfd = node->redirin_fd;
-    // printf("fileinfd : %d\n fileoutfd : %d\n",fileinfd,fileoutfd);
 	// 2. Redirectする
-    // stashedin_targetfd = stashfd(node->currentin_fd); // targetfdを退避させる
-	// stashedout_targetfd = stashfd(node->currentout_fd); // targetfdを退避させる
 	if (fileoutfd != 1)
 	{
 		dup2(fileoutfd, node->currentout_fd); // filefdをtargetfdに複製する（元々のtargetfdは閉じられる）
@@ -276,12 +246,6 @@ void redirect(t_node *node)
         dup2(fileinfd, node->currentin_fd);
         close(fileinfd);
     }
-	// 3. コマンドを実行する
-	// execute(token2argv);
-	// 4. Redirectしていたのを元に戻す
-	// dup2(stashedout_targetfd, node->currentout_fd); // 退避していたstashed_targetfdをtargetfdに複製する（元々のtargetfd）
-    // dup2(stashedin_targetfd, node->currentin_fd);
-    
 }
 
 // ここのロジックでノードを上に登る
@@ -302,8 +266,6 @@ t_node *get_next_node(t_node *node)
     // 右の子がいなければ、親を辿って適切なノードを探す
     return node->prev;
 }
-
-
 
 void execute_pipe(char **argv,int output_fd,int input_fd)
 {
@@ -366,7 +328,6 @@ void exec(t_node *node)
         int pfd[2];
     len = count_token_len(node->token);
     int end_index;
-    // int status;
     end_index = serch_endindex(node);
     while(node != NULL)
     { 
@@ -390,19 +351,14 @@ void exec(t_node *node)
                 node->token = node->token->next;
             }
            do_pipe(node,pfd[1],end_index);
-            // printf("current_OUT : %d \ncurrent_IN: %d\n\n",node->currentout_fd,node->currentin_fd);
             redirect(node);
-            // printf("argv : %s\n",token2argv[0]);
             execute_pipe(token2argv,node->currentout_fd,node->currentin_fd);
     }
     if(node->index!=1)
         close(node->prev->pipe_in);
     if(node->index!=end_index)
         close(pfd[1]);
-        // printf("pfd[0] : %d\n",pfd[0]);
-    // if(node->index!=1)
     node->pipe_in = pfd[0];
-    // printf("out_fd :%d\n in_fd : %d \n",node->currentout_fd,node->currentin_fd);
     node = node->next;
 
     }

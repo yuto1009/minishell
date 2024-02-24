@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/02/24 12:08:12 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/02/24 13:01:56 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 //     // 古い文字列の解放忘れずに
 //     ft_strlcat(new_str, expanded_env, new_str_len);
 //     ft_strlcat(new_str, env + ft_strlen(env), new_str_len);
-//     return (new_str);e
+//     return (new_str);
 // }
 
 // static char *retrieve_expanded_variable(char *env)
@@ -33,6 +33,8 @@
 
 static char *expand_dollar_sign(const char *str, const char *env)
 {
+    printf("str: %s\n", str);
+    printf("env: %s\n", env);
     const char *expanded_env = getenv(env);
     const size_t new_str_len = ft_strlen(str) - ft_strlen(env) + ft_strlen(expanded_env);
     char *new_str = (char *)calloc(new_str_len, sizeof(char *));
@@ -64,12 +66,12 @@ static void expand_token(t_token *token)
         }
         else if (*str == DOLLAR_SIGN)
         {
-            const char *expanded_token = (char *)ft_calloc(1, sizeof(char *));
-            if (expanded_token == NULL)
+            const char *expanded_token_str = (char *)ft_calloc(1, sizeof(char *));
+            if (expanded_token_str == NULL)
                 fatal_error("Malloc Error");
-            expanded_token = expand_dollar_sign(token->str, str);
+            expanded_token_str = expand_dollar_sign(token->str, ++str);
             free(token->str);
-            token->str = (char *)expanded_token;
+            token->str = (char *)expanded_token_str;
         }
         str++;
     }
@@ -125,18 +127,20 @@ void expand(t_node *node)
     while(node != NULL)
     {   
         // tokenを昇る
-        while(node->token->kind !=TK_EOF)
+        t_token *tmp;
+        tmp = node->token;
+        while(tmp->kind !=TK_EOF)
         {
             // tokenがWORD && ドルサインがあれば、展開に進む
-            if(node->token->kind == TK_WORD && ft_strchr(node->token->str, DOLLAR_SIGN))
+            if(tmp->kind == TK_WORD && ft_strchr(tmp->str, DOLLAR_SIGN))
             {
-                expand_token(node->token);
+                expand_token(tmp);
             }
             // トークンからクオートを除去
-            const char *trimmed_str = remove_quotes(&node->token->str);
-            free(node->token->str);
-            node->token->str = (char *)trimmed_str;
-            node->token = node->token->next;
+            const char *trimmed_str = remove_quotes(&tmp->str);
+            free(tmp->str);
+            tmp->str = (char *)trimmed_str;
+            tmp = tmp->next;
         }
         node = get_next_node(node);
     }

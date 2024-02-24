@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/24 15:05:54 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/02/24 15:19:27 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,25 +248,6 @@ void redirect(t_node *node)
     }
 }
 
-// ここのロジックでノードを上に登る
-t_node *get_next_node(t_node *node)
-{   
-    if (node == NULL) return NULL;
-
-    if (node->prev == NULL) return NULL;
-
-    // 右の子がいれば、その最も左の子を探す && 今いるnodeが右の子じゃない
-    if (node->prev->right != NULL && node != node->prev->right)
-    {
-        node = node->prev->right;
-        while (node->left != NULL)
-            node = node->left;
-        return node;
-    }
-    // 右の子がいなければ、親を辿って適切なノードを探す
-    return node->prev;
-}
-
 void execute_pipe(char **argv,int output_fd,int input_fd)
 {
     extern char **environ;
@@ -391,6 +372,7 @@ int interpret(char *line)
     if(node)
     ;
     node = parser(token);
+    expand(node);
     exec(node);
     return (0); // 仮
     // int status = execute(argv);

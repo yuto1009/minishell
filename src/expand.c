@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/02/24 14:51:19 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/02/24 15:19:34 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,6 @@ void expand(t_node *node)
             tmp->str = (char *)trimmed_str;
             tmp = tmp->next;
         }
-        node = get_next_node(node);
+        node = node->next;
     }
 }

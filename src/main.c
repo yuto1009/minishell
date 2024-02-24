@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/24 15:05:54 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/02/24 15:10:06 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -390,6 +390,7 @@ int interpret(char *line)
     tokenize_error(token);
     if(node)
     ;
+    expand(start_node(node));
     node = parser(token);
     exec(node);
     return (0); // 仮

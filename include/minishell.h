@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/22 17:45:45 by yuendo           ###   ########.fr       */
-=======
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/21 19:35:30 by yoshidakazu      ###   ########.fr       */
->>>>>>> main
+/*   Updated: 2024/02/24 15:02:41 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +79,6 @@ t_token *tokenize(char *line);
 char **token_to_argv(t_token *token);
 
 //parser
-// t_node *parser(t_node *node); 
 t_node *parser(t_token *token);
 t_node *get_next_node(t_node *node);
 

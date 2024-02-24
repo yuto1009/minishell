@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/22 16:08:23 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/24 14:58:25 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ char *search_path(char *filename)
     }
     return (NULL);
 }
-
 
 
 int count_token_len(t_token *token)
@@ -429,13 +428,13 @@ void printCommands(t_node* node) {
 }
 int interpret(char *line)
 {
+
     struct s_node *node = NULL ;
     t_token *token = tokenize(line);
     tokenize_error(token);
     if(node)
     ;
     node = parser(token);
-    // printCommands(node);
     exec(node);
     return (0); // 仮
     // int status = execute(argv);

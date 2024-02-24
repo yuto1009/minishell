@@ -6,44 +6,27 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/02/24 13:01:56 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/02/24 14:51:19 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-// static char *replace_env_with_expanded_env(char *str, char *env, char *expanded_env)
-// {
-//     const size_t new_str_len = ft_strlen(str) - ft_strlen(env) + ft_strlen(expanded_env);
-//     char *new_str = (char *)calloc(new_str_len, sizeof(char *));
-//     if (new_str == NULL)
-//         fatal_error("Malloc Error");
-    
-//     // 古い文字列の解放忘れずに
-//     ft_strlcat(new_str, expanded_env, new_str_len);
-//     ft_strlcat(new_str, env + ft_strlen(env), new_str_len);
-//     return (new_str);
-// }
-
-// static char *retrieve_expanded_variable(char *env)
-// {
-//     const char *expanded_env = getenv(env);
-//     return (expanded_env);
-// }
-
-static char *expand_dollar_sign(const char *str, const char *env)
+static char *expand_dollar_sign(char *str, const char *env)
 {
-    printf("str: %s\n", str);
-    printf("env: %s\n", env);
     const char *expanded_env = getenv(env);
+    if (expanded_env == NULL)
+    {
+        free(str);
+        return NULL;
+    }
     const size_t new_str_len = ft_strlen(str) - ft_strlen(env) + ft_strlen(expanded_env);
     char *new_str = (char *)calloc(new_str_len, sizeof(char *));
     if (new_str == NULL)
         fatal_error("Malloc Error");
-    
-    // 古い文字列の解放忘れずに
     ft_strlcat(new_str, expanded_env, new_str_len);
     ft_strlcat(new_str, env + ft_strlen(env), new_str_len);
+    free(str);
     return (new_str);
 }
 
@@ -51,7 +34,7 @@ static void expand_token(t_token *token)
 {
     const char *str = token->str;
     
-    while (*str != '\0')
+    while (str != NULL && *str != '\0')
     {
         if (*str == SINGLE_QUOTE)
         {
@@ -66,12 +49,8 @@ static void expand_token(t_token *token)
         }
         else if (*str == DOLLAR_SIGN)
         {
-            const char *expanded_token_str = (char *)ft_calloc(1, sizeof(char *));
-            if (expanded_token_str == NULL)
-                fatal_error("Malloc Error");
-            expanded_token_str = expand_dollar_sign(token->str, ++str);
-            free(token->str);
-            token->str = (char *)expanded_token_str;
+            token->str = expand_dollar_sign(token->str, ++str);
+            continue;
         }
         str++;
     }
@@ -121,6 +100,12 @@ static char *remove_quotes(char **str)
     return (word);
 }
 
+// getenv関数は未知の環境変数に対してNULLを返す
+static bool is_unknown_env(t_token *token)
+{
+    return (token->str == NULL);
+}
+
 void expand(t_node *node)
 {
     // nodeを昇る
@@ -129,12 +114,21 @@ void expand(t_node *node)
         // tokenを昇る
         t_token *tmp;
         tmp = node->token;
-        while(tmp->kind !=TK_EOF)
+        while(tmp != NULL && tmp->kind !=TK_EOF)
         {
             // tokenがWORD && ドルサインがあれば、展開に進む
             if(tmp->kind == TK_WORD && ft_strchr(tmp->str, DOLLAR_SIGN))
             {
-                expand_token(tmp);
+                expand_token(tmp);  // トークンを展開へ
+                if (is_unknown_env(tmp) == true)    // 指定の環境変数が存在しない場合、そのトークンはなかったことにする
+                {
+                    const t_token *void_token = tmp;
+                    if (tmp->prev != NULL && tmp->next != NULL)
+                        tmp->prev->next = tmp->next;
+                    tmp = tmp->next; 
+                    free((void *)void_token);
+                    continue;
+                }
             }
             // トークンからクオートを除去
             const char *trimmed_str = remove_quotes(&tmp->str);

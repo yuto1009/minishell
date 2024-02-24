@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/02/22 20:51:54 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/02/24 12:03:57 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void expand_token(t_token *token)
             if (*str == '\0')
                 return ;
         }
-        if (*str == DOLLAR_SIGN && str+1 == '\0')
+        if (*str == DOLLAR_SIGN && *(str+1) == '\0')
         {
             return;
         }

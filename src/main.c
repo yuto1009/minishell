@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/22 20:29:01 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/02/24 12:05:26 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -340,7 +340,7 @@ int interpret(char *line)
     node->right = NULL;
     node = parser(token);
     expand(start_node(node));
-    printf("node->token->str : %s\n",node->token->str);
+    // printf("node->token->str : %s\n",node->token->str);
     // printf("DEBUG\n");
     node = start_node(node);
     exec(node);

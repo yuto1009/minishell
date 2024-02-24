@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/19 17:31:00 by yuendo            #+#    #+#             */
-/*   Updated: 2024/02/24 13:05:18 by yoshidakazu      ###   ########.fr       */
+/*   Created: 2024/02/23 16:25:38 by yoshidakazu       #+#    #+#             */
+/*   Updated: 2024/02/23 19:38:20 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strchr(const char *s, int c)
+void sigint_handler(int sig_num) {
+    // SIGINTを受け取ったときの処理
+    // 例えば、プロンプトを再表示するなど
+    write(STDOUT_FILENO, "\nminishell> ", 12);
+    // 注意: シグナルハンドラ内では非同期シグナルセーフな関数のみを使用する
+}
+
+void set_signal()
 {
-	char	*str;
-
-    if(!s)
-        return NULL;
-	str = (char *)s;
-	while (*str != '\0')
-	{
-		if (*str == (char)c)
-			return (str);
-		str++;
-	}
-	if (*str == (char)c)
-		return (str);
-	return (NULL);
+    signal(SIGINT, sigint_handler);
 }

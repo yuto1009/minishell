@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/22 16:08:23 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/24 13:05:23 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 #include <stdio.h> // DEBUG
+
+bool is_siginit = false;
 
 bool is_path_executable(const char *path)
 {
@@ -101,7 +103,7 @@ int count_token_len(t_token *token)
 void tokenize_error(t_token *token)
 {
     if(token == NULL)
-        return ;
+    return;
     if((token->kind == TK_OPERATOR || token->kind == TK_REDIRECTION)&& count_token_len(token) == 1)
         syntax_error_exit("newline");
     while(token->kind!= TK_EOF && token->next->kind!=TK_EOF)
@@ -134,9 +136,16 @@ int heredoc(char *delimiter)
 	int		pfd[2];
 
         pipe(pfd);
+        is_siginit = false;
     while (1)
     {
+        if(is_siginit)
+        {
+            free(line);
+            break;
+        }
         line = readline("> ");
+        
         if (line == NULL)
             break ;
         if (strcmp(line, delimiter) == 0)
@@ -155,7 +164,11 @@ int heredoc(char *delimiter)
 
         free(line); // ここで安全にlineをfreeできる
     }
-    
+    // if (is_siginit)
+	// {
+	// 	close(pfd[0]);
+	// 	return (-1);
+	// }
 	close(pfd[1]);
     //    char buffer[1024];
     // int nbytes;
@@ -200,10 +213,11 @@ void open_file(t_node *node)
     else if(ft_strncmp(node->token->str , "<",1) == 0)
     {
         node->redirin_fd = open(filename,O_RDONLY);   
-        if(node->redirin_fd == -1)
-            printf("no such file or directory\n");
+            // printf("no such file or directory\n");
             // todo(ここにdup？）)
     }
+        if(node->redirin_fd == -1)
+            exit(1);
     // if(node->redir_fd == -1)
         // todo("ファイルが存在しません");
     
@@ -435,6 +449,7 @@ int interpret(char *line)
     if(node)
     ;
     node = parser(token);
+ 
     // printCommands(node);
     exec(node);
     return (0); // 仮
@@ -446,6 +461,44 @@ int interpret(char *line)
 // static void destructor() {
 //     system("leaks -q minishell");
 // }
+void sigint_handler(int sig_num) {
+    // SIGINTを受け取ったときの処理
+    // 例えば、プロンプトを再表示するなど
+    if(sig_num)
+    ;
+    
+    // write(STDOUT_FILENO, "minishell$\n", 12);
+    if(sig_num == SIGINT){
+    is_siginit = true;
+    rl_replace_line("", 0);
+    printf("\n");
+    rl_on_new_line();
+    rl_redisplay();
+    }
+    else if(sig_num == SIGQUIT)
+    ;
+    // 注意: シグナルハンドラ内では非同期シグナルセーフな関数のみを使用する
+}
+
+void set_signal()
+{
+    signal(SIGINT, sigint_handler);
+}
+
+
+   bool is_only_blank_character(char *line)
+    {
+        bool ans;
+        ans = false;
+        if(strcmp(line,"")==0)
+            return true;
+        while(is_blank(*line) && *line!='\0')
+        {
+            ans = true;
+            line++;
+        }
+        return ans;
+    }
 
 int main(void)
 {
@@ -453,15 +506,24 @@ int main(void)
     int status;
 
     set_output_destination(stderr);
+    set_signal();
     status = 0;
+
     while(1)
     {
         line = readline("minishell$ ");
-        if (line == NULL)
-            break;  // breakをreturn (0)に変えるとリークが確認できる (テスターがNG出すようになる)
-        add_history(line); 
+        if (line == NULL){
+            // exit(1);
+            break;
+        }
+        if(is_only_blank_character(line))
+            continue;
+             // breakをreturn (0)に変えるとリークが確認できる (テスターがNG出すようになる)
+        if(*line)
+            add_history(line); 
         status = interpret(line);
         free(line);
     }
+        printf("exit\n"); // Ctrl+D ^Dが表示される
     return (status);
 }

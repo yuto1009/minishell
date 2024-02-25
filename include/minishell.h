@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/23 22:45:23 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/25 21:28:08 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 #include <string.h> // strerror
 #include <fcntl.h>
 #include <sys/types.h>
+#include <signal.h>
 #include <sys/stat.h>
 // #include <limits.h>
 
@@ -62,7 +63,7 @@ struct s_node {
 
 };
 
-extern bool is_siginit;
+extern int siginit;
 // error.c
 void set_output_destination(FILE *dst);
 void fatal_error(char *message);

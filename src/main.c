@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/24 13:05:23 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/25 23:04:21 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include <stdio.h> // DEBUG
 
-bool is_siginit = false;
+int siginit = 0;
 
 bool is_path_executable(const char *path)
 {
@@ -136,18 +136,17 @@ int heredoc(char *delimiter)
 	int		pfd[2];
 
         pipe(pfd);
-        is_siginit = false;
+        siginit = 2;
     while (1)
     {
-        if(is_siginit)
-        {
-            free(line);
-            break;
-        }
         line = readline("> ");
         
         if (line == NULL)
-            break ;
+        {
+            printf("\n");
+            exit(1);
+            // break ;
+        }
         if (strcmp(line, delimiter) == 0)
         {
             free(line);
@@ -164,33 +163,12 @@ int heredoc(char *delimiter)
 
         free(line); // ここで安全にlineをfreeできる
     }
-    // if (is_siginit)
-	// {
-	// 	close(pfd[0]);
-	// 	return (-1);
-	// }
-	close(pfd[1]);
-    //    char buffer[1024];
-    // int nbytes;
 
-    // while ((nbytes = read(pfd[0], buffer, sizeof(buffer))) > 0) {
-    //     write(STDOUT_FILENO, buffer, nbytes);
-    // }
+	close(pfd[1]);
+
     return pfd[0];
 }
 
-bool is_redirection_in(t_token *token)
-{
-    // while(token->kind !=TK_EOF)
-    // {
-        if(token->kind == TK_REDIRECTION && ft_strncmp(token->str,"<",1) ==0)
-            return true;
-        // token = token->next;
-    // }
-    return false;
-        // printf("left token : %s\n right token %s\n",node->token->str);
-    
-}
 t_node *start_node(t_node*node)
 {
     while(node->left!=NULL)
@@ -275,8 +253,8 @@ void redirect(t_node *node)
 	// 1. Redirect先のfdをopenする
 	// fileoutfd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
     fileoutfd = node->redirout_fd;
-	// fileoutfd = stashfd(fileoutfd); // filefdを退避させる
     fileinfd = node->redirin_fd;
+	// fileoutfd = stashfd(fileoutfd); // filefdを退避させる
     // printf("fileinfd : %d\n fileoutfd : %d\n",fileinfd,fileoutfd);
 	// 2. Redirectする
     // stashedin_targetfd = stashfd(node->currentin_fd); // targetfdを退避させる
@@ -333,7 +311,6 @@ void execute_pipe(char **argv,int output_fd,int input_fd)
         dup2(input_fd,0);
         close(input_fd);
         }
-        
         // // 子プロセス
         if (ft_strchr(argv[0], '/') == NULL)
         {
@@ -346,6 +323,7 @@ void execute_pipe(char **argv,int output_fd,int input_fd)
         execve(executable, argv, environ);
         cmd_error_exit(executable, "command not found", 127);
         // exit(1);
+
 }
 
 void do_pipe(t_node *node,int outpfd , int end_index)
@@ -374,20 +352,35 @@ void do_pipe(t_node *node,int outpfd , int end_index)
     }
     return count;
 }
-void exec(t_node *node)
+
+void child_handler(int sig)
+{
+    if(sig)
+    ;
+      rl_replace_line("", 0);
+    printf("\n");
+        rl_on_new_line();
+
+}
+int exec(t_node *node)
 {
     char **token2argv;
     int len ,i =0 ;
         int pfd[2];
+        // int exit_status;
+        // int status;
     len = count_token_len(node->token);
     int end_index;
     // int status;
     end_index = serch_endindex(node);
+        siginit = 1;
+    
     while(node != NULL)
     { 
         if(end_index>1 && node->index!=end_index)
             pipe(pfd);
         if(fork() == 0){
+            // signal(SIGINT,child_handler);
             token2argv = (char **)ft_calloc(len+1,sizeof(char *));
             i = 0;
             while(node->token->kind !=TK_EOF)
@@ -404,29 +397,33 @@ void exec(t_node *node)
                 }
                 node->token = node->token->next;
             }
-           do_pipe(node,pfd[1],end_index);
+            do_pipe(node,pfd[1],end_index);
             // printf("current_OUT : %d \ncurrent_IN: %d\n\n",node->currentout_fd,node->currentin_fd);
             redirect(node);
             // printf("argv : %s\n",token2argv[0]);
             execute_pipe(token2argv,node->currentout_fd,node->currentin_fd);
+        }
+        // if(node->index!=1)
+        //     close(node->prev->pipe_in);
+        // if(node->index!=end_index)
+        //     close(pfd[1]);
+            // printf("pfd[0] : %d\n",pfd[0]);
+        // if(node->index!=1)
+        node->pipe_in = pfd[0];
+        // printf("out_fd :%d\n in_fd : %d \n",node->currentout_fd,node->currentin_fd);
+        node = node->next;
+    
     }
-    if(node->index!=1)
-        close(node->prev->pipe_in);
-    if(node->index!=end_index)
-        close(pfd[1]);
-        // printf("pfd[0] : %d\n",pfd[0]);
-    // if(node->index!=1)
-    node->pipe_in = pfd[0];
-    // printf("out_fd :%d\n in_fd : %d \n",node->currentout_fd,node->currentin_fd);
-    node = node->next;
-
-    }
-    if(end_index>1){
+        // wait(&status);
+        // exit_status = WEXITSTATUS(status);
+        if(pfd[0]!=0)
         close(pfd[0]);
+        if(pfd[1] != 1)
         close(pfd[1]);
-    }
     for(int i = 0 ; i<end_index;i++)
         wait(NULL);
+    // return exit_status;
+    return 0;
 }
 
 void printCommands(t_node* node) {
@@ -444,6 +441,7 @@ void printCommands(t_node* node) {
 int interpret(char *line)
 {
     struct s_node *node = NULL ;
+    int status;
     t_token *token = tokenize(line);
     tokenize_error(token);
     if(node)
@@ -451,8 +449,9 @@ int interpret(char *line)
     node = parser(token);
  
     // printCommands(node);
-    exec(node);
-    return (0); // 仮
+    status = exec(node);
+    // printf("exit_status : %d\n" , status);
+    return (status); // 仮
     // int status = execute(argv);
     // return (status);
 }
@@ -461,7 +460,7 @@ int interpret(char *line)
 // static void destructor() {
 //     system("leaks -q minishell");
 // }
-void sigint_handler(int sig_num) {
+void sig_handler(int sig_num) {
     // SIGINTを受け取ったときの処理
     // 例えば、プロンプトを再表示するなど
     if(sig_num)
@@ -469,20 +468,49 @@ void sigint_handler(int sig_num) {
     
     // write(STDOUT_FILENO, "minishell$\n", 12);
     if(sig_num == SIGINT){
-    is_siginit = true;
-    rl_replace_line("", 0);
-    printf("\n");
-    rl_on_new_line();
-    rl_redisplay();
+    // siginit = true;
+    if(siginit==0){
+        rl_replace_line("", 0);
+        printf("\n");
+        rl_on_new_line();
+        rl_redisplay();
     }
-    else if(sig_num == SIGQUIT)
-    ;
+    else if(siginit == 1)
+    {
+        rl_replace_line("", 0);
+        printf("\n");
+        rl_on_new_line();
+        
+    }
+    else if(siginit == 2)
+    {
+        rl_replace_line("", 0);
+        rl_on_new_line();
+        exit(1);
+        rl_redisplay();
+    }
+    }
+                
+    if(sig_num == SIGQUIT)
+    {
+        rl_replace_line("", 0);
+        rl_on_new_line();
+        rl_redisplay();
+        printf("\n");
+    }
     // 注意: シグナルハンドラ内では非同期シグナルセーフな関数のみを使用する
 }
 
 void set_signal()
 {
-    signal(SIGINT, sigint_handler);
+    // struct sigaction sa;
+    // sigemptyset(&sa.sa_mask);
+    // sa.sa_handler = sig_handler;
+    // sa.sa_flags = 0;
+    // sigaction(SIGINT,&sa,NULL);
+    // sigaction(SIGQUIT,&sa,NULL);
+    signal(SIGINT, sig_handler);
+    signal(SIGQUIT,sig_handler);
 }
 
 
@@ -504,13 +532,13 @@ int main(void)
 {
     char *line;
     int status;
-
     set_output_destination(stderr);
     set_signal();
     status = 0;
 
     while(1)
     {
+        siginit = 0;
         line = readline("minishell$ ");
         if (line == NULL){
             // exit(1);

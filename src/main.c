@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/25 23:04:21 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/25 23:05:06 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -362,6 +362,8 @@ void child_handler(int sig)
         rl_on_new_line();
 
 }
+
+
 int exec(t_node *node)
 {
     char **token2argv;

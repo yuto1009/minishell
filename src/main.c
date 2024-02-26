@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/26 15:00:59 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/26 22:30:28 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,13 +121,7 @@ void tokenize_error(t_token *token)
         syntax_error_exit("newline");
 }
 
-bool is_redirection_out(t_token *token)
-{
-    if(token->kind == TK_REDIRECTION && ft_strncmp(token->str,">",1) ==0)
-        return true;
-    return false;
-    
-}
+
 
 int heredoc(char *delimiter)
 {
@@ -138,13 +132,12 @@ int heredoc(char *delimiter)
         siginit = 2;
     while (1)
     {
-        line = readline("> ");
         
+        line = readline("> ");
         if (line == NULL)
         {
-            printf("\n");
-            exit(1);
-            // break ;
+            free(line);
+            break ;
         }
         if (strcmp(line, delimiter) == 0)
         {
@@ -208,37 +201,6 @@ int stashfd(int fd)
     stashfd = fcntl(fd, F_DUPFD, 10);
     return (stashfd);
 }
-int execute(char **argv)
-{
-    int wstatus;
-    extern char **environ;
-    char *executable;
-    pid_t pid = fork();
-    
-    if (pid < 0)
-        fatal_error("fork");
-    if (pid == 0)
-    {
-        // // 子プロセス
-        if (ft_strchr(argv[0], '/') == NULL)
-        {
-            executable = search_path(argv[0]);
-        }
-        else
-        {
-            executable = argv[0];
-        }
-        execve(executable, argv, environ);
-        cmd_error_exit(executable, "command not found", 127);
-    }
-    else 
-    {
-        // 親プロセス
-        wait(&wstatus);
-        return (WEXITSTATUS(wstatus));
-    }
-    return (WEXITSTATUS(wstatus));
-}
 
 void redirect(t_node *node)
 {
@@ -266,21 +228,11 @@ void redirect(t_node *node)
     }
 }
 
-void execute_pipe(char **argv,int output_fd,int input_fd)
+void execute_pipe(char **argv)
 {
     extern char **environ;
     char *executable;
-        siginit = 1;
 
-        if(output_fd!=1){
-        dup2(output_fd,1);
-        close(output_fd);
-        }
-        if(input_fd!=0){
-        dup2(input_fd,0);
-        close(input_fd);
-        }
-        // // 子プロセス
         if (ft_strchr(argv[0], '/') == NULL)
         {
             executable = search_path(argv[0]);
@@ -291,24 +243,9 @@ void execute_pipe(char **argv,int output_fd,int input_fd)
         }
         execve(executable, argv, environ);
         cmd_error_exit(executable, "command not found", 127);
-        // exit(1);
 
 }
 
-void do_pipe(t_node *node,int outpfd , int end_index)
-{
-     if(node->index == 1){
-                node->currentout_fd = outpfd;
-            }
-            else if(node->index == end_index){
-                node->currentin_fd =node->prev->pipe_in;
-            }
-            else
-            {
-                node->currentout_fd = outpfd;
-                node->currentin_fd =node->prev->pipe_in;                
-            }
-}
 
  int serch_endindex(t_node *node)
 {
@@ -322,80 +259,56 @@ void do_pipe(t_node *node,int outpfd , int end_index)
     return count;
 }
 
-void child_handler(int sig)
+char **serch_redir(t_node *node,int len)
 {
-    if(sig)
-    ;
-      rl_replace_line("", 0);
-    printf("\n");
-        rl_on_new_line();
-
+    int i;
+    i = 0;
+    char **token2argv;
+    token2argv = (char **)ft_calloc(len+1,sizeof(char *));
+while(node->token->kind !=TK_EOF)
+    {
+        if(node->token->kind == TK_REDIRECTION)
+        {
+            open_file(node);
+            node->token = node->token->next;
+        }
+        else
+        {
+            token2argv[i] = node->token->str;
+            i++;
+        }
+        node->token = node->token->next;
+    }
+    return token2argv;
 }
 
 
 int exec(t_node *node)
 {
     char **token2argv;
-    int len ,i =0 ;
-        int pfd[2];
-        // int exit_status;
-        // int status;
-    len = count_token_len(node->token);
+    int len;
     int end_index;
     int pid;
-    // int status;
     end_index = serch_endindex(node);
-    
+        siginit = 1;
+
     while(node != NULL)
     { 
-        if(end_index>1 && node->index!=end_index)
-            pipe(pfd);
+        len = count_token_len(node->token);
+        set_pipe(node,end_index);
         pid = fork();
-            // signal(SIGINT,child_handler);
-            token2argv = (char **)ft_calloc(len+1,sizeof(char *));
-            i = 0;
-            while(node->token->kind !=TK_EOF)
-            {
-                if(node->token->kind == TK_REDIRECTION)
-                {
-                    open_file(node);
-                    node->token = node->token->next;
-                }
-                else
-                {
-                    token2argv[i] = node->token->str;
-                    i++;
-                }
-                node->token = node->token->next;
-            }
-            do_pipe(node,pfd[1],end_index);
-            // printf("current_OUT : %d \ncurrent_IN: %d\n\n",node->currentout_fd,node->currentin_fd);
+        if(pid < 0)
+            cmd_error_exit("fork","fork error",1);
+        else if (pid == 0){
+        token2argv= serch_redir(node,len);
+            dup_child_pipe(node);
             redirect(node);
-        if(pid == 0){
-            // printf("argv : %s\n",token2argv[0]);
-            execute_pipe(token2argv,node->currentout_fd,node->currentin_fd);
+            execute_pipe(token2argv);
         }
-        if(node->index!=1)
-            close(node->prev->pipe_in);
-        if(node->index!=end_index)
-            close(pfd[1]);
-            // printf("pfd[0] : %d\n",pfd[0]);
-        // if(node->index!=1)
-        node->pipe_in = pfd[0];
-        // printf("out_fd :%d\n in_fd : %d \n",node->currentout_fd,node->currentin_fd);
+        set_parent_pipe(node);
         node = node->next;
-    
     }
-        // wait(&status);
-        // exit_status = WEXITSTATUS(status);
-        if(pfd[0]!=0)
-        close(pfd[0]);
-        if(pfd[1] != 1)
-        close(pfd[1]);
-    for(int i = 0 ; i<end_index;i++)
-        wait(NULL);
-    // return exit_status;
-    return 0;
+    return pid;
 }
 
 void printCommands(t_node* node) {
@@ -410,11 +323,33 @@ void printCommands(t_node* node) {
         node = node->next;
     }
 }
+
+int wait_pid(pid_t pid)
+{
+    	pid_t	wait_result;
+	int		status;
+	int		wstatus;
+
+	while (1)
+	{
+		wait_result = wait(&wstatus);
+		if (wait_result == pid)
+			status = WEXITSTATUS(wstatus);
+		else if (wait_result < 0)
+		{
+			if (errno == ECHILD)
+				break ;
+		}
+	}
+	return (status);
+}
+
 int interpret(char *line)
 {
 
     struct s_node *node = NULL ;
     int status;
+    pid_t pid;
     t_token *token = tokenize(line);
     tokenize_error(token);
     if(node)
@@ -422,11 +357,11 @@ int interpret(char *line)
     node = parser(token);
  
     // printCommands(node);
-    status = exec(node);
+    pid = exec(node);
+    status = wait_pid(pid);
     // printf("exit_status : %d\n" , status);
     return (status); // 仮
-    // int status = execute(argv);
-    // return (status);
+
 }
 
 // __attribute__((destructor))
@@ -450,10 +385,13 @@ void sig_handler(int sig_num) {
     }
     else if(siginit == 1)
     {
+        // rl_replace_line("", 0);
+        // printf("\n");
+        // rl_on_new_line();
         rl_replace_line("", 0);
-        printf("child\n");
+        printf("\n");
         rl_on_new_line();
-        
+        rl_redisplay();
     }
     else if(siginit == 2)
     {
@@ -466,10 +404,10 @@ void sig_handler(int sig_num) {
                 
     if(sig_num == SIGQUIT)
     {
+        // rl_redisplay();
+        // rl_on_new_line();
         rl_replace_line("", 0);
-        rl_on_new_line();
-        rl_redisplay();
-        printf("\n");
+        // printf("\n");
     }
     // 注意: シグナルハンドラ内では非同期シグナルセーフな関数のみを使用する
 }

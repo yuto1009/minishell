@@ -1,7 +1,10 @@
 NAME     = minishell
 CC       = cc
-CFLAGS   = -Wall -Wextra -Werror
-LDFLAGS  = -lreadline 
+# -fsanitize=address
+# RLDIR    = $(shell brew --prefix readline)
+# INCLUDES = -I include -I$(RLDIR)/include
+CFLAGS   = -Wall -Wextra -Werror -g -I $(shell brew --prefix readline)/include
+LDFLAGS  = -lreadline -L$(shell brew --prefix readline)/lib
 SRCS     = src/main.c src/error.c src/tokenize.c built_in/builtin_exit.c built_in/builtin_env.c src/parser.c\
 
 OBJS = $(SRCS:.c=.o)
@@ -15,7 +18,7 @@ $(LIBFT):
 	@$(MAKE) -C $(LIBFT_PATH)
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBFT)
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(LDFLAGS) 
 	@echo "Successfully compiled $(NAME)"
 
 %.o: %.c
@@ -35,3 +38,4 @@ fclean:
 re: fclean all
 
 .PHONY: all clean fclean re
+

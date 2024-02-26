@@ -6,13 +6,15 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/22 20:39:58 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/26 14:15:59 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 #include <stdio.h> // DEBUG
+
+int siginit = 0;
 
 bool is_path_executable(const char *path)
 {
@@ -101,7 +103,7 @@ int count_token_len(t_token *token)
 void tokenize_error(t_token *token)
 {
     if(token == NULL)
-        return ;
+    return;
     if((token->kind == TK_OPERATOR || token->kind == TK_REDIRECTION)&& count_token_len(token) == 1)
         syntax_error_exit("newline");
     while(token->kind!= TK_EOF && token->next->kind!=TK_EOF)
@@ -130,15 +132,21 @@ bool is_redirection_out(t_token *token)
 
 int heredoc(char *delimiter)
 {
-    char	*line;
-	int		pfd[2];
+    char    *line;
+    int     pfd[2];
 
         pipe(pfd);
+        siginit = 2;
     while (1)
     {
         line = readline("> ");
+        
         if (line == NULL)
-            break ;
+        {
+            printf("\n");
+            exit(1);
+            // break ;
+        }
         if (strcmp(line, delimiter) == 0)
         {
             free(line);
@@ -155,29 +163,12 @@ int heredoc(char *delimiter)
 
         free(line); // ここで安全にlineをfreeできる
     }
-    
-	close(pfd[1]);
-    //    char buffer[1024];
-    // int nbytes;
 
-    // while ((nbytes = read(pfd[0], buffer, sizeof(buffer))) > 0) {
-    //     write(STDOUT_FILENO, buffer, nbytes);
-    // }
+    close(pfd[1]);
+
     return pfd[0];
 }
 
-bool is_redirection_in(t_token *token)
-{
-    // while(token->kind !=TK_EOF)
-    // {
-        if(token->kind == TK_REDIRECTION && ft_strncmp(token->str,"<",1) ==0)
-            return true;
-        // token = token->next;
-    // }
-    return false;
-        // printf("left token : %s\n right token %s\n",node->token->str);
-    
-}
 t_node *start_node(t_node*node)
 {
     while(node->left!=NULL)
@@ -200,23 +191,24 @@ void open_file(t_node *node)
     else if(ft_strncmp(node->token->str , "<",1) == 0)
     {
         node->redirin_fd = open(filename,O_RDONLY);   
-        if(node->redirin_fd == -1)
-            printf("no such file or directory\n");
+            // printf("no such file or directory\n");
             // todo(ここにdup？）)
     }
+        if(node->redirin_fd == -1)
+            exit(1);
     // if(node->redir_fd == -1)
         // todo("ファイルが存在しません");
     
         
     // return node;
 }
-int	stashfd(int fd)
+int stashfd(int fd)
 {
-	int	stashfd;
+    int stashfd;
     //fcntlは使用不可
 
-	stashfd = fcntl(fd, F_DUPFD, 10);
-	return (stashfd);
+    stashfd = fcntl(fd, F_DUPFD, 10);
+    return (stashfd);
 }
 int execute(char **argv)
 {
@@ -255,32 +247,32 @@ int execute(char **argv)
 
 void redirect(t_node *node)
 {
-	int fileoutfd,fileinfd;
+    int fileoutfd,fileinfd;
     // int stashedout_targetfd = 0,stashedin_targetfd;
     extern char **environ;
-	// 1. Redirect先のfdをopenする
-	// fileoutfd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    // 1. Redirect先のfdをopenする
+    // fileoutfd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
     fileoutfd = node->redirout_fd;
-	// fileoutfd = stashfd(fileoutfd); // filefdを退避させる
     fileinfd = node->redirin_fd;
+    // fileoutfd = stashfd(fileoutfd); // filefdを退避させる
     // printf("fileinfd : %d\n fileoutfd : %d\n",fileinfd,fileoutfd);
-	// 2. Redirectする
+    // 2. Redirectする
     // stashedin_targetfd = stashfd(node->currentin_fd); // targetfdを退避させる
-	// stashedout_targetfd = stashfd(node->currentout_fd); // targetfdを退避させる
-	if (fileoutfd != 1)
-	{
-		dup2(fileoutfd, node->currentout_fd); // filefdをtargetfdに複製する（元々のtargetfdは閉じられる）
-		close(fileoutfd);
-	}
+    // stashedout_targetfd = stashfd(node->currentout_fd); // targetfdを退避させる
+    if (fileoutfd != 1)
+    {
+        dup2(fileoutfd, node->currentout_fd); // filefdをtargetfdに複製する（元々のtargetfdは閉じられる）
+        close(fileoutfd);
+    }
     if(fileinfd != 0)
     {
         dup2(fileinfd, node->currentin_fd);
         close(fileinfd);
     }
-	// 3. コマンドを実行する
-	// execute(token2argv);
-	// 4. Redirectしていたのを元に戻す
-	// dup2(stashedout_targetfd, node->currentout_fd); // 退避していたstashed_targetfdをtargetfdに複製する（元々のtargetfd）
+    // 3. コマンドを実行する
+    // execute(token2argv);
+    // 4. Redirectしていたのを元に戻す
+    // dup2(stashedout_targetfd, node->currentout_fd); // 退避していたstashed_targetfdをtargetfdに複製する（元々のtargetfd）
     // dup2(stashedin_targetfd, node->currentin_fd);
     
 }
@@ -310,6 +302,7 @@ void execute_pipe(char **argv,int output_fd,int input_fd)
 {
     extern char **environ;
     char *executable;
+        siginit = 1;
 
         if(output_fd!=1){
         dup2(output_fd,1);
@@ -319,7 +312,6 @@ void execute_pipe(char **argv,int output_fd,int input_fd)
         dup2(input_fd,0);
         close(input_fd);
         }
-        
         // // 子プロセス
         if (ft_strchr(argv[0], '/') == NULL)
         {
@@ -332,6 +324,7 @@ void execute_pipe(char **argv,int output_fd,int input_fd)
         execve(executable, argv, environ);
         cmd_error_exit(executable, "command not found", 127);
         // exit(1);
+
 }
 
 void do_pipe(t_node *node,int outpfd , int end_index)
@@ -360,20 +353,37 @@ void do_pipe(t_node *node,int outpfd , int end_index)
     }
     return count;
 }
-void exec(t_node *node)
+
+void child_handler(int sig)
+{
+    if(sig)
+    ;
+      rl_replace_line("", 0);
+    printf("\n");
+        rl_on_new_line();
+
+}
+
+
+int exec(t_node *node)
 {
     char **token2argv;
     int len ,i =0 ;
         int pfd[2];
+        // int exit_status;
+        // int status;
     len = count_token_len(node->token);
     int end_index;
+    int pid;
     // int status;
     end_index = serch_endindex(node);
+    
     while(node != NULL)
     { 
         if(end_index>1 && node->index!=end_index)
             pipe(pfd);
-        if(fork() == 0){
+        pid = fork();
+            // signal(SIGINT,child_handler);
             token2argv = (char **)ft_calloc(len+1,sizeof(char *));
             i = 0;
             while(node->token->kind !=TK_EOF)
@@ -390,29 +400,34 @@ void exec(t_node *node)
                 }
                 node->token = node->token->next;
             }
-           do_pipe(node,pfd[1],end_index);
+            do_pipe(node,pfd[1],end_index);
             // printf("current_OUT : %d \ncurrent_IN: %d\n\n",node->currentout_fd,node->currentin_fd);
             redirect(node);
+        if(pid == 0){
             // printf("argv : %s\n",token2argv[0]);
             execute_pipe(token2argv,node->currentout_fd,node->currentin_fd);
+        }
+        if(node->index!=1)
+            close(node->prev->pipe_in);
+        if(node->index!=end_index)
+            close(pfd[1]);
+            // printf("pfd[0] : %d\n",pfd[0]);
+        // if(node->index!=1)
+        node->pipe_in = pfd[0];
+        // printf("out_fd :%d\n in_fd : %d \n",node->currentout_fd,node->currentin_fd);
+        node = node->next;
+    
     }
-    if(node->index!=1)
-        close(node->prev->pipe_in);
-    if(node->index!=end_index)
-        close(pfd[1]);
-        // printf("pfd[0] : %d\n",pfd[0]);
-    // if(node->index!=1)
-    node->pipe_in = pfd[0];
-    // printf("out_fd :%d\n in_fd : %d \n",node->currentout_fd,node->currentin_fd);
-    node = node->next;
-
-    }
-    if(end_index>1){
+        // wait(&status);
+        // exit_status = WEXITSTATUS(status);
+        if(pfd[0]!=0)
         close(pfd[0]);
+        if(pfd[1] != 1)
         close(pfd[1]);
-    }
     for(int i = 0 ; i<end_index;i++)
         wait(NULL);
+    // return exit_status;
+    return 0;
 }
 
 void printCommands(t_node* node) {
@@ -430,14 +445,17 @@ void printCommands(t_node* node) {
 int interpret(char *line)
 {
     struct s_node *node = NULL ;
+    int status;
     t_token *token = tokenize(line);
     tokenize_error(token);
     if(node)
     ;
     node = parser(token);
+ 
     // printCommands(node);
-    exec(node);
-    return (0); // 仮
+    status = exec(node);
+    // printf("exit_status : %d\n" , status);
+    return (status); // 仮
     // int status = execute(argv);
     // return (status);
 }
@@ -446,34 +464,98 @@ int interpret(char *line)
 // static void destructor() {
 //     system("leaks -q minishell");
 // }
-void handle_sigint(int sig) {
-    // ここで特定の処理を行う
-    // 例: プロンプトを再表示する、特定のクリーンアップ処理を行う等
-    // write(STDOUT_FILENO, "\nCustom prompt> ", 16);
-    // rl_replace_line("", 0);
-    printf("\n");
-    if(sig)
+void sig_handler(int sig_num) {
+    // SIGINTを受け取ったときの処理
+    // 例えば、プロンプトを再表示するなど
+    if(sig_num)
     ;
+    
+    // write(STDOUT_FILENO, "minishell$\n", 12);
+    if(sig_num == SIGINT){
+    // siginit = true;
+    if(siginit==0){
+        rl_replace_line("", 0);
+        printf("\n");
+        rl_on_new_line();
+        rl_redisplay();
+    }
+    else if(siginit == 1)
+    {
+        rl_replace_line("", 0);
+        printf("child\n");
+        rl_on_new_line();
+        
+    }
+    else if(siginit == 2)
+    {
+        rl_replace_line("", 0);
+        rl_on_new_line();
+        exit(1);
+        rl_redisplay();
+    }
+    }
+                
+    if(sig_num == SIGQUIT)
+    {
+        rl_replace_line("", 0);
+        rl_on_new_line();
+        rl_redisplay();
+        printf("\n");
+    }
+    // 注意: シグナルハンドラ内では非同期シグナルセーフな関数のみを使用する
 }
 
+void set_signal()
+{
+    // struct sigaction sa;
+    // sigemptyset(&sa.sa_mask);
+    // sa.sa_handler = sig_handler;
+    // sa.sa_flags = 0;
+    // sigaction(SIGINT,&sa,NULL);
+    // sigaction(SIGQUIT,&sa,NULL);
+    signal(SIGINT, sig_handler);
+    signal(SIGQUIT,sig_handler);
+}
+
+
+   bool is_only_blank_character(char *line)
+    {
+        bool ans;
+        ans = false;
+        if(strcmp(line,"")==0)
+            return true;
+        while(is_blank(*line) && *line!='\0')
+        {
+            ans = true;
+            line++;
+        }
+        return ans;
+    }
 
 int main(void)
 {
     char *line;
     int status;
-
     set_output_destination(stderr);
-    //  signal(SIGINT, handle_sigint);
-     signal(SIGQUIT, SIG_IGN);
+    set_signal();
     status = 0;
+
     while(1)
     {
+        siginit = 0;
         line = readline("minishell$ ");
-        if (line == NULL)
-            break;  // breakをreturn (0)に変えるとリークが確認できる (テスターがNG出すようになる)
-        add_history(line); 
+        if (line == NULL){
+            // exit(1);
+            break;
+        }
+        if(is_only_blank_character(line))
+            continue;
+             // breakをreturn (0)に変えるとリークが確認できる (テスターがNG出すようになる)
+        if(*line)
+            add_history(line); 
         status = interpret(line);
         free(line);
     }
+        printf("exit\n"); // Ctrl+D ^Dが表示される
     return (status);
 }

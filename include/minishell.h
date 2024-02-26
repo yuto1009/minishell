@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/22 17:26:02 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/26 13:33:59 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,13 @@
 #include "../libft/libft.h"
 #include "../built_in/include/built_in.h"
 // #include "parser.h"
+#include <stdio.h> // DEBUG
 #include <readline/readline.h> // readline, add_history
+#include <readline/history.h>
 #include <stdlib.h> // free exit getenv
 #include <unistd.h> // fork execve access 
 #include <stdbool.h> // boolean
 #include <sys/wait.h> // wait
-#include <stdio.h> // DEBUG
 #include <errno.h> // errno
 #include <string.h> // strerror
 #include <fcntl.h>
@@ -62,6 +63,7 @@ struct s_node {
 
 };
 
+extern int siginit;
 // error.c
 void set_output_destination(FILE *dst);
 void fatal_error(char *message);

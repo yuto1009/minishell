@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 17:31:00 by yuendo            #+#    #+#             */
-/*   Updated: 2023/11/12 18:01:18 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/02/24 13:05:18 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ char	*ft_strchr(const char *s, int c)
 {
 	char	*str;
 
+    if(!s)
+        return NULL;
 	str = (char *)s;
 	while (*str != '\0')
 	{

@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/26 14:59:16 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/26 16:40:59 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ struct s_node {
     int currentin_fd; // 現在のfd初期値はSTDOUT
     int redirout_fd;
     int redirin_fd;
-    int pipe_in;
-    int pipe_out;
+    int pipe_in[2];
+    int pipe_out[2];
     int index;
 
 };
@@ -90,6 +90,10 @@ t_node *get_next_node(t_node *node);
 // expand.c
 void expand(t_node *node);
 
+//pipe_utils.c
+void set_pipe(t_node *node,int end_index);
+void dup_child_pipe(t_node *node);
+void set_parent_pipe(t_node *node);
 
 # define TK_WORD 0
 # define TK_OPERATOR 1

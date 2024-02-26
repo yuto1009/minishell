@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/26 17:00:50 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/26 22:30:28 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,13 +132,12 @@ int heredoc(char *delimiter)
         siginit = 2;
     while (1)
     {
-        line = readline("> ");
         
+        line = readline("> ");
         if (line == NULL)
         {
-            printf("\n");
-            exit(1);
-            // break ;
+            free(line);
+            break ;
         }
         if (strcmp(line, delimiter) == 0)
         {
@@ -386,10 +385,13 @@ void sig_handler(int sig_num) {
     }
     else if(siginit == 1)
     {
+        // rl_replace_line("", 0);
+        // printf("\n");
+        // rl_on_new_line();
         rl_replace_line("", 0);
         printf("\n");
         rl_on_new_line();
-        
+        rl_redisplay();
     }
     else if(siginit == 2)
     {
@@ -402,8 +404,8 @@ void sig_handler(int sig_num) {
                 
     if(sig_num == SIGQUIT)
     {
-        rl_redisplay();
-        rl_on_new_line();
+        // rl_redisplay();
+        // rl_on_new_line();
         rl_replace_line("", 0);
         // printf("\n");
     }

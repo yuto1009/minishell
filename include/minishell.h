@@ -6,9 +6,11 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/26 13:33:59 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/26 14:59:16 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
@@ -82,8 +84,11 @@ t_token *tokenize(char *line);
 char **token_to_argv(t_token *token);
 
 //parser
-// t_node *parser(t_node *node); 
 t_node *parser(t_token *token);
+t_node *get_next_node(t_node *node);
+
+// expand.c
+void expand(t_node *node);
 
 
 # define TK_WORD 0
@@ -93,6 +98,7 @@ t_node *parser(t_token *token);
 
 # define SINGLE_QUOTE '\''
 # define DOUBLE_QUOTE '\"'
+# define DOLLAR_SIGN '$'
 
 
 

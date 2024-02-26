@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/26 14:15:59 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/26 15:00:59 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ char *search_path(char *filename)
     }
     return (NULL);
 }
-
 
 
 int count_token_len(t_token *token)
@@ -180,7 +179,6 @@ void open_file(t_node *node)
 {
     char *filename;
 
-    // int filefd;
     filename = node->token->next->str;
     if(ft_strncmp(node->token->str , ">>",2) == 0)
         node->redirout_fd = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
@@ -242,9 +240,6 @@ int execute(char **argv)
     return (WEXITSTATUS(wstatus));
 }
 
-
-
-
 void redirect(t_node *node)
 {
     int fileoutfd,fileinfd;
@@ -269,34 +264,7 @@ void redirect(t_node *node)
         dup2(fileinfd, node->currentin_fd);
         close(fileinfd);
     }
-    // 3. コマンドを実行する
-    // execute(token2argv);
-    // 4. Redirectしていたのを元に戻す
-    // dup2(stashedout_targetfd, node->currentout_fd); // 退避していたstashed_targetfdをtargetfdに複製する（元々のtargetfd）
-    // dup2(stashedin_targetfd, node->currentin_fd);
-    
 }
-
-// ここのロジックでノードを上に登る
-t_node *get_next_node(t_node *node)
-{   
-    if (node == NULL) return NULL;
-
-    if (node->prev == NULL) return NULL;
-
-    // 右の子がいれば、その最も左の子を探す && 今いるnodeが右の子じゃない
-    if (node->prev->right != NULL && node != node->prev->right)
-    {
-        node = node->prev->right;
-        while (node->left != NULL)
-            node = node->left;
-        return node;
-    }
-    // 右の子がいなければ、親を辿って適切なノードを探す
-    return node->prev;
-}
-
-
 
 void execute_pipe(char **argv,int output_fd,int input_fd)
 {
@@ -444,6 +412,7 @@ void printCommands(t_node* node) {
 }
 int interpret(char *line)
 {
+
     struct s_node *node = NULL ;
     int status;
     t_token *token = tokenize(line);

@@ -3,86 +3,102 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:13:26 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/02/26 13:33:20 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/29 13:04:43 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
-
-void	handler(int signum)
+void	signal_handler_heredoc(int signum, siginfo_t *info, void *ucontext)
 {
-	sig = signum;
+	(void)signum;
+	(void)ucontext;
+	(void)info;
+	close(0);
+    exit(0);
 }
 
-void	reset_sig(int signum)
+void	signal_handler_heredoc_quit(int signum, siginfo_t *info, void *ucontext)
 {
-	struct sigaction	sa;
+	(void)signum;
+	(void)ucontext;
+	(void)info;
+	rl_on_new_line();
+	rl_redisplay();
+}
 
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
+void	signal_heredoc(void)
+{
+	struct sigaction	act1;
+	struct sigaction	act2;
+
+	sigemptyset(&act1.sa_mask);
+	act1.sa_sigaction = signal_handler_heredoc;
+	act1.sa_flags = SA_SIGINFO;
+	sigaction(SIGINT, &act1, NULL);
+	sigemptyset(&act2.sa_mask);
+	act2.sa_sigaction = signal_handler_heredoc_quit;
+	act2.sa_flags = SA_SIGINFO;
+	sigaction(SIGQUIT, &act2, NULL);
+}
+
+
+void reset_sig(int sig)
+{
+    struct sigaction	sa;
+
+    sigemptyset(&sa.sa_mask);
 	sa.sa_handler = SIG_DFL;
-	if (sigaction(signum, &sa, NULL) < 0)
-		fatal_error("sigaction");
+	sigaction(sig, &sa, NULL);
 }
-
-void	ignore_sig(int signum)
+void ignore_sig(int sig)
 {
-	struct sigaction	sa;
-
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
+    struct sigaction	sa;
+    sigemptyset(&sa.sa_mask);
 	sa.sa_handler = SIG_IGN;
-	if (sigaction(signum, &sa, NULL) < 0)
-		fatal_error("sigaction");
+	sigaction(sig, &sa, NULL);
+
+}
+void	signal_parent_init(void)
+{
+    ignore_sig(SIGINT);
+    ignore_sig(SIGQUIT);
+}
+void	signal_child_init(void)
+{
+	reset_sig(SIGINT);
+    reset_sig(SIGQUIT);
 }
 
-void	setup_sigint(void)
+void sigint_action()
 {
-	struct sigaction	sa;
-
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sa.sa_handler = handler;
-	if (sigaction(SIGINT, &sa, NULL) < 0)
-		fatal_error("sigaction");
+    printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
-#include <stdio.h>
-#include <readline/readline.h>
-
-int	check_state(void)
+void sigquit_action()
 {
-	if (sig == 0)
-		return (0);
-	else if (sig == SIGINT)
-	{
-		sig = 0;
-		readline_interrupted = true;
-		rl_replace_line("", 0);
-		rl_done = 1;
-		return (0);
-	}
-	return (0);
+    rl_on_new_line();
+	rl_redisplay();
 }
-
-void	setup_signal(void)
+void setup_signal()
 {
-	extern int	_rl_echo_control_chars;
+    struct sigaction sa1;
+    struct sigaction sa2;
+    extern int	_rl_echo_control_chars;
 
 	_rl_echo_control_chars = 0;
-	rl_outstream = stderr;
-	if (isatty(STDIN_FILENO))
-		rl_event_hook = check_state;
-	ignore_sig(SIGQUIT);
-	setup_sigint();
-}
+    sigemptyset(&sa1.sa_mask);
+    sa1.sa_handler = sigint_action;
+    sigaction(SIGINT , &sa1 , NULL);
+    
+    sigemptyset(&sa2.sa_mask);
+    sa2.sa_handler = sigquit_action;
+    sigaction(SIGQUIT , &sa2 , NULL);
 
-void	reset_signal(void)
-{
-	reset_sig(SIGQUIT);
-	reset_sig(SIGINT);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/26 16:40:59 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/29 13:05:45 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "../built_in/include/built_in.h"
 // #include "parser.h"
 #include <stdio.h> // DEBUG
+# include <signal.h>
 #include <readline/readline.h> // readline, add_history
 #include <readline/history.h>
 #include <stdlib.h> // free exit getenv
@@ -29,7 +30,6 @@
 #include <string.h> // strerror
 #include <fcntl.h>
 #include <sys/types.h>
-# include <signal.h>
 #include <sys/stat.h>
 // #include <limits.h>
 
@@ -65,7 +65,9 @@ struct s_node {
 
 };
 
-extern int siginit;
+// extern bool is_sig;
+extern bool is_sig_get;
+// volatile sig_atomic_t	sig = 0;
 // error.c
 void set_output_destination(FILE *dst);
 void fatal_error(char *message);
@@ -94,6 +96,13 @@ void expand(t_node *node);
 void set_pipe(t_node *node,int end_index);
 void dup_child_pipe(t_node *node);
 void set_parent_pipe(t_node *node);
+void	signal_heredoc(void);
+
+//signal
+void	signal_parent_init(void);
+void	signal_child_init(void);
+void setup_signal();
+
 
 # define TK_WORD 0
 # define TK_OPERATOR 1

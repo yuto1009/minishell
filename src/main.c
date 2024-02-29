@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/26 22:30:28 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/29 13:04:38 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,14 @@
 
 #include <stdio.h> // DEBUG
 
-int siginit = 0;
-
+int siginit;
+bool is_sig_get = false;
+void	signal_child_init(void);
+void	reset_signal(void);
+void	signal_parent_init(void);
+void	signal_heredoc(void);
+int sig = 0;
+int flag= 0;
 bool is_path_executable(const char *path)
 {
     int result = access(path, X_OK);
@@ -130,6 +136,9 @@ int heredoc(char *delimiter)
 
         pipe(pfd);
         siginit = 2;
+        is_sig_get = false;
+        signal_heredoc();
+
     while (1)
     {
         
@@ -144,7 +153,6 @@ int heredoc(char *delimiter)
             free(line);
             break ;
         }
-        
         char *temp = line; // lineの値を保持
         while(*temp != '\0') // tempを使って文字列を操作
         {
@@ -155,7 +163,6 @@ int heredoc(char *delimiter)
 
         free(line); // ここで安全にlineをfreeできる
     }
-
     close(pfd[1]);
 
     return pfd[0];
@@ -232,7 +239,6 @@ void execute_pipe(char **argv)
 {
     extern char **environ;
     char *executable;
-
         if (ft_strchr(argv[0], '/') == NULL)
         {
             executable = search_path(argv[0]);
@@ -265,6 +271,8 @@ char **serch_redir(t_node *node,int len)
     i = 0;
     char **token2argv;
     token2argv = (char **)ft_calloc(len+1,sizeof(char *));
+    if(!token2argv)
+        return NULL;
 while(node->token->kind !=TK_EOF)
     {
         if(node->token->kind == TK_REDIRECTION)
@@ -292,6 +300,7 @@ int exec(t_node *node)
     end_index = serch_endindex(node);
         siginit = 1;
 
+                flag = 1;
     while(node != NULL)
     { 
         len = count_token_len(node->token);
@@ -303,11 +312,14 @@ int exec(t_node *node)
         token2argv= serch_redir(node,len);
             dup_child_pipe(node);
             redirect(node);
+            // signal_child_init();
+
             execute_pipe(token2argv);
         }
         set_parent_pipe(node);
         node = node->next;
     }
+        flag = 1;
     return pid;
 }
 
@@ -329,18 +341,29 @@ int wait_pid(pid_t pid)
     	pid_t	wait_result;
 	int		status;
 	int		wstatus;
-
+	signal_parent_init();
 	while (1)
 	{
 		wait_result = wait(&wstatus);
 		if (wait_result == pid)
-			status = WEXITSTATUS(wstatus);
+		{
+			if (WIFSIGNALED(wstatus))
+				status = 128 + WTERMSIG(wstatus);
+			else
+				status = WEXITSTATUS(wstatus);
+		}
 		else if (wait_result < 0)
 		{
 			if (errno == ECHILD)
 				break ;
+            else if (errno == EINTR)
+				continue ;
+			else
+				fatal_error("wait");
 		}
 	}
+            printf("\n");
+
 	return (status);
 }
 
@@ -357,8 +380,10 @@ int interpret(char *line)
     node = parser(token);
  
     // printCommands(node);
+    flag = 1;
     pid = exec(node);
     status = wait_pid(pid);
+    siginit = 0;
     // printf("exit_status : %d\n" , status);
     return (status); // 仮
 
@@ -367,62 +392,7 @@ int interpret(char *line)
 // __attribute__((destructor))
 // static void destructor() {
 //     system("leaks -q minishell");
-// }
-void sig_handler(int sig_num) {
-    // SIGINTを受け取ったときの処理
-    // 例えば、プロンプトを再表示するなど
-    if(sig_num)
-    ;
-    
-    // write(STDOUT_FILENO, "minishell$\n", 12);
-    if(sig_num == SIGINT){
-    // siginit = true;
-    if(siginit==0){
-        rl_replace_line("", 0);
-        printf("\n");
-        rl_on_new_line();
-        rl_redisplay();
-    }
-    else if(siginit == 1)
-    {
-        // rl_replace_line("", 0);
-        // printf("\n");
-        // rl_on_new_line();
-        rl_replace_line("", 0);
-        printf("\n");
-        rl_on_new_line();
-        rl_redisplay();
-    }
-    else if(siginit == 2)
-    {
-        rl_replace_line("", 0);
-        rl_on_new_line();
-        exit(1);
-        rl_redisplay();
-    }
-    }
-                
-    if(sig_num == SIGQUIT)
-    {
-        // rl_redisplay();
-        // rl_on_new_line();
-        rl_replace_line("", 0);
-        // printf("\n");
-    }
-    // 注意: シグナルハンドラ内では非同期シグナルセーフな関数のみを使用する
-}
 
-void set_signal()
-{
-    // struct sigaction sa;
-    // sigemptyset(&sa.sa_mask);
-    // sa.sa_handler = sig_handler;
-    // sa.sa_flags = 0;
-    // sigaction(SIGINT,&sa,NULL);
-    // sigaction(SIGQUIT,&sa,NULL);
-    signal(SIGINT, sig_handler);
-    signal(SIGQUIT,sig_handler);
-}
 
 
    bool is_only_blank_character(char *line)
@@ -444,17 +414,19 @@ int main(void)
     char *line;
     int status;
     set_output_destination(stderr);
-    set_signal();
+    // set_signal();
     status = 0;
 
     while(1)
     {
-        siginit = 0;
+    setup_signal();
+        flag = 0;
         line = readline("minishell$ ");
         if (line == NULL){
             // exit(1);
             break;
         }
+        siginit = 0;
         if(is_only_blank_character(line))
             continue;
              // breakをreturn (0)に変えるとリークが確認できる (テスターがNG出すようになる)
@@ -463,6 +435,7 @@ int main(void)
         status = interpret(line);
         free(line);
     }
-        printf("exit\n"); // Ctrl+D ^Dが表示される
+        printf("exit"); // Ctrl+D ^Dが表示される
+
     return (status);
 }

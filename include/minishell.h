@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/29 18:02:50 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/02 16:26:02 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,10 @@ int exec(t_node *node);
 //path
 char *search_path(char *filename);
 
-
+bool	is_builtin(char **cmd);
+void exec_builtin(char **str);
+//BUILTIN
+// void mini_echo(char **str);
 
 
 int wait_pid(pid_t pid);

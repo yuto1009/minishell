@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 16:34:36 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/08 18:46:12 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/02 16:19:20 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int mini_env(char **argv);
 #define OP_N "-n"
 typedef struct s_token t_token;
 void mini_pwd();
-void mini_echo(t_token **token);
+void mini_echo(char **str);
 int mini_exit(char **args);
 #endif
 

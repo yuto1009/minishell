@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/01 15:40:22 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/02 17:34:33 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ void execute_pipe(char **argv)
             executable = search_path(argv[0]);
         else
             executable = argv[0];
-        execve(executable, argv, environ);
+            if(is_builtin(argv))
+                exec_builtin(argv);
+            else  
+                execve(executable, argv, environ);
         cmd_error_exit(argv[0], "command not found", 127);
 }
 
@@ -61,11 +64,14 @@ int exec(t_node *node)
     { 
         len = count_token_len(node->token);
         set_pipe(node);
+        token2argv= serch_redir(node,len);
+        if(ft_strncmp(token2argv[0] , "exit",4) == 0)
+            if(mini_exit(token2argv) == 1)
+                return 1;
         pid = fork();
         if(pid < 0)
             cmd_error_exit("fork","fork error",1);
         else if (pid == 0){
-            token2argv= serch_redir(node,len);
             if(!token2argv)
                 exit(1);
             dup_child_pipe(node);

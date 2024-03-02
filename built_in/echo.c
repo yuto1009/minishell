@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:56:12 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/04 19:22:51 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/02 16:44:15 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,26 @@
 
 // echo関数は動作確認むずいから飛ばす
 // 実装も難しくないから後回し！
-void mini_echo(t_token **token) 
+void mini_echo(char **str) 
 {
-    t_token *current;
-    bool print_newline;
-    
-    if (token == NULL || *token == '\0')
-     {
-        printf("\n");
-        return;
-    }
-    current = *token;
-    print_newline = true;
-    if (ft_strncmp(current->str, OP_N, ft_strlen(OP_N)) == 0) 
+  bool is_op_n;
+    int i;
+    i = 1;
+    is_op_n = false;
+    // printf("this is echo\n");
+    while (str[i] != NULL && ft_strncmp(str[i], "-n", 2) == 0)
     {
-        current = current->next;
-        print_newline = false;
+        is_op_n = true;
+        i++;
     }
-
-    while (current != NULL) 
+    while (str[i] != NULL)
     {
-        printf("%s", current->str);
-        current = current->next;
-        if (current != NULL) 
-        {
-            printf(" ");
-        }
+        ft_putstr_fd(str[i], 1);
+        if (str[i + 1] != NULL)
+            ft_putstr_fd(" ", 1);
+        i++;
     }
-
-    if (print_newline == true) 
-    {
-        printf("\n");
-    }
+    if (!is_op_n)
+        ft_putstr_fd("\n", 1);
+    exit(0);
 }

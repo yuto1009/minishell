@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 12:08:13 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/01/04 18:09:08 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/02 17:48:54 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ static bool check_long_overflow(char *str,int sign)
   }
   return true;
 }
+void print_numeric_error(char *str)
+{
+  printf("minishel: exit: %s: numeric argument required\n",str);
+  // exit(255);
+}
 static void atol_exit(char *str)
 {
     //256以上の場合終了コードは256で割ったあまりを返す
@@ -59,7 +64,8 @@ static void atol_exit(char *str)
   }
   if(!ft_isdigit(str[i]) || !check_long_overflow(str, sign))
   {
-    ft_putstr_fd("exit : numeric argument required",STDERR_FILENO);
+    print_numeric_error(str);
+    // ft_putstr_fd("exit : numeric argument required\n",STDERR_FILENO);
     exit(255);
   }
   while(str[i])
@@ -76,9 +82,10 @@ int mini_exit(char **args)
 
     arg_len = 0;
     arg_len = count_args(args);
+    printf("exit\n");
     if(arg_len>2)
     {
-      ft_putstr_fd("exit : too many arguments\n",STDERR_FILENO);
+      minishell_error("exit : too many arguments");
       return (1);
     }
     else if(arg_len == 2)

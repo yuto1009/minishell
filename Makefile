@@ -7,7 +7,7 @@ CFLAGS   = -Wall -Wextra -Werror -g -fsanitize=address -I include -I $(shell bre
 LDFLAGS  = -lreadline -L$(shell brew --prefix readline)/lib
 SRCS     = src/main.c src/error.c src/tokenize.c built_in/builtin_exit.c built_in/builtin_env.c \
 src/parser.c src/pipe_utils.c src/signal.c src/redirect.c \
-src/tokenize_error.c src/serch_path.c src/exec_cmd.c src/wait_pid.c \
+src/tokenize_error.c src/serch_path.c src/exec_cmd.c src/wait_pid.c src/is_builtin.c src/exec_builtin.c built_in/echo.c\
 
 OBJS = $(SRCS:.c=.o)
 

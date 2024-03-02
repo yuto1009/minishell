@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/02/24 15:19:34 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/02/24 16:43:36 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static char *expand_dollar_sign(char *str, const char *env)
 {
+    printf("str: %s\n", str);
+    printf("env: %s\n", env);
     const char *expanded_env = getenv(env);
     if (expanded_env == NULL)
     {
@@ -131,6 +133,7 @@ void expand(t_node *node)
                 }
             }
             // トークンからクオートを除去
+            printf("token->str: %s\n", tmp->str);
             const char *trimmed_str = remove_quotes(&tmp->str);
             free(tmp->str);
             tmp->str = (char *)trimmed_str;

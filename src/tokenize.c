@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/22 17:08:46 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/02/24 16:26:12 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,40 +125,17 @@ t_token *tokenize_word(char **line) // クオート除去機能はexpand.cに移
     const size_t word_size = ft_strlen(*line) + 1;
     char *word;
     size_t i;
-    size_t j;
 
     word = (char *)ft_calloc(word_size, sizeof(char));
     if (word == NULL)
         fatal_error("malloc error");
     i = 0;
-    j = 0;
     while ((*line)[i] != '\0' && is_metacharacter((*line)[i]) == false)
     {
-        if ((*line)[i] == SINGLE_QUOTE || (*line)[i] == DOUBLE_QUOTE)
-        {
-            const char current_quote = (*line)[i];
-            i++;    // クオートをスキップ
-            while ((*line)[i] != '\0' && (*line)[i] != current_quote)
-            {
-                word[j] = (*line)[i];
-                i++;
-                j++;
-            }
-            if ((*line)[i] == '\0')
-            {
-                free(word);
-                minishell_error("unclosed quote");
-            }
-            i++;    // 閉じクオートスキップ
-        }
-        else
-        {
-            word[j] = (*line)[i];
-            i++;
-            j++;
-        }
+        word[i] = (*line)[i];
+        i++;
     }
-    word[j] = '\0';
+    word[i] = '\0';
     *line += i;   // 入力から得た文字列をインクリメント
     return (new_token(word, TK_WORD));
 }

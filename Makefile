@@ -5,7 +5,9 @@ CC       = cc
 # INCLUDES = -I include -I$(RLDIR)/include
 CFLAGS   = -Wall -Wextra -Werror -g -fsanitize=address -I include -I $(shell brew --prefix readline)/include
 LDFLAGS  = -lreadline -L$(shell brew --prefix readline)/lib
-SRCS     = src/main.c src/error.c src/tokenize.c built_in/builtin_exit.c built_in/builtin_env.c src/parser.c src/pipe_utils.c src/signal.c\
+SRCS     = src/main.c src/error.c src/tokenize.c built_in/builtin_exit.c built_in/builtin_env.c \
+src/parser.c src/pipe_utils.c src/signal.c src/redirect.c \
+src/tokenize_error.c src/serch_path.c src/exec_cmd.c src/wait_pid.c \
 
 OBJS = $(SRCS:.c=.o)
 

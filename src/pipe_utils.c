@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 16:40:04 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/02/26 16:46:59 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/29 18:01:50 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 
 
-void set_pipe(t_node *node,int end_index)
+void set_pipe(t_node *node)
 {
-    // printf("hello\n");
-    if(node->index == end_index )
+    if(node->next == NULL)
         return;
-    // if(pipe(node->pipe_out)<0)
-    pipe(node->pipe_out);
-        //error
+    if(pipe(node->pipe_out)<0)
+        fatal_error("pipe");
     node->next->pipe_in[0] = node->pipe_out[0];
     node->next->pipe_in[1] = node->pipe_out[1];
     

@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/29 13:05:45 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/29 18:02:50 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ void set_output_destination(FILE *dst);
 void fatal_error(char *message);
 void minishell_error(char *message);
 void cmd_error_exit(char *location, char *message, int exit_status);
-void syntax_error_exit(char *token_str);
-
+int syntax_error_exit(char *token_str);
+int unsupported_token_msg(char *str);
 // tokenize.c
 bool is_operator(char *line);
 int is_blank(char c) ;
@@ -84,7 +84,8 @@ t_token *tokenize_operator(char **line);
 t_token *tokenize_word(char **line);
 t_token *tokenize(char *line);
 char **token_to_argv(t_token *token);
-
+int tokenize_error(t_token *token);
+int count_token_len(t_token *token);
 //parser
 t_node *parser(t_token *token);
 t_node *get_next_node(t_node *node);
@@ -93,7 +94,7 @@ t_node *get_next_node(t_node *node);
 void expand(t_node *node);
 
 //pipe_utils.c
-void set_pipe(t_node *node,int end_index);
+void set_pipe(t_node *node);
 void dup_child_pipe(t_node *node);
 void set_parent_pipe(t_node *node);
 void	signal_heredoc(void);
@@ -103,7 +104,19 @@ void	signal_parent_init(void);
 void	signal_child_init(void);
 void setup_signal();
 
+//redirect
+int heredoc(char *delimiter);
+void open_file(t_node *node);
+void dup_fd(t_node *node);
+char **serch_redir(t_node *node,int len);
+int exec(t_node *node);
+//path
+char *search_path(char *filename);
 
+
+
+
+int wait_pid(pid_t pid);
 # define TK_WORD 0
 # define TK_OPERATOR 1
 # define TK_REDIRECTION 2

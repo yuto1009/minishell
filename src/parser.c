@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/02/26 15:42:16 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/02/29 19:25:42 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,14 @@ t_node* createCommandNode(t_token* startToken,int index) {
 
 // コマンドとしてトークンを切り出すための関数
 t_token* cutCommandTokens(t_token** current, t_token** nextCommandStart) {
-    if (!*current) return NULL;
-
+    if (!*current) 
+        return NULL;
     t_token* start = *current;
     t_token* end = start;
-
-
-    while (end->next!=NULL && end->next->kind!=TK_EOF && end->kind !=TK_OPERATOR) {
+    while (end->next!=NULL && end->next->kind!=TK_EOF && end->kind !=TK_OPERATOR) 
+    {
         end = end->next;
     }
-    // printf("end : %s\n",end->str);
-
     if(end!=NULL&&end->kind==TK_OPERATOR)
     {
         *nextCommandStart = end->next;
@@ -50,9 +47,6 @@ t_token* cutCommandTokens(t_token** current, t_token** nextCommandStart) {
     }
     else
     *nextCommandStart =NULL;
-
-
-
     return start;
 }
 
@@ -77,6 +71,5 @@ t_node* parser(t_token* tokens) {
         index++;
         currentToken = nextCommandStart;
     }
-
     return head;
 }

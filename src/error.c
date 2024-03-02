@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 15:22:40 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/30 20:07:32 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/02/29 19:05:35 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void minishell_error(char *message)
 {
     ft_putstr_fd("minishell: ", STDERR_FILENO);
     ft_putendl_fd(message, STDERR_FILENO);
-    exit(MINISHELL_ERROR);
+    write(1,"\n",1);
+    // exit(MINISHELL_ERROR);
 }
 
 // bashと同様の部分でエラーがある場合に呼び出す。
@@ -49,12 +50,22 @@ void cmd_error_exit(char *location, char *message, int exit_status)
     exit(exit_status);
 }
 
-void syntax_error_exit(char *token_str)
+int syntax_error_exit(char *token_str)
 {
     const char *join_str = ft_strjoin(token_str,"'");
     ft_putstr_fd("minishell: ", STDERR_FILENO);    
     ft_putstr_fd("syntax error near unexpected token '", STDERR_FILENO);
     ft_putstr_fd((char *)join_str, STDERR_FILENO);
+    write(1,"\n",1);
     free((char *)join_str);
-    exit(SYNTAX_ERROR);
+    return 258;
+    // exit(SYNTAX_ERROR);
+}
+
+int unsupported_token_msg(char *str)
+{
+    const char *join_str = ft_strjoin("sorry this command is unsupported : ", str);
+    ft_putstr_fd((char *)join_str,STDERR_FILENO);
+    write(1,"\n",1);
+    return -1;
 }

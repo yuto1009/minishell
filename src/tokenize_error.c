@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_error.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:33:09 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/01 15:47:02 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/02 14:42:15 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int unsupported_variable(t_token *token)
         return unsupported_token_msg("()");
     else if(ft_strncmp(token->str , "&",1) == 0)
         return unsupported_token_msg("&");
-
+    else if(ft_strncmp(token->str , "<>",2) == 0)
+        return unsupported_token_msg("<>");
     // unsupported = { "||", "&&", "&", ";", ";;", "(", ")"};
     return 0;
 }

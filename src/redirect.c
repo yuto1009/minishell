@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:20:06 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/02/29 19:44:20 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/02 14:17:59 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,12 @@ void dup_fd(t_node *node)
     // stashedout_targetfd = stashfd(node->currentout_fd); // targetfdを退避させる
     if (fileoutfd != 1)
     {
-        dup2(fileoutfd, node->currentout_fd); // filefdをtargetfdに複製する（元々のtargetfdは閉じられる）
+        dup2(fileoutfd, STDOUT_FILENO); // filefdをtargetfdに複製する（元々のtargetfdは閉じられる）
         close(fileoutfd);
     }
     if(fileinfd != 0)
     {
-        dup2(fileinfd, node->currentin_fd);
+        dup2(fileinfd, STDIN_FILENO);
         close(fileinfd);
     }
 }

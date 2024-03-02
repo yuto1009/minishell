@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:13:26 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/02/29 19:27:26 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/02 15:14:34 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	signal_handler_heredoc(int signum)
+void	handler_heredoc(int signum)
 {
     if(signum)
     ;
@@ -21,7 +21,7 @@ void	signal_handler_heredoc(int signum)
     exit(0);
 }
 
-void	signal_handler_heredoc_quit(int signum)
+void	handler_heredoQuit(int signum)
 {
     if(signum)
     ;    
@@ -35,10 +35,10 @@ void	signal_heredoc(void)
 	struct sigaction	act2;
     
 	sigemptyset(&act1.sa_mask);
-	act1.sa_handler = signal_handler_heredoc;
+	act1.sa_handler = handler_heredoc;
 	sigaction(SIGINT, &act1, NULL);
 	sigemptyset(&act2.sa_mask);
-	act2.sa_handler = signal_handler_heredoc_quit;
+	act2.sa_handler = handler_heredoQuit;
 	sigaction(SIGQUIT, &act2, NULL);
 }
 

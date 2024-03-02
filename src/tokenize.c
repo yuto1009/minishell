@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/22 17:08:46 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/02/29 18:17:27 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ bool is_operator(char *line)
     }
     return (false);
 }
+
 bool is_redirection_operator(char *line)
 {
-    const char *operators[] = {">|", "|>", "<|", "|<",">>","<<","<>","<",">"};
+    const char *operators[] = {">>","<<","<>","<",">"};
 
     size_t i = 0;
     while (i < sizeof(operators) / sizeof(*operators))//comment by kyoshida iを配列の要素数より小さいだけ回している？
@@ -99,7 +100,7 @@ t_token *tokenize_operator(char **line)
 
 t_token *tokenize_redirection_operator(char **line)
 {
-    const char *operators[] = {">|", "|>", "<|", "|<",">>","<<","<>","<",">"};
+    const char *operators[] = {">>","<<","<>","<",">"};
     char *operator;
     size_t i;
 

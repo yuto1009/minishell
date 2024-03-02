@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/24 15:02:41 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/02 17:40:46 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ t_node *parser(t_token *token);
 t_node *get_next_node(t_node *node);
 
 // expand.c
-void expand(t_node *node);
+void expand(t_token *token);
 
 
 # define TK_WORD 0
@@ -91,6 +91,7 @@ void expand(t_node *node);
 # define TK_REDIRECTION 2
 # define TK_EOF 3
 
+# define NO_QUOTE 0
 # define SINGLE_QUOTE '\''
 # define DOUBLE_QUOTE '\"'
 # define DOLLAR_SIGN '$'

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/24 15:19:27 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/02 19:03:18 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,16 +363,27 @@ void printCommands(t_node* node) {
         node = node->next;
     }
 }
+
+void print_tokens(t_token *token)
+{
+    while(token != NULL)
+    {
+        printf("token: %s\n",token->str);
+        token = token->next;
+    }
+}
+
 int interpret(char *line)
 {
 
     struct s_node *node = NULL ;
     t_token *token = tokenize(line);
+    // print_tokens(token);
+    expand(token);  // expandはtokenを変更する
     tokenize_error(token);
     if(node)
     ;
     node = parser(token);
-    expand(node);
     exec(node);
     return (0); // 仮
     // int status = execute(argv);

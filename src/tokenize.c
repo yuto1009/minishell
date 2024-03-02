@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/24 16:26:12 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/02 18:24:09 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,11 +120,32 @@ t_token *tokenize_redirection_operator(char **line)
     return (new_token(operator, TK_REDIRECTION));
 }
 
-t_token *tokenize_word(char **line) // クオート除去機能はexpand.cに移動しました　いつかこの関数のクオート除去機能は消さないといかない
+// t_token *tokenize_word(char **line) // クオート除去機能はexpand.cに移動しました　いつかこの関数のクオート除去機能は消さないといかない
+// {
+//     const size_t word_size = ft_strlen(*line) + 1;
+//     char *word;
+//     size_t i;
+
+//     word = (char *)ft_calloc(word_size, sizeof(char));
+//     if (word == NULL)
+//         fatal_error("malloc error");
+//     i = 0;
+//     while ((*line)[i] != '\0' && is_metacharacter((*line)[i]) == false)
+//     {
+//         word[i] = (*line)[i];
+//         i++;
+//     }
+//     word[i] = '\0';
+//     *line += i;   // 入力から得た文字列をインクリメント
+//     return (new_token(word, TK_WORD));
+// }
+
+t_token *tokenize_word(char **line)
 {
     const size_t word_size = ft_strlen(*line) + 1;
     char *word;
     size_t i;
+    char current_quote;
 
     word = (char *)ft_calloc(word_size, sizeof(char));
     if (word == NULL)
@@ -132,6 +153,23 @@ t_token *tokenize_word(char **line) // クオート除去機能はexpand.cに移
     i = 0;
     while ((*line)[i] != '\0' && is_metacharacter((*line)[i]) == false)
     {
+        current_quote = NO_QUOTE;
+        if ((*line)[i] == SINGLE_QUOTE || (*line)[i] == DOUBLE_QUOTE)
+        {
+            current_quote = (*line)[i];
+            word[i] = (*line)[i];
+            i++;
+            while ((*line)[i] != '\0' && (*line)[i] != current_quote)
+            {
+                word[i] = (*line)[i];
+                i++;
+            }
+            if ((*line)[i] == '\0')
+            {   
+                free(word);
+                minishell_error("unclosed quote");
+            }
+        }
         word[i] = (*line)[i];
         i++;
     }

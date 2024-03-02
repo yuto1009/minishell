@@ -6,55 +6,70 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/03/02 13:02:18 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/03/02 19:21:22 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static char *expand_dollar_sign(char *str, const char *env)
+static size_t count_val_len(const char *str)
 {
-    printf("str: %s\n", str);
-    printf("env: %s\n", env);
+    size_t len;
+
+    len = 0;
+    while (ft_isalpha(str[len]) == true || str[len] == '_' || str[len] == '?')
+        len++;
+    return (len);
+}
+
+static char *expand_dollar_sign(const char *str)
+{
+    const size_t env_len = count_val_len(str + 1);
+    char *env;
+    
+    env = ft_substr(str, 1, env_len);
     const char *expanded_env = getenv(env);
     if (expanded_env == NULL)
     {
-        free(str);
         return NULL;
     }
-    const size_t new_str_len = ft_strlen(str) - ft_strlen(env) + ft_strlen(expanded_env);
-    char *new_str = (char *)calloc(new_str_len, sizeof(char *));
-    if (new_str == NULL)
-        fatal_error("Malloc Error");
-    ft_strlcat(new_str, expanded_env, new_str_len);
-    ft_strlcat(new_str, env + ft_strlen(env), new_str_len);
-    free(str);
-    return (new_str);
+    free(env);  
+    str = str + env_len + 1;
+    const char *expanded_str = ft_strjoin(expanded_env, str);
+    return ((char *)expanded_str);
 }
 
 static void expand_token(t_token *token)
 {
     const char *str = token->str;
-    
-    while (str != NULL && *str != '\0')
+    size_t i;
+
+    i = 0;    
+    while (str[i] != '\0')
     {
-        if (*str == SINGLE_QUOTE)
+        if (str[i] == SINGLE_QUOTE)
         {
-            while (*str != '\0' && *str != SINGLE_QUOTE)
-                str++;
-            if (*str == '\0')
+            while (str[i] != '\0' && str[i] != SINGLE_QUOTE)
+                i++;
+            if (str[i] == '\0')
                 return ;
         }
-        if (*str == DOLLAR_SIGN && *(str+1) == '\0')
+        else if (str[i] == DOLLAR_SIGN && str[i+1] == '\0')
         {
             return;
         }
-        else if (*str == DOLLAR_SIGN)
+        else if (str[i] == DOLLAR_SIGN)
         {
-            token->str = expand_dollar_sign(token->str, ++str);
+            char *expanded_str = ft_substr(token->str, 0, i);
+            char *newly_expanded_str = expand_dollar_sign(&str[i]);
+            free(token->str);
+            token->str = ft_strjoin(expanded_str, newly_expanded_str);
+            free(expanded_str);
+            free(newly_expanded_str);
+            str += i;
             continue;
         }
-        str++;
+        i++;
     }
 }
 
@@ -192,36 +207,31 @@ static bool is_unknown_env(t_token *token)
     return (token->str == NULL);
 }
 
-void expand(t_node *node)
+void expand(t_token *token)
 {
-    // nodeを昇る
-    while(node != NULL)
-    {   
-        // tokenを昇る
-        t_token *tmp_token;
-        tmp_token = node->token;
-        while(tmp_token != NULL && tmp_token->kind !=TK_EOF)
+    // tokenを昇る
+    t_token *tmp_token;
+    tmp_token = token;
+    while(tmp_token != NULL && tmp_token->kind !=TK_EOF)
+    {
+        tmp_token->str = remove_double_quotes(&tmp_token->str);
+        // tokenがWORD && ドルサインがあれば、展開に進む
+        if(tmp_token->kind == TK_WORD && ft_strchr(tmp_token->str, DOLLAR_SIGN))
         {
-            tmp_token->str = remove_double_quotes(&tmp_token->str);
-            // tokenがWORD && ドルサインがあれば、展開に進む
-            if(tmp_token->kind == TK_WORD && ft_strchr(tmp_token->str, DOLLAR_SIGN))
+            expand_token(tmp_token);  // トークンを展開へ
+            if (is_unknown_env(tmp_token) == true)    // 指定の環境変数が存在しない場合、そのトークンはなかったことにする
             {
-                expand_token(tmp_token);  // トークンを展開へ
-                if (is_unknown_env(tmp_token) == true)    // 指定の環境変数が存在しない場合、そのトークンはなかったことにする
-                {
-                    const t_token *void_token = tmp_token;
-                    if (tmp_token->prev != NULL && tmp_token->next != NULL)
-                        tmp_token->prev->next = tmp_token->next;
-                    tmp_token = tmp_token->next; 
-                    free((void *)void_token);
-                    continue;
-                }
+                const t_token *void_token = tmp_token;
+                if (tmp_token->prev != NULL)
+                    tmp_token->prev->next = tmp_token->next;
+                else
+                    token = tmp_token->next;
+                free((void *)void_token);
+                continue;
             }
-            // トークンからクオートを除去
-            printf("token->str: %s\n", tmp_token->str);
-            tmp_token->str = remove_single_quotes(&tmp_token->str);
-            tmp_token = tmp_token->next;
         }
-        node = node->next;
+        // トークンからクオートを除去
+        tmp_token->str = remove_single_quotes(&tmp_token->str);
+        tmp_token = tmp_token->next;
     }
 }

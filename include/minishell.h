@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/29 18:02:50 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/07 22:18:46 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ t_node *parser(t_token *token);
 t_node *get_next_node(t_node *node);
 
 // expand.c
-void expand(t_node *node);
+void expand(t_token *token);
 
 //pipe_utils.c
 void set_pipe(t_node *node);

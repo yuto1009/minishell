@@ -6,136 +6,99 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/02/24 15:19:34 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/07 22:18:08 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static char *expand_dollar_sign(char *str, const char *env)
+static void append_single_quote(const char **str, char **new_str)
 {
-    const char *expanded_env = getenv(env);
-    if (expanded_env == NULL)
-    {
-        free(str);
-        return NULL;
-    }
-    const size_t new_str_len = ft_strlen(str) - ft_strlen(env) + ft_strlen(expanded_env);
-    char *new_str = (char *)calloc(new_str_len, sizeof(char *));
-    if (new_str == NULL)
-        fatal_error("Malloc Error");
-    ft_strlcat(new_str, expanded_env, new_str_len);
-    ft_strlcat(new_str, env + ft_strlen(env), new_str_len);
-    free(str);
-    return (new_str);
+    
 }
 
-static void expand_token(t_token *token)
+static void append_double_quote(const char **str, char **new_str)
 {
+    
+}
+
+static bool is_dollar_sign(char c)
+{
+    return (c == '$');
+}
+
+static bool is_single_dollar_sign(char *str)
+{
+    // ToDo check if dollar sign and next is null or space or double quote or single quote
+        // then true
+}
+
+static void append_variable(const char **str, char **new_str)
+{
+    // ToDo check if single dollar sign
+
+    // ToDo check if upper char, 
+        // then append_env_variable
+    
+    // ToDo check if lower char,
+        // then append_shell_variable
+            // not branch 76
+
+    // ToDo check if ?,
+        // then append_exit_status
+            // not branch 76
+
+    // else minishell_error
+}
+
+static char *ft_strcpy(char *dest, const char *src) 
+{
+    char *original_dest = dest;
+
+    while (*src != '\0') 
+    {
+        *dest = *src;
+        dest++;
+        src++;
+    }
+    *dest = '\0';
+    return original_dest;
+}
+
+static void append_char(const char **str, char new_char)
+{
+    // ToDo re-calloc new_str by 1
+        // copy to new new_str
+            // renew the pointer
+}
+
+void expand(t_token *token)
+{
+    char *new_str;
     const char *str = token->str;
     
-    while (str != NULL && *str != '\0')
+    if (token == NULL)
+        return;
+    if (token->kind != TK_WORD || token->str == NULL)
+        return expand(token->next);
+    new_str = (char *)calloc(1, sizeof(char));
+    if (new_str == NULL)
+        fatal_error("Malloc Error");
+    while(*str != '\0')
     {
         if (*str == SINGLE_QUOTE)
-        {
-            while (*str != '\0' && *str != SINGLE_QUOTE)
-                str++;
-            if (*str == '\0')
-                return ;
-        }
-        if (*str == DOLLAR_SIGN && *(str+1) == '\0')
-        {
-            return;
-        }
-        else if (*str == DOLLAR_SIGN)
-        {
-            token->str = expand_dollar_sign(token->str, ++str);
-            continue;
-        }
-        str++;
-    }
-}
-
-static char *remove_quotes(char **str)
-{
-    // シングルクオートとダブルクオートをbashの挙動の通りに除去
-    // tokeninze.cのtokenize_word関数にコードあり
-    const size_t word_size = ft_strlen(*str) + 1;
-    char *word;
-    size_t i;
-    size_t j;
-
-    word = (char *)ft_calloc(word_size, sizeof(char));
-    if (word == NULL)
-        fatal_error("malloc error");
-    i = 0;
-    j = 0;
-    while ((*str)[i] != '\0' && is_metacharacter((*str)[i]) == false)
-    {
-        if ((*str)[i] == SINGLE_QUOTE || (*str)[i] == DOUBLE_QUOTE)
-        {
-            const char current_quote = (*str)[i];
-            i++;    // クオートをスキップ
-            while ((*str)[i] != '\0' && (*str)[i] != current_quote)
-            {
-                word[j] = (*str)[i];
-                i++;
-                j++;
-            }
-            if ((*str)[i] == '\0')
-            {
-                free(word);
-                minishell_error("unclosed quote");
-            }
-            i++;    // 閉じクオートスキップ
-        }
+            append_single_quote(&str, &new_str);
+        else if (*str == DOUBLE_QUOTE)
+            append_double_quote(&str, &new_str);
+        else if (is_dollar_sign(*str) == true)
+            append_variable(&str, &new_str);
         else
         {
-            word[j] = (*str)[i];
-            i++;
-            j++;
+            append_char(&str, *new_str);
+            new_str++;
         }
     }
-    word[j] = '\0';
-    return (word);
-}
-
-// getenv関数は未知の環境変数に対してNULLを返す
-static bool is_unknown_env(t_token *token)
-{
-    return (token->str == NULL);
-}
-
-void expand(t_node *node)
-{
-    // nodeを昇る
-    while(node != NULL)
-    {   
-        // tokenを昇る
-        t_token *tmp;
-        tmp = node->token;
-        while(tmp != NULL && tmp->kind !=TK_EOF)
-        {
-            // tokenがWORD && ドルサインがあれば、展開に進む
-            if(tmp->kind == TK_WORD && ft_strchr(tmp->str, DOLLAR_SIGN))
-            {
-                expand_token(tmp);  // トークンを展開へ
-                if (is_unknown_env(tmp) == true)    // 指定の環境変数が存在しない場合、そのトークンはなかったことにする
-                {
-                    const t_token *void_token = tmp;
-                    if (tmp->prev != NULL && tmp->next != NULL)
-                        tmp->prev->next = tmp->next;
-                    tmp = tmp->next; 
-                    free((void *)void_token);
-                    continue;
-                }
-            }
-            // トークンからクオートを除去
-            const char *trimmed_str = remove_quotes(&tmp->str);
-            free(tmp->str);
-            tmp->str = (char *)trimmed_str;
-            tmp = tmp->next;
-        }
-        node = node->next;
-    }
+    free(token->str);
+    token->str = new_str;
+    expand(token->next);
 }

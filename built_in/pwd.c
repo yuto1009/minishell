@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:29:17 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/04 18:42:06 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/02 22:29:09 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void mini_pwd()
     }
     printf("%s\n", buff);
     free(buff);
+    exit(0);
 }
 
 // minishellに接続しないで動作確認するためのコード 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 16:34:36 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/02 16:19:20 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/07 13:53:29 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ typedef struct s_token t_token;
 void mini_pwd();
 void mini_echo(char **str);
 int mini_exit(char **args);
+void mini_cd(char **str);
 #endif
 

@@ -3,19 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 23:03:00 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/04 16:25:55 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:37:10 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/built_in.h"
 
-void mini_cd(t_token **token)   // t_tokenの形で入力がある想定
+void mini_cd(char **str)   // t_tokenの形で入力がある想定
 {
-    char *path = (*token)->next->str;   // 1つ目の引数はcdなので、2つ目の引数を取得する
-    
+    char *path = str[1];   // 1つ目の引数はcdなので、2つ目の引数を取得する
     if (path == NULL || *path == '\0')  // 引数がない場合は、ホームディレクトリに移動する
     {
         path = getenv("HOME");
@@ -25,12 +24,14 @@ void mini_cd(t_token **token)   // t_tokenの形で入力がある想定
             return;
         }
     }
+    
     if (chdir(path) == -1)
     {
         printf("cd: %s: %s\n", path, strerror(errno));
         return;
+
     }
-    return;
+    // exit(0);
 }
 
 // // minishellに接続しないで動作確認するためのコード 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/02 17:34:33 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:22:57 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,13 @@ int exec(t_node *node)
         len = count_token_len(node->token);
         set_pipe(node);
         token2argv= serch_redir(node,len);
-        if(ft_strncmp(token2argv[0] , "exit",4) == 0)
+        if(ft_strncmp(token2argv[0] , "exit",4) == 0){
             if(mini_exit(token2argv) == 1)
                 return 1;
+        }
+        else if (ft_strncmp(token2argv[0], "cd", 2) == 0)
+		        mini_cd(token2argv);
+        else{
         pid = fork();
         if(pid < 0)
             cmd_error_exit("fork","fork error",1);
@@ -79,6 +83,7 @@ int exec(t_node *node)
             execute_pipe(token2argv);
         }
         set_parent_pipe(node);
+        }
         node = node->next;
     }
     return pid;

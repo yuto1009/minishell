@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_error.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:33:09 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/02 14:42:15 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/07 14:15:58 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,20 @@
 
 int unsupported_variable(t_token *token)
 {
-    if(ft_strncmp(token->str , "||",2) == 0)
-        return unsupported_token_msg("||");
-    else if(ft_strncmp(token->str , ";",1) == 0)
-        return unsupported_token_msg(";");
-    else if(ft_strncmp(token->str , "&&",2) == 0)
-        return unsupported_token_msg("&&");
-    else if(ft_strncmp(token->str , "(",1) == 0 || ft_strncmp(token->str , ")",1) == 0)
-        return unsupported_token_msg("()");
-    else if(ft_strncmp(token->str , "&",1) == 0)
-        return unsupported_token_msg("&");
-    else if(ft_strncmp(token->str , "<>",2) == 0)
-        return unsupported_token_msg("<>");
+    if(token->kind == TK_OPERATOR)
+    {
+        if(ft_strncmp(token->str , "||",2) == 0)
+            return unsupported_token_msg("||");
+        else if(ft_strncmp(token->str , ";",1) == 0)
+            return unsupported_token_msg(";");
+        else if(ft_strncmp(token->str , "&&",2) == 0)
+            return unsupported_token_msg("&&");
+        else if(ft_strncmp(token->str , "(",1) == 0 || ft_strncmp(token->str , ")",1) == 0)
+            return unsupported_token_msg("()");
+        else if(ft_strncmp(token->str , "&",1) == 0)
+            return unsupported_token_msg("&");
+    }
+
     // unsupported = { "||", "&&", "&", ";", ";;", "(", ")"};
     return 0;
 }
@@ -42,8 +44,8 @@ int tokenize_error(t_token *token)
 
     while(token->kind!= TK_EOF && token->next->kind!=TK_EOF)
     {
-        if(unsupported_variable(token->next) < 0)
-            return 127;
+        // if(unsupported_variable(token->next) < 0)
+        //     return 127;
         if(token->kind == TK_OPERATOR && token->next->kind == TK_OPERATOR)
             return syntax_error_exit(token->next->str);            
         else if(token->kind == TK_REDIRECTION && token->next->kind == TK_REDIRECTION)

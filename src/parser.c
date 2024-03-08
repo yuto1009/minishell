@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/03/02 14:18:11 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/07 15:46:54 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ t_token* cutCommandTokens(t_token** current, t_token** nextCommandStart) {
         return NULL;
     t_token* start = *current;
     t_token* end = start;
-    while (end->next!=NULL && end->next->kind!=TK_EOF && end->kind !=TK_OPERATOR) 
+    while (end->next!=NULL && end->next->kind!=TK_EOF && end->kind !=TK_OPERATOR && ft_strncmp(end->str,"|",1)!=0) 
     {
         end = end->next;
     }
-    if(end!=NULL&&end->kind==TK_OPERATOR)
+    if(end!=NULL&&end->kind==TK_OPERATOR && ft_strncmp(end->str,"|",1)==0)
     {
         *nextCommandStart = end->next;
         end->kind =TK_EOF;

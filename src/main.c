@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/01 22:26:35 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/10 16:02:33 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,14 @@ int interpret(char *line)
     t_token *token;
     token = tokenize(line);
     node = NULL ;
+    expand(token);
     status = tokenize_error(token);
     if(status == 258 || status == 127)
     {
         free(token);
         return status;
     }
+    
     node = parser(token);
     // printCommands(node);
     pid = exec(node);

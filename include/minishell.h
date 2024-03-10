@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/07 22:18:46 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/10 16:04:46 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,8 @@ int exec(t_node *node);
 //path
 char *search_path(char *filename);
 
-
-
+//expand
+void expand(t_token *token);
 
 int wait_pid(pid_t pid);
 # define TK_WORD 0

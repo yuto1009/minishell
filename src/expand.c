@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/03/10 17:06:38 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/10 17:11:27 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,7 +252,6 @@ static void expand_variable(t_token *token)
         fatal_error("Malloc Error");
     while(*str != '\0')
     {
-        printf("str : %c\n",*str);
         if (*str == SINGLE_QUOTE)
             append_single_quote(&str, &new_str);
         else if (*str == DOUBLE_QUOTE)
@@ -273,12 +272,12 @@ static void expand_variable(t_token *token)
 void expand(t_token *token)
 {
     // 変数展開とクオートの削除
-    t_token *first_token = token;
+    // t_token *first_token = token;
     expand_variable(token);
     
     remove_quotes(token);
     // TK_WORD && str == NULL -> tokenなかったことにする
     // ここに作る
     remove_void_tokens(token);
-    token = first_token;
+    // token = first_token;
 }

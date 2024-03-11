@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/29 18:17:27 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/11 10:41:15 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,24 +135,24 @@ t_token *tokenize_word(char **line) // クオート除去機能はexpand.cに移
     j = 0;
     while ((*line)[i] != '\0' && is_metacharacter((*line)[i]) == false)
     {
-        if ((*line)[i] == SINGLE_QUOTE || (*line)[i] == DOUBLE_QUOTE)
-        {
-            const char current_quote = (*line)[i];
-            i++;    // クオートをスキップ
-            while ((*line)[i] != '\0' && (*line)[i] != current_quote)
-            {
-                word[j] = (*line)[i];
-                i++;
-                j++;
-            }
-            if ((*line)[i] == '\0')
-            {
-                free(word);
-                minishell_error("unclosed quote");
-            }
-            i++;    // 閉じクオートスキップ
-        }
-        else
+        // if ((*line)[i] == SINGLE_QUOTE || (*line)[i] == DOUBLE_QUOTE)
+        // {
+        //     const char current_quote = (*line)[i];
+        //     i++;    // クオートをスキップ
+        //     while ((*line)[i] != '\0' && (*line)[i] != current_quote)
+        //     {
+        //         word[j] = (*line)[i];
+        //         i++;
+        //         j++;
+        //     }
+        //     if ((*line)[i] == '\0')
+        //     {
+        //         free(word);
+        //         minishell_error("unclosed quote");
+        //     }
+        //     i++;    // 閉じクオートスキップ
+        // }
+        // else
         {
             word[j] = (*line)[i];
             i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/03/10 16:37:15 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/11 16:07:32 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,10 @@ static void remove_quotes(t_token *token)
         else if (*str == DOUBLE_QUOTE)
             remove_double_quote(&str, &new_str);
         else
+        {
             append_char(&new_str, *str);
+            str++;
+        }
     }    
     free(token->str);
     token->str = new_str;
@@ -141,10 +144,14 @@ static void append_double_quote(char **str, char **new_str)
     {
         append_char(new_str ,**str);
         (*str)++;
-        while (**str != DOUBLE_QUOTE)
+        while (**str != DOUBLE_QUOTE )
         {
+            printf("str : %c\n",**str);
             if (**str == '\0')
+            {
                 minishell_error("Unclosed double quote");
+                break;
+            }
             else if (is_dollar_sign(**str))
                 append_variable(str, new_str);  // どうしようか
             else
@@ -186,12 +193,15 @@ static bool is_env_variable(char *str)
     }
     return false;
 }
-
+bool is_alpha(char chr)
+{
+    return (('a'<=chr && chr<='z') || ('A'<= chr && chr<='Z'));
+}
 static void append_env_variable(char **str, char **new_str)
 {
     char *env_name = ft_calloc(1,sizeof(char));
     char *ans;
-    while(**str !='\0'&&**str !=' ' && **str != '$')
+    while(**str !='\0'&&is_alpha(**str))
     {
         append_char(&env_name, **str);
         (*str)++;
@@ -239,7 +249,6 @@ static void expand_variable(t_token *token)
 {
     char *new_str;
     char *str = token->str;
-    
     if (token == NULL || token->kind == TK_EOF)
         return;
     if (token->kind != TK_WORD || token->str == NULL)
@@ -257,12 +266,13 @@ static void expand_variable(t_token *token)
             append_variable(&str, &new_str);
         else
         {
-            append_char(&str, *new_str);
-            new_str++;
+            append_char(&new_str, *str);
+            str++;
         }
     }
     free(token->str);
     token->str = new_str;
+
     expand_variable(token->next);
 }
 
@@ -271,7 +281,6 @@ void expand(t_token *token)
     // 変数展開とクオートの削除
     
     expand_variable(token);
-    
     remove_quotes(token);
     // TK_WORD && str == NULL -> tokenなかったことにする
     // ここに作る

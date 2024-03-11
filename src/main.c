@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/10 16:02:33 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/11 17:23:05 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int main(void)
 
     while(1)
     {
-    setup_signal();
+        setup_signal();
         line = readline("minishell$ ");
         if (line == NULL){
             // exit(1);

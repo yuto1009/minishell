@@ -6,7 +6,11 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/03/11 16:07:32 by yoshidakazu      ###   ########.fr       */
+=======
+/*   Updated: 2024/03/10 17:11:27 by yutoendo         ###   ########.fr       */
+>>>>>>> 6a2a8b0924e51bfe2badce1c73dbb29024f305f7
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,10 +283,11 @@ static void expand_variable(t_token *token)
 void expand(t_token *token)
 {
     // 変数展開とクオートの削除
-    
+    // t_token *first_token = token;
     expand_variable(token);
     remove_quotes(token);
     // TK_WORD && str == NULL -> tokenなかったことにする
     // ここに作る
     remove_void_tokens(token);
+    // token = first_token;
 }

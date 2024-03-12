@@ -6,11 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/03/11 16:07:32 by yoshidakazu      ###   ########.fr       */
-=======
-/*   Updated: 2024/03/10 17:11:27 by yutoendo         ###   ########.fr       */
->>>>>>> 6a2a8b0924e51bfe2badce1c73dbb29024f305f7
+/*   Updated: 2024/03/12 10:03:20 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

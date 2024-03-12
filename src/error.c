@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 15:22:40 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/29 19:05:35 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/12 13:06:45 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void minishell_error(char *message)
 {
     ft_putstr_fd("minishell: ", STDERR_FILENO);
     ft_putendl_fd(message, STDERR_FILENO);
-    write(1,"\n",1);
+    // write(1,"\n",1);
     // exit(MINISHELL_ERROR);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/10 16:04:46 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/12 12:59:58 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,12 @@ struct s_node {
     int index;
 
 };
+//main
+int roop_readline(void);
 
 // extern bool is_sig;
 extern bool is_sig_get;
+extern int exit_status;
 // volatile sig_atomic_t	sig = 0;
 // error.c
 void set_output_destination(FILE *dst);

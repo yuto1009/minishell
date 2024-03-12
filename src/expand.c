@@ -6,13 +6,13 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/03/12 10:03:20 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/12 13:23:07 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 static void append_variable(char **str, char **new_str);
-
+int exit_status = 0;
 static void append_char(char **str, char new_char)
 {
     size_t len;
@@ -32,7 +32,7 @@ static void append_char(char **str, char new_char)
     *str = new_str;
 }
 
-// 文字列の入ってない（null）TK_WORDトークンを除去
+// 文字列の入ってない（null）TK_WORDトークンを除去r
 static void remove_void_tokens(t_token *token)
 {
     if (token->kind == TK_EOF)
@@ -57,9 +57,11 @@ static void remove_single_quote(char **str, char **new_str)
         while(**str != SINGLE_QUOTE)
         {
             if (**str == '\0')
+            {
                 minishell_error("Unclosed single qupte");
+            }
             append_char(new_str, **str);
-            (**str)++;
+            (*str)++;
         }
         (*str)++;
         return ;
@@ -75,9 +77,12 @@ static void remove_double_quote(char **str,char **new_str)
         while(**str != DOUBLE_QUOTE)
         {
             if (**str == '\0')
+            {
                 minishell_error("Unclosed double qupte");
+                break;
+            }
             append_char(new_str, **str);
-            (**str)++;
+            (*str)++;
         }
         (*str)++;
         return ;
@@ -90,14 +95,14 @@ static void remove_quotes(t_token *token)
     char *str = token->str;
     char *new_str;
 
-    if (token == NULL || token->kind != TK_WORD || token->str == NULL)
+    if (token == NULL || token->str == NULL) //delete token->kind != TK_WORD because TK_REDIRECTION
         return ;
     new_str = (char *)ft_calloc(1, sizeof(char));
     if (new_str == NULL)
         fatal_error("Malloc Error");
     
     // シングルとダブルクオートを削除
-    while(*str!='\0')
+    while(*str != '\0')
     {
         if(*str == SINGLE_QUOTE)
             remove_single_quote(&str, &new_str);
@@ -123,7 +128,11 @@ static void append_single_quote(char **str, char **new_str)
         while (**str != SINGLE_QUOTE)
         {
             if (**str == '\0')
+            {
                 minishell_error("Unclosed single quote");
+                exit_status = 1;
+                return;
+            }
             append_char(new_str, **str);
             (*str)++;
         }
@@ -146,23 +155,25 @@ static void append_double_quote(char **str, char **new_str)
         (*str)++;
         while (**str != DOUBLE_QUOTE )
         {
-            printf("str : %c\n",**str);
             if (**str == '\0')
             {
                 minishell_error("Unclosed double quote");
-                break;
+                exit_status = 1;
+                return;
             }
             else if (is_dollar_sign(**str))
                 append_variable(str, new_str);  // どうしようか
             else
-            append_char(new_str, **str);
-            (*str)++;
+            {
+                append_char(new_str, **str);
+                (*str)++;
+            }
         }
         append_char(new_str, **str);
         (*str)++;
         return;
     }
-    fatal_error("Expected dingle quote");
+    fatal_error("Expected double quote");
 }
 
 
@@ -269,6 +280,8 @@ static void expand_variable(t_token *token)
             append_char(&new_str, *str);
             str++;
         }
+        if(exit_status == 1)
+            return ;
     }
     free(token->str);
     token->str = new_str;
@@ -276,11 +289,23 @@ static void expand_variable(t_token *token)
     expand_variable(token->next);
 }
 
+void print_tokens(t_token *token)
+{
+    if (token == NULL || token->kind == TK_EOF)
+        return ;
+    if (token != NULL)
+        printf("token : %s\n", token->str);
+    return (print_tokens(token->next));
+}
+
 void expand(t_token *token)
 {
     // 変数展開とクオートの削除
     // t_token *first_token = token;
     expand_variable(token);
+    if(exit_status == 1)
+    return;
+    // print_tokens(token);
     remove_quotes(token);
     // TK_WORD && str == NULL -> tokenなかったことにする
     // ここに作る

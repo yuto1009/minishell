@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/11 10:41:15 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/12 13:23:02 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ int is_blank(char c)
 bool is_metacharacter(char c)
 {
     const char *metacharacters = "|&;()<> \t";
-
+    
+    if(c== '\0')
+    return false;
     if (ft_strchr(metacharacters, c) != NULL)
     {
         return (true);
@@ -135,24 +137,41 @@ t_token *tokenize_word(char **line) // クオート除去機能はexpand.cに移
     j = 0;
     while ((*line)[i] != '\0' && is_metacharacter((*line)[i]) == false)
     {
-        // if ((*line)[i] == SINGLE_QUOTE || (*line)[i] == DOUBLE_QUOTE)
-        // {
-        //     const char current_quote = (*line)[i];
-        //     i++;    // クオートをスキップ
-        //     while ((*line)[i] != '\0' && (*line)[i] != current_quote)
-        //     {
-        //         word[j] = (*line)[i];
-        //         i++;
-        //         j++;
-        //     }
-        //     if ((*line)[i] == '\0')
-        //     {
-        //         free(word);
-        //         minishell_error("unclosed quote");
-        //     }
-        //     i++;    // 閉じクオートスキップ
-        // }
-        // else
+        if ((*line)[i] == SINGLE_QUOTE || (*line)[i] == DOUBLE_QUOTE)
+        {
+            const char current_quote = (*line)[i];
+            while((*line)[i] != '\0')
+            {
+                if((*line)[i] == current_quote&&(((*line)[i+1] == '\0')||is_metacharacter((*line)[i+1])))
+                {
+                    word[j] = (*line)[i];
+                    j++;
+                    // printf("aa\n");t
+                    break;
+                }
+                word[j] = (*line)[i];
+                i++;
+                j++;
+            }
+            if((*line)[i+1] == '\0'||is_metacharacter((*line)[i+1])){
+                i++;
+            break;
+            }
+            // // i++;    // クオートをスキップ
+            // while ((*line)[i] != '\0' && (*line)[i] != current_quote )
+            // {
+            //     word[j] = (*line)[i];
+            //     i++;
+            //     j++;
+            // }
+            // if ((*line)[i] == '\0')
+            // {
+            //     free(word);
+            //     minishell_error("unclosed quote");
+            // }
+            // i++;    // 閉じクオートスキップ
+        }
+        else
         {
             word[j] = (*line)[i];
             i++;
@@ -186,6 +205,7 @@ t_token *tokenize(char *line)
         new = tokenize_redirection_operator(&line);
     }
     else{
+        // printf("line : %s\n",line);
         new = tokenize_word(&line);
     }
     

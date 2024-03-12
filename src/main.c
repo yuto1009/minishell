@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/10 16:02:33 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/12 13:27:32 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 #include <stdio.h>
-
+int exit_status;
 void printCommands(t_node* node) {
     while (node != NULL) {
         t_token* token = node->token;
@@ -35,6 +35,8 @@ int interpret(char *line)
     token = tokenize(line);
     node = NULL ;
     expand(token);
+    if(exit_status == 1)
+        return exit_status;
     status = tokenize_error(token);
     if(status == 258 || status == 127)
     {
@@ -69,17 +71,16 @@ bool is_only_blank_character(char *line)
     return ans;
 }
 
-int main(void)
+int roop_readline(void)
 {
-    char *line;
     int status;
-    set_output_destination(stderr);
+    char *line;
     status = 0;
-
     while(1)
     {
-    setup_signal();
+        setup_signal();
         line = readline("minishell$ ");
+        exit_status  = 0;
         if (line == NULL){
             // exit(1);
             break;
@@ -92,7 +93,15 @@ int main(void)
         status = interpret(line);
         free(line);
     }
-    printf("exit\n"); // Ctrl+D ^Dが表示される
+    return status;
+}
 
+int main(void)
+{
+    int status;
+    set_output_destination(stderr);
+    status = 0;
+    status = roop_readline();
+    printf("exit\n"); // Ctrl+D ^Dが表示される
     return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/12 13:23:02 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/13 22:46:38 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,32 @@ t_token *tokenize_redirection_operator(char **line)
     *line += ft_strlen(operator);
     return (new_token(operator, TK_REDIRECTION));
 }
+bool is_metacharacter_token(char c)
+{
+    const char *metacharacters = "|&;()<>\t";
+    
+    if(c== '\0')
+    return false;
+    if (ft_strchr(metacharacters, c) != NULL)
+    {
+        return (true);
+    }
+    return (false);
+}
+
+bool is_multquote(char *line)
+{
+    int i =0;
+    while(line[i]!='\0')
+    {
+        if(line[i] == DOUBLE_QUOTE && line[i+1] == DOUBLE_QUOTE)
+            return true;
+        else if(line[i] == SINGLE_QUOTE && line[i+1] == SINGLE_QUOTE)
+            return true;
+        i++;
+    }
+    return false;
+}
 
 t_token *tokenize_word(char **line) // クオート除去機能はexpand.cに移動しました　いつかこの関数のクオート除去機能は消さないといかない
 {
@@ -129,25 +155,30 @@ t_token *tokenize_word(char **line) // クオート除去機能はexpand.cに移
     char *word;
     size_t i;
     size_t j;
-
+    int tmp;
     word = (char *)ft_calloc(word_size, sizeof(char));
     if (word == NULL)
         fatal_error("malloc error");
     i = 0;
+    tmp = 0;
     j = 0;
     while ((*line)[i] != '\0' && is_metacharacter((*line)[i]) == false)
     {
         if ((*line)[i] == SINGLE_QUOTE || (*line)[i] == DOUBLE_QUOTE)
         {
             const char current_quote = (*line)[i];
-            while((*line)[i] != '\0')
+            while((*line)[i] != '\0'&&!is_metacharacter_token((*line)[i]))
             {
                 if((*line)[i] == current_quote&&(((*line)[i+1] == '\0')||is_metacharacter((*line)[i+1])))
                 {
-                    word[j] = (*line)[i];
-                    j++;
-                    // printf("aa\n");t
-                    break;
+                    tmp = i+1;
+                    while(is_blank((*line)[tmp]))
+                        tmp++;
+                    if(!((*line)[tmp] == DOUBLE_QUOTE || (*line)[tmp] == SINGLE_QUOTE) ||!is_multquote(*line)){
+                        word[j] = (*line)[i];
+                        j++;
+                        break;
+                    }
                 }
                 word[j] = (*line)[i];
                 i++;

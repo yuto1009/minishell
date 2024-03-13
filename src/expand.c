@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/03/12 13:23:07 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/12 19:11:28 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,10 +302,10 @@ void expand(t_token *token)
 {
     // 変数展開とクオートの削除
     // t_token *first_token = token;
+    print_tokens(token);
     expand_variable(token);
     if(exit_status == 1)
     return;
-    // print_tokens(token);
     remove_quotes(token);
     // TK_WORD && str == NULL -> tokenなかったことにする
     // ここに作る

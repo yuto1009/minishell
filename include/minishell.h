@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/29 18:02:50 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/14 20:55:21 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,16 @@ struct s_node {
     int pipe_out[2];
     int index;
 
+};
+
+// 環境変数マップ
+typedef struct s_var t_var;
+
+struct s_var {
+    char *name;
+    char *value;
+    t_var *prev;
+    t_var *next;
 };
 
 // extern bool is_sig;

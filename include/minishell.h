@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/16 15:08:53 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/03/16 18:24:14 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ struct s_var {
     t_var *next;
 };
 
-// extern bool is_sig;
 extern bool is_sig_get;
+// extern bool is_sig;
 // volatile sig_atomic_t	sig = 0;
 // error.c
 void set_output_destination(FILE *dst);
@@ -123,7 +123,12 @@ int exec(t_node *node);
 //path
 char *search_path(char *filename);
 
-
+// map.c
+t_var * init_env_map(void);
+char *get_env_value(char *env_name, t_var *map);
+char *get_env_list(t_var *map);
+void unset_env(char *env_name,t_var *map);
+void export_env(t_var *map, char *env_name, char *env_value);
 
 
 int wait_pid(pid_t pid);
@@ -135,7 +140,7 @@ int wait_pid(pid_t pid);
 # define SINGLE_QUOTE '\''
 # define DOUBLE_QUOTE '\"'
 # define DOLLAR_SIGN '$'
-
+# define EQUAL_SIGN '='
 
 
 #endif

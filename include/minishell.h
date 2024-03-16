@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/29 18:02:50 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/12 12:59:58 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,12 @@ struct s_node {
     int index;
 
 };
+//main
+int roop_readline(void);
 
 // extern bool is_sig;
 extern bool is_sig_get;
+extern int exit_status;
 // volatile sig_atomic_t	sig = 0;
 // error.c
 void set_output_destination(FILE *dst);
@@ -91,7 +94,7 @@ t_node *parser(t_token *token);
 t_node *get_next_node(t_node *node);
 
 // expand.c
-void expand(t_node *node);
+void expand(t_token *token);
 
 //pipe_utils.c
 void set_pipe(t_node *node);
@@ -113,8 +116,8 @@ int exec(t_node *node);
 //path
 char *search_path(char *filename);
 
-
-
+//expand
+void expand(t_token *token);
 
 int wait_pid(pid_t pid);
 # define TK_WORD 0

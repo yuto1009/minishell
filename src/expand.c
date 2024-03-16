@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/03/12 19:11:28 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/16 18:47:29 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static void append_char(char **str, char new_char)
         free(*str);
     *str = new_str;
 }
-
 // 文字列の入ってない（null）TK_WORDトークンを除去r
 static void remove_void_tokens(t_token *token)
 {

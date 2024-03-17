@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 16:34:36 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/17 12:06:25 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/03/17 12:17:48 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,6 @@
 #include "../../include/minishell.h"
 
 typedef struct s_var t_var;
-
-// //env
-// typedef struct s_var{
-//   const char *key;
-//   const char *value;
-//   struct s_var *next;
-// } t_var;
-
 
 void mini_pwd();
 int mini_exit(char **args);

@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 20:56:14 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/16 18:23:31 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/03/17 12:17:58 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void unset_env(char *env_name,t_var *map)
             map->next->prev = map->prev;
         }
         else if (map->prev != NULL)
-            map->prev->next == NULL
+            map->prev->next == NULL;
         else
             map->next->prev == NULL;
         free(map); 
@@ -169,6 +169,3 @@ void export_env(t_var *map, char *env_name, char *env_value)
     }
     
 } 
-
-
-    

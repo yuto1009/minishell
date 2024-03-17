@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/17 13:48:30 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/17 19:51:52 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@
 
 # define MINISHELL_ERROR 255
 # define SYNTAX_ERROR 258
+# define GENERAL_ERRORS 1
+
+extern int g_status;
 
 typedef int token_kind;
 typedef struct s_token t_token;
@@ -65,7 +68,7 @@ struct s_node {
 
 };
 //main
-int roop_readline(void);
+void roop_readline(void);
 
 // 環境変数マップ
 typedef struct s_var t_var;
@@ -78,7 +81,6 @@ struct s_var {
 };
 
 extern bool is_sig_get;
-extern int exit_status;
 
 // volatile sig_atomic_t	sig = 0;
 // error.c
@@ -104,7 +106,7 @@ t_node *parser(t_token *token);
 t_node *get_next_node(t_node *node);
 
 // expand.c
-void expand(t_token *token, t_var *env_map);
+void expand(t_token *token, t_var *env_map,int prev_status);
 
 //pipe_utils.c
 void set_pipe(t_node *node);
@@ -135,7 +137,7 @@ void unset_env(char *env_name,t_var *map);
 t_var *export_env(t_var *map, char *env_name, char *env_value);
 
 
-int wait_pid(pid_t pid);
+void wait_pid(pid_t pid);
 # define TK_WORD 0
 # define TK_OPERATOR 1
 # define TK_REDIRECTION 2
@@ -145,6 +147,7 @@ int wait_pid(pid_t pid);
 # define DOUBLE_QUOTE '\"'
 # define DOLLAR_SIGN '$'
 # define EQUAL_SIGN '='
+# define QUESTION '?'
 
 
 #endif

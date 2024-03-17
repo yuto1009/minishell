@@ -6,13 +6,13 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/03/17 15:41:50 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/17 19:59:21 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-static void append_variable(char **str, char **new_str, t_var *env_map);
-int exit_status = 0;
+static void append_variable(char **str, char **new_str, t_var *env_map, int prev_status);
+// int g_status = 0;
 static void append_char(char **str, char new_char)
 {
     size_t len;
@@ -129,7 +129,7 @@ static void append_single_quote(char **str, char **new_str)
             if (**str == '\0')
             {
                 minishell_error("Unclosed single quote");
-                exit_status = 1;
+                g_status = MINISHELL_ERROR;
                 return;
             }
             append_char(new_str, **str);
@@ -146,7 +146,7 @@ static bool is_dollar_sign(char c)
     return (c == '$');
 }
 
-static void append_double_quote(char **str, char **new_str, t_var *env_map)
+static void append_double_quote(char **str, char **new_str, t_var *env_map,int prev_status)
 {
     if (**str == DOUBLE_QUOTE)
     {
@@ -157,11 +157,11 @@ static void append_double_quote(char **str, char **new_str, t_var *env_map)
             if (**str == '\0')
             {
                 minishell_error("Unclosed double quote");
-                exit_status = 1;
+                g_status = MINISHELL_ERROR;
                 return;
             }
             else if (is_dollar_sign(**str))
-                append_variable(str, new_str, env_map);  // どうしようか
+                append_variable(str, new_str, env_map,prev_status);
             else
             {
                 append_char(new_str, **str);
@@ -231,7 +231,36 @@ static void append_env_variable(char **str, char **new_str, t_var *env_map)
     }
 }
 
-static void append_variable(char **str, char **new_str, t_var *env_map)
+bool is_exit_status(char *str)
+{
+    char *p;
+    p = str;
+    if (*p == DOLLAR_SIGN)
+    {
+        p++;
+        if (*p == QUESTION)
+            return true;
+    }
+    return false;
+}
+
+static void append_question(char **str, char **new_str,int prev_status)
+{
+    char *exit_status;
+    (*str)++;   // ?をインクリメント
+    exit_status = ft_itoa(prev_status);
+    
+    if (exit_status == NULL)
+        fatal_error("MALLOC ERROR");
+    while(*exit_status)
+    {
+        append_char(new_str, *exit_status);
+        exit_status++;
+    }
+}
+
+
+static void append_variable(char **str, char **new_str, t_var *env_map, int prev_status)
 {
     // ドルサイン単体であれば、そのままドルサインを返す
     if (is_single_dollar_sign(*str))
@@ -241,12 +270,12 @@ static void append_variable(char **str, char **new_str, t_var *env_map)
         (*str)++;
         append_env_variable(str, new_str, env_map);
     }
-    // ToDo ドルサイン+小文字があったらappend_shell_variable 
-        // ハッシュマップ実装後別ブランチで実装
-
-    // ToDo check if ?,
-        // then append_exit_status
-            // not branch 76
+    if (is_exit_status(*str))
+    {
+        // puts("Debug");
+        (*str)++;
+        append_question(str, new_str,prev_status);
+    }
 
     // else minishell_error
 }
@@ -256,14 +285,15 @@ static void append_variable(char **str, char **new_str, t_var *env_map)
 // 変数展開（シェル変数・環境変数）
 // 各トークンを再帰的に巡る
 // 一文字ずつクオート・変数を確認
-static void expand_variable(t_token *token, t_var *env_map)
+static void expand_variable(t_token *token, t_var *env_map,int prev_status)
 {
     char *new_str;
     char *str = token->str;
+ 
     if (token == NULL || token->kind == TK_EOF)
         return;
     if (token->kind != TK_WORD || token->str == NULL)
-        return expand_variable(token->next, env_map);
+        return expand_variable(token->next, env_map,prev_status);
     new_str = (char *)calloc(1, sizeof(char));
     if (new_str == NULL)
         fatal_error("Malloc Error");
@@ -272,21 +302,21 @@ static void expand_variable(t_token *token, t_var *env_map)
         if (*str == SINGLE_QUOTE)
             append_single_quote(&str, &new_str);
         else if (*str == DOUBLE_QUOTE)
-            append_double_quote(&str, &new_str, env_map);
+            append_double_quote(&str, &new_str, env_map,prev_status);
         else if (is_dollar_sign(*str) == true)
-            append_variable(&str, &new_str, env_map);
+            append_variable(&str, &new_str, env_map,prev_status);
         else
         {
             append_char(&new_str, *str);
             str++;
         }
-        if(exit_status == 1)
-            return ;
     }
+        if(g_status == MINISHELL_ERROR)
+            return ;
     free(token->str);
     token->str = new_str;
 
-    expand_variable(token->next, env_map);
+    expand_variable(token->next, env_map,prev_status);
 }
 
 void print_tokens(t_token *token)
@@ -298,14 +328,14 @@ void print_tokens(t_token *token)
     return (print_tokens(token->next));
 }
 
-void expand(t_token *token, t_var *env_map)
+void expand(t_token *token, t_var *env_map, int prev_status)
 {
     // 変数展開とクオートの削除
     // t_token *first_token = token;
     // print_tokens(token);
-    expand_variable(token, env_map);
-    if(exit_status == 1)
-    return;
+    expand_variable(token, env_map,prev_status);
+    if(g_status == MINISHELL_ERROR)
+        return;
     remove_quotes(token);
     // TK_WORD && str == NULL -> tokenなかったことにする
     // ここに作る

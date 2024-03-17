@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   wait_pid.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 18:02:20 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/02/29 18:03:32 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/17 16:55:18 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-int wait_pid(pid_t pid)
+int g_status;
+void wait_pid(pid_t pid)
 {
     pid_t	result;
-	int		status;
+	// int		status;
 	int		wstatus;
 	signal_parent_init();
 	while (1)
@@ -24,9 +24,9 @@ int wait_pid(pid_t pid)
 		if (result == pid)
 		{
 			if (WIFSIGNALED(wstatus))
-				status = 128 + WTERMSIG(wstatus);
+				g_status = 128 + WTERMSIG(wstatus);
 			else
-				status = WEXITSTATUS(wstatus);
+				g_status = WEXITSTATUS(wstatus);
 		}
 		else if (result < 0)
 		{
@@ -38,5 +38,5 @@ int wait_pid(pid_t pid)
 				fatal_error("wait");
 		}
 	}
-	return (status);
+	return ;
 }

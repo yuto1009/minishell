@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/17 20:43:50 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/17 22:23:56 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void roop_readline(void)
     // int status = 0;
     t_var *env_map;
     char *line;
-    int exit_status;
     env_map = init_env_map();
     // while(env_map != NULL){
     //     printf("name : %s ; value : %s;\n", env_map->name ,env_map->value);
@@ -93,7 +92,6 @@ void roop_readline(void)
     {
         setup_signal();
         line = readline("minishell$ ");
-        exit_status  = 0;
         if (line == NULL){
             break;
         }
@@ -110,9 +108,7 @@ void roop_readline(void)
 
 int main(void)
 {
-    int status;
     set_output_destination(stderr);
-    status = 0;
     roop_readline();
     printf("exit\n"); // Ctrl+D ^Dが表示される
     return (g_status);

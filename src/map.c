@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 20:56:14 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/17 21:03:33 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/17 22:24:20 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,8 +169,6 @@ static t_var *create_map(char *name, char *value)
 
 t_var *export_env(t_var *map, char *env_name, char *env_value)
 {
-    t_var *head;    // kore irankune
-    head = map;
     if(map == NULL)
     {
         map = create_map(env_name, env_value);

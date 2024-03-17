@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/03/17 19:59:21 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/17 22:42:18 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,13 +263,21 @@ static void append_question(char **str, char **new_str,int prev_status)
 static void append_variable(char **str, char **new_str, t_var *env_map, int prev_status)
 {
     // ドルサイン単体であれば、そのままドルサインを返す
-    if (is_single_dollar_sign(*str))
+    if (is_single_dollar_sign(*str)){
         append_char(new_str, **str);
+        (*str)++;
+
+    }
     else if (is_env_variable(*str))  // ドルサイン+大文字があったらappend_env_variable
     {
         (*str)++;
         append_env_variable(str, new_str, env_map);
     }
+    // else{
+    //     while(**str!='\0')
+    //         (*str)++;
+    //     return;
+    // }
     if (is_exit_status(*str))
     {
         // puts("Debug");

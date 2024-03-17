@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/17 12:30:34 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/03/17 13:48:30 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ t_node *parser(t_token *token);
 t_node *get_next_node(t_node *node);
 
 // expand.c
-void expand(t_token *token);
+void expand(t_token *token, t_var *env_map);
 
 //pipe_utils.c
 void set_pipe(t_node *node);
@@ -132,9 +132,7 @@ t_var * init_env_map(void);
 char *get_env_value(char *env_name, t_var *map);
 char *get_env_list(t_var *map);
 void unset_env(char *env_name,t_var *map);
-void export_env(t_var *map, char *env_name, char *env_value);
-//expand
-void expand(t_token *token);
+t_var *export_env(t_var *map, char *env_name, char *env_value);
 
 
 int wait_pid(pid_t pid);

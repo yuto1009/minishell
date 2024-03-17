@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/02/29 18:17:27 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/13 22:46:38 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ int is_blank(char c)
 bool is_metacharacter(char c)
 {
     const char *metacharacters = "|&;()<> \t";
-
+    
+    if(c== '\0')
+    return false;
     if (ft_strchr(metacharacters, c) != NULL)
     {
         return (true);
@@ -120,6 +122,32 @@ t_token *tokenize_redirection_operator(char **line)
     *line += ft_strlen(operator);
     return (new_token(operator, TK_REDIRECTION));
 }
+bool is_metacharacter_token(char c)
+{
+    const char *metacharacters = "|&;()<>\t";
+    
+    if(c== '\0')
+    return false;
+    if (ft_strchr(metacharacters, c) != NULL)
+    {
+        return (true);
+    }
+    return (false);
+}
+
+bool is_multquote(char *line)
+{
+    int i =0;
+    while(line[i]!='\0')
+    {
+        if(line[i] == DOUBLE_QUOTE && line[i+1] == DOUBLE_QUOTE)
+            return true;
+        else if(line[i] == SINGLE_QUOTE && line[i+1] == SINGLE_QUOTE)
+            return true;
+        i++;
+    }
+    return false;
+}
 
 t_token *tokenize_word(char **line) // クオート除去機能はexpand.cに移動しました　いつかこの関数のクオート除去機能は消さないといかない
 {
@@ -127,30 +155,52 @@ t_token *tokenize_word(char **line) // クオート除去機能はexpand.cに移
     char *word;
     size_t i;
     size_t j;
-
+    int tmp;
     word = (char *)ft_calloc(word_size, sizeof(char));
     if (word == NULL)
         fatal_error("malloc error");
     i = 0;
+    tmp = 0;
     j = 0;
     while ((*line)[i] != '\0' && is_metacharacter((*line)[i]) == false)
     {
         if ((*line)[i] == SINGLE_QUOTE || (*line)[i] == DOUBLE_QUOTE)
         {
             const char current_quote = (*line)[i];
-            i++;    // クオートをスキップ
-            while ((*line)[i] != '\0' && (*line)[i] != current_quote)
+            while((*line)[i] != '\0'&&!is_metacharacter_token((*line)[i]))
             {
+                if((*line)[i] == current_quote&&(((*line)[i+1] == '\0')||is_metacharacter((*line)[i+1])))
+                {
+                    tmp = i+1;
+                    while(is_blank((*line)[tmp]))
+                        tmp++;
+                    if(!((*line)[tmp] == DOUBLE_QUOTE || (*line)[tmp] == SINGLE_QUOTE) ||!is_multquote(*line)){
+                        word[j] = (*line)[i];
+                        j++;
+                        break;
+                    }
+                }
                 word[j] = (*line)[i];
                 i++;
                 j++;
             }
-            if ((*line)[i] == '\0')
-            {
-                free(word);
-                minishell_error("unclosed quote");
+            if((*line)[i+1] == '\0'||is_metacharacter((*line)[i+1])){
+                i++;
+            break;
             }
-            i++;    // 閉じクオートスキップ
+            // // i++;    // クオートをスキップ
+            // while ((*line)[i] != '\0' && (*line)[i] != current_quote )
+            // {
+            //     word[j] = (*line)[i];
+            //     i++;
+            //     j++;
+            // }
+            // if ((*line)[i] == '\0')
+            // {
+            //     free(word);
+            //     minishell_error("unclosed quote");
+            // }
+            // i++;    // 閉じクオートスキップ
         }
         else
         {
@@ -186,6 +236,7 @@ t_token *tokenize(char *line)
         new = tokenize_redirection_operator(&line);
     }
     else{
+        // printf("line : %s\n",line);
         new = tokenize_word(&line);
     }
     

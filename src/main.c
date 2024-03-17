@@ -6,13 +6,13 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/16 15:20:08 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/03/17 12:28:33 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 #include <stdio.h>
-
+int exit_status;
 void printCommands(t_node* node) {
     while (node != NULL) {
         t_token* token = node->token;
@@ -34,12 +34,16 @@ int interpret(char *line)
     t_token *token;
     token = tokenize(line);
     node = NULL ;
+    expand(token);
+    if(exit_status == 1)
+        return exit_status;
     status = tokenize_error(token);
     if(status == 258 || status == 127)
     {
         free(token);
         return status;
     }
+    
     node = parser(token);
     // printCommands(node);
     pid = exec(node);
@@ -67,20 +71,20 @@ bool is_only_blank_character(char *line)
     return ans;
 }
 
-int main(void)
+int roop_readline(void)
 {
-    char *line;
     int status;
     t_var *env_map;
+    char *line;
     
     env_map = init_env_map();
     set_output_destination(stderr);
     status = 0;
-
     while(1)
     {
-    setup_signal();
+        setup_signal();
         line = readline("minishell$ ");
+        exit_status  = 0;
         if (line == NULL){
             // exit(1);
             break;
@@ -93,7 +97,15 @@ int main(void)
         status = interpret(line);
         free(line);
     }
-    printf("exit\n"); // Ctrl+D ^Dが表示される
+    return status;
+}
 
+int main(void)
+{
+    int status;
+    set_output_destination(stderr);
+    status = 0;
+    status = roop_readline();
+    printf("exit\n"); // Ctrl+D ^Dが表示される
     return (status);
 }

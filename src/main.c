@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/12 13:27:32 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/17 15:48:26 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 #include <stdio.h>
 int exit_status;
-void printCommands(t_node* node) {
+void printCommands(t_node* node)
+{
     while (node != NULL) {
         t_token* token = node->token;
         printf("nodeindex %d :",node->index);
@@ -26,15 +27,16 @@ void printCommands(t_node* node) {
     }
 }
 
-int interpret(char *line)
+int interpret(char *line, t_var *env_map)
 {
     struct s_node *node;
     int status;
     pid_t pid;
     t_token *token;
+    
     token = tokenize(line);
     node = NULL ;
-    expand(token);
+    expand(token,env_map);
     if(exit_status == 1)
         return exit_status;
     status = tokenize_error(token);
@@ -43,9 +45,9 @@ int interpret(char *line)
         free(token);
         return status;
     }
-    
     node = parser(token);
     // printCommands(node);
+    
     pid = exec(node);
     status = wait_pid(pid);
     return (status); // 仮
@@ -74,7 +76,15 @@ bool is_only_blank_character(char *line)
 int roop_readline(void)
 {
     int status;
+    t_var *env_map;
     char *line;
+    printf("minishell start\n");
+    env_map = init_env_map();
+    // while(env_map != NULL){
+    //     printf("name : %s ; value : %s;\n", env_map->name ,env_map->value);
+    //     env_map = env_map->next;
+    // }
+    set_output_destination(stderr);
     status = 0;
     while(1)
     {
@@ -90,7 +100,7 @@ int roop_readline(void)
              // breakをreturn (0)に変えるとリークが確認できる (テスターがNG出すようになる)
         if(*line)
             add_history(line); 
-        status = interpret(line);
+        status = interpret(line, env_map);
         free(line);
     }
     return status;

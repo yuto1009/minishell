@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/03/16 18:47:29 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/17 15:41:50 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-static void append_variable(char **str, char **new_str);
+static void append_variable(char **str, char **new_str, t_var *env_map);
 int exit_status = 0;
 static void append_char(char **str, char new_char)
 {
@@ -146,7 +146,7 @@ static bool is_dollar_sign(char c)
     return (c == '$');
 }
 
-static void append_double_quote(char **str, char **new_str)
+static void append_double_quote(char **str, char **new_str, t_var *env_map)
 {
     if (**str == DOUBLE_QUOTE)
     {
@@ -161,7 +161,7 @@ static void append_double_quote(char **str, char **new_str)
                 return;
             }
             else if (is_dollar_sign(**str))
-                append_variable(str, new_str);  // どうしようか
+                append_variable(str, new_str, env_map);  // どうしようか
             else
             {
                 append_char(new_str, **str);
@@ -207,8 +207,9 @@ bool is_alpha(char chr)
 {
     return (('a'<=chr && chr<='z') || ('A'<= chr && chr<='Z'));
 }
-static void append_env_variable(char **str, char **new_str)
+static void append_env_variable(char **str, char **new_str, t_var *env_map)
 {
+   
     char *env_name = ft_calloc(1,sizeof(char));
     char *ans;
     while(**str !='\0'&&is_alpha(**str))
@@ -217,7 +218,7 @@ static void append_env_variable(char **str, char **new_str)
         (*str)++;
         // printf("str: %s\n",*str);
     }
-    ans = getenv(env_name);
+    ans = get_env_value(env_name,env_map);
     free(env_name);
     // getenvがnullを返してきた時は何もnew_strにappendしない strだけはその変数分インクリメント
     if(ans)
@@ -230,7 +231,7 @@ static void append_env_variable(char **str, char **new_str)
     }
 }
 
-static void append_variable(char **str, char **new_str)
+static void append_variable(char **str, char **new_str, t_var *env_map)
 {
     // ドルサイン単体であれば、そのままドルサインを返す
     if (is_single_dollar_sign(*str))
@@ -238,7 +239,7 @@ static void append_variable(char **str, char **new_str)
     else if (is_env_variable(*str))  // ドルサイン+大文字があったらappend_env_variable
     {
         (*str)++;
-        append_env_variable(str, new_str);
+        append_env_variable(str, new_str, env_map);
     }
     // ToDo ドルサイン+小文字があったらappend_shell_variable 
         // ハッシュマップ実装後別ブランチで実装
@@ -255,14 +256,14 @@ static void append_variable(char **str, char **new_str)
 // 変数展開（シェル変数・環境変数）
 // 各トークンを再帰的に巡る
 // 一文字ずつクオート・変数を確認
-static void expand_variable(t_token *token)
+static void expand_variable(t_token *token, t_var *env_map)
 {
     char *new_str;
     char *str = token->str;
     if (token == NULL || token->kind == TK_EOF)
         return;
     if (token->kind != TK_WORD || token->str == NULL)
-        return expand_variable(token->next);
+        return expand_variable(token->next, env_map);
     new_str = (char *)calloc(1, sizeof(char));
     if (new_str == NULL)
         fatal_error("Malloc Error");
@@ -271,9 +272,9 @@ static void expand_variable(t_token *token)
         if (*str == SINGLE_QUOTE)
             append_single_quote(&str, &new_str);
         else if (*str == DOUBLE_QUOTE)
-            append_double_quote(&str, &new_str);
+            append_double_quote(&str, &new_str, env_map);
         else if (is_dollar_sign(*str) == true)
-            append_variable(&str, &new_str);
+            append_variable(&str, &new_str, env_map);
         else
         {
             append_char(&new_str, *str);
@@ -285,7 +286,7 @@ static void expand_variable(t_token *token)
     free(token->str);
     token->str = new_str;
 
-    expand_variable(token->next);
+    expand_variable(token->next, env_map);
 }
 
 void print_tokens(t_token *token)
@@ -297,12 +298,12 @@ void print_tokens(t_token *token)
     return (print_tokens(token->next));
 }
 
-void expand(t_token *token)
+void expand(t_token *token, t_var *env_map)
 {
     // 変数展開とクオートの削除
     // t_token *first_token = token;
-    print_tokens(token);
-    expand_variable(token);
+    // print_tokens(token);
+    expand_variable(token, env_map);
     if(exit_status == 1)
     return;
     remove_quotes(token);

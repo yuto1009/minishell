@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:13:26 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/03/02 15:14:34 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/17 15:40:28 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void sigint_action()
 {
     printf("\n");
 	rl_on_new_line();
-	rl_replace_line("", 0);
+	// rl_replace_line("", 0); //コンパイルの都合で消す 使用してるから後で治す
 	rl_redisplay();
 }
 

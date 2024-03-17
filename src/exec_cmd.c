@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/17 15:53:03 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/17 20:54:29 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void execute_pipe(char **argv)
     return count;
 }
 
-int exec(t_node *node)
+int exec(t_node *node, t_var *env_map)
 {
     char **token2argv;
     int len;
@@ -61,6 +61,18 @@ int exec(t_node *node)
     { 
         len = count_token_len(node->token);
         set_pipe(node);
+        if(strcmp(node->token->str,"export") == 0){
+             builtin_export(node->token,env_map);
+            return 0;
+        }
+        if(strcmp(node->token->str,"env") == 0){
+            builtin_env(env_map);
+            return 0;
+        }
+        if(strcmp(node->token->str,"unset") == 0){
+            builtin_unset(node->token,env_map);
+            return 0;
+        }
         pid = fork();
         if(pid < 0)
             cmd_error_exit("fork","fork error",1);

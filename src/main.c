@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/17 20:02:23 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/17 20:43:50 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void interpret(char *line, t_var *env_map)
     }
     node = parser(token);
     // printCommands(node);
-    pid = exec(node);
+    pid = exec(node, env_map);
     wait_pid(pid);
     return ; // 仮
 }

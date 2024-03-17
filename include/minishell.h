@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/17 19:51:52 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/17 20:52:04 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,13 +124,15 @@ int heredoc(char *delimiter);
 void open_file(t_node *node);
 void dup_fd(t_node *node);
 char **serch_redir(t_node *node,int len);
-int exec(t_node *node);
+int exec(t_node *node,t_var *env_map);
 //path
 char *search_path(char *filename);
 
 
 // map.c
 t_var * init_env_map(void);
+char *trim_env_name(char *env);
+char *trim_env_value(char *env);
 char *get_env_value(char *env_name, t_var *map);
 char *get_env_list(t_var *map);
 void unset_env(char *env_name,t_var *map);

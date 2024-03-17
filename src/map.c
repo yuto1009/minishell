@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 20:56:14 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/17 15:52:29 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/17 21:03:33 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_var *export_env(t_var *map, char *env_name, char *env_value);
 
 
-static char *trim_env_name(char *env)
+char *trim_env_name(char *env)
 {
     char * equal_pos;
     char *name;
@@ -35,7 +35,7 @@ static char *trim_env_name(char *env)
 }
 
 
-static char *trim_env_value(char *env)
+char *trim_env_value(char *env)
 {
     char *equal_pos;
     char *value;
@@ -96,9 +96,20 @@ char *get_env_list(t_var *map)
 {
     char *ans;
     char *tmp;
+    ans =NULL;
+    tmp = NULL;
     while(map!=NULL)
     {
-        ans = ft_strjoin(map->name, "=");
+        if(ans)
+        {
+            ans = ft_strjoin(ans, map->name);
+            tmp = ft_strjoin(ans, "=");
+            ans = tmp;
+            free(tmp);
+        }
+        else
+            ans = ft_strjoin(map->name, "=");
+            
         tmp = ft_strjoin(ans , map->value);
         free(ans);
         ans = tmp;
@@ -138,7 +149,7 @@ void unset_env(char *env_name,t_var *map)
             map->next->prev = NULL;
         free(map); 
     }
-    return (unset_env(env_name, map->next));
+    return(unset_env(env_name, map->next));
 }
 
 static t_var *create_map(char *name, char *value)
@@ -168,7 +179,6 @@ t_var *export_env(t_var *map, char *env_name, char *env_value)
     {
         while(map->next != NULL)
             map = map->next;
-
         map->next = create_map(env_name, env_value);
         map->next->prev = map;    
 

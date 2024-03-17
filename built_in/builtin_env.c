@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 18:45:42 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/17 16:06:31 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/17 20:27:55 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,24 @@
 //   return start;
 // }
 
-void mini_env(t_var *env_map)
+void builtin_env(t_var *env_map)
 {
   //  extern char **environ; // 環境変数へのポインタ
   //  t_var *var;
   //   (void)argv;
 
+  while(env_map != NULL)
+  {
+    printf("%s=%s\n", env_map->name, env_map->value);
+    env_map = env_map->next;
+  }
   //   var = env_to_var(environ);
   //   while(var != NULL)
   //   {
   //     printf("%s=%s\n", var->key, var->value);
   //     var = var->next;
   //   }
-  printf("%s", get_env_list(env_map));
+  // printf("%s", get_env_list(env_map));
 }
 
 // int main()

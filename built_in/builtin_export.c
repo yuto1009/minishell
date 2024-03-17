@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 17:10:24 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/03/17 19:28:17 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/17 20:51:23 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,14 @@ void builtin_export(t_token *token,t_var *env_map)
 		if (is_identifier(env_name) != true)
 		{
 			g_status = GENERAL_ERRORS;
+			printf("minishell: export: '%s': not a valid identifier\n", env_name);
 			return ;
 		}
 		export_env(env_map, env_name, env_value);
-		free(env_name);
-		free(env_value);
+	 
+		
+		// free(env_name);
+		// free(env_value);
 		token = token->next;
 	}
 }

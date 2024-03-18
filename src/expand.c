@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/03/17 22:42:18 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/17 23:43:06 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,11 +273,11 @@ static void append_variable(char **str, char **new_str, t_var *env_map, int prev
         (*str)++;
         append_env_variable(str, new_str, env_map);
     }
-    // else{
-    //     while(**str!='\0')
-    //         (*str)++;
-    //     return;
-    // }
+    else{
+        while(**str!='\0')
+            (*str)++;
+        return;
+    }
     if (is_exit_status(*str))
     {
         // puts("Debug");

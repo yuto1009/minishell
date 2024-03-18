@@ -6,13 +6,13 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:29:17 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/01/04 18:42:06 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/17 23:45:16 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/built_in.h"
 
-void mini_pwd()
+void buildin_pwd()
 {
     char *buff = ft_calloc(PATH_MAX, 1);
     if (buff == NULL)
@@ -24,6 +24,7 @@ void mini_pwd()
     }
     printf("%s\n", buff);
     free(buff);
+    exit(0);
 }
 
 // minishellに接続しないで動作確認するためのコード 

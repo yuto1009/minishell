@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/17 20:52:04 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/18 21:43:45 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int heredoc(char *delimiter);
 void open_file(t_node *node);
 void dup_fd(t_node *node);
 char **serch_redir(t_node *node,int len);
-int exec(t_node *node,t_var *env_map);
+int exec(t_node *node,t_var *env_map,int prev_status);
 //path
 char *search_path(char *filename);
 
@@ -140,6 +140,12 @@ t_var *export_env(t_var *map, char *env_name, char *env_value);
 
 
 void wait_pid(pid_t pid);
+
+
+//buildin
+ bool is_buildin(char  *str);
+ int exec_buildin(t_token *token,t_var *env_map,int prev_status);
+
 # define TK_WORD 0
 # define TK_OPERATOR 1
 # define TK_REDIRECTION 2

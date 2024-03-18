@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/17 22:23:56 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/18 21:43:28 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,16 @@ void interpret(char *line, t_var *env_map)
     }
     node = parser(token);
     // printCommands(node);
-    pid = exec(node, env_map);
-    wait_pid(pid);
+
+        if(node->next == NULL&&is_buildin(node->token->str)){
+            // dup_child_pipe(node);
+            exec_buildin(node->token,env_map,prev_status);
+            // set_parent_pipe(node);
+        }
+        else{
+            pid = exec(node, env_map,prev_status);
+            wait_pid(pid);
+        }
     return ; // 仮
 }
 

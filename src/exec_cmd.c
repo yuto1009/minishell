@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/18 10:59:30 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/18 21:43:14 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ static char **envlist2char(t_var *env_map)
     i=0;
     while(tmp != NULL)
     {
-        // printf("tmp : %s\n",tmp->name);
         joinrow = list2join(tmp);
         ans[i] = joinrow;
         i++;
@@ -97,7 +96,7 @@ static void execute_pipe(char **argv,t_var *env_map)
         execve(executable, argv, envlist2char(env_map));
         cmd_error_exit(argv[0], "command not found", 127);
 }
-
+// envlist2char(env_map)
 
  int serch_endindex(t_node *node)
 {
@@ -113,7 +112,7 @@ static void execute_pipe(char **argv,t_var *env_map)
     return count;
 }
 
-static bool is_buildin(char  *str)
+ bool is_buildin(char  *str)
 {
     if (ft_strncmp(str, "echo", 5) == 0)
 		return (true);
@@ -127,26 +126,35 @@ static bool is_buildin(char  *str)
 		return (true);
 	else if (ft_strncmp(str, "env", 4) == 0)
 		return (true);
+    else if(ft_strncmp(str, "exit", 5) == 0)
+        return (true);
 	return (false);
 }
-static void exec_buildin(t_token *token,t_var *env_map)
+ int exec_buildin(t_token *token,t_var *env_map,int prev_status)
 {
     
         if(strcmp(token->str,"export") == 0){
             builtin_export(token,env_map);
-            return ;
+            return 0;
         }
         if(strcmp(token->str,"env") == 0){
             builtin_env(env_map);
-            return ;
+            return 0;
         }
         if(strcmp(token->str,"unset") == 0){
             builtin_unset(token,env_map);
-            return ;
+            return 0;
         }
+        if(strcmp(token->str , "echo") == 0)
+            return builtin_echo(token);
+        if(strcmp(token->str , "pwd") == 0)
+            return builtin_pwd();
+        if(strcmp(token->str,"exit") == 0)
+            return builtin_exit(token,prev_status);
+        return 0;
 }
 
-int exec(t_node *node, t_var *env_map)
+int exec(t_node *node, t_var *env_map,int prev_status)
 {
     char **token2argv;
     int len;
@@ -155,23 +163,22 @@ int exec(t_node *node, t_var *env_map)
     { 
         len = count_token_len(node->token);
         set_pipe(node);
-        if(is_buildin(node->token->str))
-            exec_buildin(node->token,env_map);
-        else
-        {
             pid = fork();
             if(pid < 0)
                 cmd_error_exit("fork","fork error",1);
             else if (pid == 0){
-                token2argv= serch_redir(node,len);
-                if(!token2argv)
-                    exit(1);
                 dup_child_pipe(node);
                 dup_fd(node);
-                execute_pipe(token2argv,env_map);
+                if(is_buildin(node->token->str))
+                    exit(exec_buildin(node->token,env_map,prev_status));
+                else{
+                    token2argv= serch_redir(node,len);
+                    if(!token2argv)
+                        exit(1);
+                    execute_pipe(token2argv,env_map);
+                }
             }
             set_parent_pipe(node);
-        }
         node = node->next;
     }
     return pid;

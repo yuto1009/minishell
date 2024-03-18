@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:29:17 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/17 23:45:16 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/18 20:59:35 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/built_in.h"
 
-void buildin_pwd()
+int builtin_pwd()
 {
     char *buff = ft_calloc(PATH_MAX, 1);
     if (buff == NULL)
@@ -24,7 +24,7 @@ void buildin_pwd()
     }
     printf("%s\n", buff);
     free(buff);
-    exit(0);
+    return 0;
 }
 
 // minishellに接続しないで動作確認するためのコード 

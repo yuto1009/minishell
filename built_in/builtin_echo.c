@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:56:12 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/18 10:59:18 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/18 21:32:02 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,27 @@
 
 // echo関数は動作確認むずいから飛ばす
 // 実装も難しくないから後回し！
-void buildin_echo(char **str) 
+int builtin_echo(t_token *token) 
 {
   bool is_op_n;
-    int i;
-    i = 1;
     is_op_n = false;
     // printf("this is echo\n");
-    while (str[i] != NULL && ft_strncmp(str[i], "-n", 2) == 0)
+    token = token->next;
+    if(!token)
+        return 0;
+    while (token->str != NULL && ft_strncmp(token->str, OP_N, 2) == 0)
     {
         is_op_n = true;
-        i++;
+        token = token->next;
     }
-    while (str[i] != NULL)
+    while (token->str != NULL)
     {
-        ft_putstr_fd(str[i], 1);
-        if (str[i + 1] != NULL)
+        ft_putstr_fd(token->str, 1);
+        if (token->next->str != NULL)
             ft_putstr_fd(" ", 1);
-        i++;
+        token = token->next;
     }
     if (!is_op_n)
         ft_putstr_fd("\n", 1);
-    exit(0);
+    return 0;
 }

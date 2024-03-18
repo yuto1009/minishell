@@ -22,7 +22,7 @@ void builtin_unset(t_token *token,t_var *env_map)
     token = token->next;
     while (env_map != NULL)
     {
-        if (is_identifier(token->str) != true)
+        if (!is_identifier(token->str))
 		{
 			g_status = GENERAL_ERRORS;
 			printf("minishell: unset: '%s': not a valid identifier\n", token->str);

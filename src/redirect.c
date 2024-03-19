@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:20:06 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/02 14:17:59 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/19 18:29:06 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,39 +75,45 @@ void open_file(t_node *node)
     // return node;
 }
 
-
-
 void dup_fd(t_node *node)
 {
     int fileoutfd,fileinfd;
-    // int stashedout_targetfd = 0,stashedin_targetfd;
     extern char **environ;
-    // 1. Redirect先のfdをopenする
-    // fileoutfd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
     fileoutfd = node->redirout_fd;
     fileinfd = node->redirin_fd;
-    // fileoutfd = stashfd(fileoutfd); // filefdを退避させる
-    // printf("fileinfd : %d\n fileoutfd : %d\n",fileinfd,fileoutfd);
-    // 2. Redirectする
-    // stashedin_targetfd = stashfd(node->currentin_fd); // targetfdを退避させる
-    // stashedout_targetfd = stashfd(node->currentout_fd); // targetfdを退避させる
     if (fileoutfd != 1)
     {
+        node->currentout_fd = stashfd(STDOUT_FILENO);
         dup2(fileoutfd, STDOUT_FILENO); // filefdをtargetfdに複製する（元々のtargetfdは閉じられる）
         close(fileoutfd);
     }
     if(fileinfd != 0)
     {
+        node->currentin_fd = stashfd(STDIN_FILENO);
         dup2(fileinfd, STDIN_FILENO);
         close(fileinfd);
     }
 }
-
+void reset_fd(t_node *node)
+{
+    if(node->currentout_fd != STDOUT_FILENO)
+    {
+        dup2(node->currentout_fd,STDOUT_FILENO);
+        close(node->currentout_fd);
+    }
+    if(node->currentin_fd != STDIN_FILENO)
+    {
+        dup2(node->currentin_fd,STDIN_FILENO);
+        close(node->currentin_fd);
+    }
+}
 char **serch_redir(t_node *node,int len)
 {
     int i;
+    // t_node *tmp;
     i = 0;
     char **token2argv;
+    // tmp = node;
     token2argv = (char **)ft_calloc(len+1,sizeof(char *));
     if(!token2argv)
         return NULL;
@@ -125,5 +131,6 @@ while(node->token->kind !=TK_EOF)
         }
         node->token = node->token->next;
     }
+    // free(node);
     return token2argv;
 }

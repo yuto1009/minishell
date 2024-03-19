@@ -6,21 +6,18 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 12:08:13 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/18 21:44:20 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/19 00:04:14 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-int count_args(t_token *token)
+int count_args(char **args)
 {
     int i;
 
     i = 0;
-    while (token->str!= NULL)
-    {
+    while (args[i]!= NULL)
         i++;
-        token = token->next;
-    }
     return (i);
 }
 
@@ -74,20 +71,21 @@ static void atol_exit(char *str)
   exit(num);
 }
 
-int builtin_exit(t_token *token,int status)
+int builtin_exit(char **args,int status)
 {
     int arg_len;
 
     arg_len = 0;
-    arg_len = count_args(token);
+    arg_len = count_args(args);
+    printf("exit\n");
     if(arg_len>2)
     {
-      ft_putstr_fd("exit : too many arguments\n",STDERR_FILENO);
+      minishell_error("exit : too many arguments");
       return (1);
     }
     else if(arg_len == 2)
-      atol_exit(token->next->str);
+      atol_exit(args[1]);
     else
-      exit(status); 
+      exit(status); // 最後のステータスを保持しておく必要あり
     return (0);
 }

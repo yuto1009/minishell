@@ -15,22 +15,25 @@ static bool is_identifier(char *name)
 	return (true);
 }
 
-void builtin_unset(t_token *token,t_var *env_map)
+int builtin_unset(char  **args, t_var *env_map)
 {
-    if (token->kind == TK_EOF)
-        return ;
-    token = token->next;
-    while (env_map != NULL)
+    int i;
+    i = 1;
+    while(args[i]!=NULL)
     {
-        if (is_identifier(token->str) != true)
-		{
-			g_status = GENERAL_ERRORS;
-			printf("minishell: unset: '%s': not a valid identifier\n", token->str);
-			return ;
-		}
-        if (ft_strncmp(token->str, env_map->name, ft_strlen(token->str)) == 0)
-            unset_env(token->str, env_map);
-        env_map = env_map->next;
+        while (env_map != NULL)
+        {
+            if (!is_identifier(args[i]))
+            {
+                g_status = GENERAL_ERRORS;
+                printf("minishell: unset: '%s': not a valid identifier\n", args[i]);
+                return 0;
+            }
+            if (ft_strncmp(args[i], env_map->name, ft_strlen(args[i])) == 0)
+                unset_env(args[i], env_map);
+            env_map = env_map->next;
+        }
+        i++;
     }
-    return (builtin_unset(token->next,env_map));
+    return 0;
 }

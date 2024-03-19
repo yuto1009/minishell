@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/03/17 22:42:18 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/18 20:35:06 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,7 +249,6 @@ static void append_question(char **str, char **new_str,int prev_status)
     char *exit_status;
     (*str)++;   // ?をインクリメント
     exit_status = ft_itoa(prev_status);
-    
     if (exit_status == NULL)
         fatal_error("MALLOC ERROR");
     while(*exit_status)
@@ -273,16 +272,16 @@ static void append_variable(char **str, char **new_str, t_var *env_map, int prev
         (*str)++;
         append_env_variable(str, new_str, env_map);
     }
-    // else{
-    //     while(**str!='\0')
-    //         (*str)++;
-    //     return;
-    // }
-    if (is_exit_status(*str))
+    else if (is_exit_status(*str))
     {
         // puts("Debug");
         (*str)++;
         append_question(str, new_str,prev_status);
+    }
+    else{
+        while(**str!='\0')
+            (*str)++;
+        return;
     }
 
     // else minishell_error

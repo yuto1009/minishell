@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 17:10:24 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/03/17 20:51:23 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/19 18:31:56 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,14 @@ static bool is_identifier(char *name)
 	return (true);
 }
 
-void builtin_export(t_token *token,t_var *env_map)
+void builtin_export(char **args,t_var *env_map)
 {
-	token = token->next;
-	while(token->kind != TK_EOF)
+    int i;
+    i = 1;
+	while(args[i]!=NULL)
 	{
-		char *env_name = trim_env_name(token->str);
-		char *env_value = trim_env_value(token->str);
+		char *env_name = trim_env_name(args[i]);
+		char *env_value = trim_env_value(args[i]);
 		if (is_identifier(env_name) != true)
 		{
 			g_status = GENERAL_ERRORS;
@@ -42,10 +43,6 @@ void builtin_export(t_token *token,t_var *env_map)
 			return ;
 		}
 		export_env(env_map, env_name, env_value);
-	 
-		
-		// free(env_name);
-		// free(env_value);
-		token = token->next;
+        i++;
 	}
 }

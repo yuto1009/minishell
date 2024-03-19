@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/17 22:23:56 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/19 18:29:21 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,35 @@ void printCommands(t_node* node)
 {
     while (node != NULL) {
         t_token* token = node->token;
-        printf("nodeindex %d :",node->index);
+        // printf("nodeindex %d :",node->index);
         while (token != NULL && token->kind!=TK_EOF) {
-            printf("%s ", token->str);
+            printf("token : %s \n", token->str);
             token = token->next;
         }
         printf("\n");
         node = node->next;
     }
 }
-
+int count_token_len(t_token *token)
+{
+    int i;
+    t_token *tmp;
+    tmp = token;
+    i = 0;
+    while(tmp!= NULL)
+    {
+        i++;
+        tmp = tmp->next;
+    }
+    free(tmp);
+    return (i-1);
+}
 void interpret(char *line, t_var *env_map)
 {
     struct s_node *node;
     int status;
     int prev_status;
+    char **token2argv;
     pid_t pid;
     t_token *token;
     
@@ -51,8 +65,20 @@ void interpret(char *line, t_var *env_map)
     }
     node = parser(token);
     // printCommands(node);
-    pid = exec(node, env_map);
-    wait_pid(pid);
+
+        if(node->next == NULL&&is_buildin(node->token->str)){
+            token2argv= serch_redir(node,count_token_len(node->token));
+                if(!token2argv)
+                    exit(1);
+            dup_fd(node);
+            exec_buildin(token2argv,env_map,prev_status);
+            reset_fd(node);
+        }
+        else
+        {
+            pid = exec(node, env_map,prev_status);
+            wait_pid(pid);
+        }
     return ; // 仮
 }
 

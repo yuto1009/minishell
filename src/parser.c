@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/03/02 14:18:11 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/19 18:27:02 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ t_node* createCommandNode(t_token* startToken,int index) {
     newNode->token = startToken;
     newNode->next = NULL;
     newNode->prev = NULL;
+    newNode->currentin_fd = 0;
+    newNode->currentout_fd = 1;
     newNode->redirout_fd = 1;
     newNode->redirin_fd = 0;
     newNode->pipe_in[0] = STDIN_FILENO;

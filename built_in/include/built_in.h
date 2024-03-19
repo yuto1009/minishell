@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 16:34:36 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/17 20:51:01 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/19 00:00:07 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,11 @@ typedef struct s_var t_var;
 typedef struct s_token t_token;
 #define OP_N "-n"
 
-void builtin_unset(t_token *token,t_var *env_map);
-void builtin_pwd();
-int builtin_exit(char **args);
+int builtin_unset(char **args,t_var *env_map);
 void builtin_env(t_var *env_map);
-void builtin_export(t_token *token,t_var *env_map);
-void builtin_pwd();
-void builtin_echo(t_token **token);
-int builtin_exit(char **args);
+void builtin_export(char **args,t_var *env_map);
+int builtin_pwd();
+int builtin_echo(char **args);
+int builtin_exit(char **args,int status);
 #endif
 

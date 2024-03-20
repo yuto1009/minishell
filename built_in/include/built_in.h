@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 16:34:36 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/20 10:00:28 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/20 13:14:02 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ typedef struct s_token t_token;
 #define OP_N "-n"
 
 int builtin_unset(char **args,t_var *env_map);
-void builtin_env(t_var *env_map);
+int builtin_env(t_var *env_map);
 void builtin_export(char **args,t_var *env_map);
 int builtin_pwd();
 int builtin_echo(char **args);

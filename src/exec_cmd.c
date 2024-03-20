@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/19 11:51:51 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/20 10:01:03 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,8 @@ static void execute_pipe(char **argv,t_var *env_map)
             return builtin_pwd();
         if(strcmp(argv[0],"exit") == 0)
             return builtin_exit(argv,prev_status);
+        if(strcmp(argv[0],"cd") == 0)
+            return builtin_cd(argv,env_map);
         return 0;
 }
 

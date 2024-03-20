@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 17:10:24 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/03/19 18:31:56 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/19 22:34:54 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,18 @@ static bool is_identifier(char *name)
 	}
 	return (true);
 }
-
+bool is_env_exists(t_var *env_map , char *name)
+{
+    t_var *tmp;
+    tmp = env_map;
+    while(tmp!=NULL)
+    {
+        if(ft_strncmp(tmp->name,name,ft_strlen(name)) == 0)
+            return true;
+        tmp = tmp->next;
+    }
+    return false;
+}
 void builtin_export(char **args,t_var *env_map)
 {
     int i;
@@ -36,6 +47,8 @@ void builtin_export(char **args,t_var *env_map)
 	{
 		char *env_name = trim_env_name(args[i]);
 		char *env_value = trim_env_value(args[i]);
+         if(is_env_exists(env_map,env_name))
+            return ;
 		if (is_identifier(env_name) != true)
 		{
 			g_status = GENERAL_ERRORS;

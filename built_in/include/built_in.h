@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 16:34:36 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/19 00:00:07 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/20 10:00:28 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ void builtin_export(char **args,t_var *env_map);
 int builtin_pwd();
 int builtin_echo(char **args);
 int builtin_exit(char **args,int status);
+int builtin_cd(char **args, t_var *env_map);
 #endif
 

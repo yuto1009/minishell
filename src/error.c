@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 15:22:40 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/12 13:06:45 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/20 10:15:06 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,15 @@ void minishell_error(char *message)
     // write(1,"\n",1);
     // exit(MINISHELL_ERROR);
 }
+void cd_error(char *cmd)
+{
+    ft_putstr_fd("minishell: ", STDERR_FILENO);
+    ft_putstr_fd("cd: ", STDERR_FILENO);
+    ft_putstr_fd(cmd, STDERR_FILENO);
+    ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+    
 
+}
 // bashと同様の部分でエラーがある場合に呼び出す。
 // exit_statusもbashと同様の値を返す。
 void cmd_error_exit(char *location, char *message, int exit_status)

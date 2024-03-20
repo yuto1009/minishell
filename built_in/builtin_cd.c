@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 23:03:00 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/20 10:48:15 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/20 10:50:25 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ char *new_pwd(char *prev_pwd, char *path)
              path++;
         else
             new_pwd = append_pwd(new_pwd,&path); //todo 3/20
-        printf("path :%s\n",path);
     }
     return new_pwd;
 }
@@ -102,7 +101,6 @@ int builtin_cd(char **args, t_var *env_map)
         path = (char *)malloc(sizeof(char )* ft_strlen(args[1])+1);
         ft_strlcpy(path , args[1],ft_strlen(args[1])+1);
     }
-    printf("path %s\n",path);
     if(chdir(path) < 0)
     {
        cd_error(path);

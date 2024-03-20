@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 20:56:14 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/17 22:24:20 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/19 22:31:22 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,12 +167,13 @@ static t_var *create_map(char *name, char *value)
     return (map);
 }
 
+
+
 t_var *export_env(t_var *map, char *env_name, char *env_value)
 {
+   
     if(map == NULL)
-    {
         map = create_map(env_name, env_value);
-    }
     else
     {
         while(map->next != NULL)

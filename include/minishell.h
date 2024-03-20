@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/19 18:25:58 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/20 10:14:19 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void minishell_error(char *message);
 void cmd_error_exit(char *location, char *message, int exit_status);
 int syntax_error_exit(char *token_str);
 int unsupported_token_msg(char *str);
+void cd_error(char *cmd);
 // tokenize.c
 bool is_operator(char *line);
 int is_blank(char c) ;

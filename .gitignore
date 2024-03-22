@@ -1,6 +1,0 @@
-.vscode
-.DS_Store
-**.o
-**.a
-**/a.out
-**/minishell

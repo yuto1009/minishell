@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/23 00:09:21 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/23 13:05:33 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void roop_readline(void)
         }
         if(is_only_blank_character(line))
             continue;
-             // breakをreturn (0)に変えるとリークが確認できる (テスターがNG出すようになる)
+            // breakをreturn (0)に変えるとリークが確認できる (テスターがNG出すようになる)
         if(*line)
             add_history(line); 
         interpret(line, env_map);

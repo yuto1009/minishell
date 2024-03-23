@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 23:03:00 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/22 23:35:18 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/23 12:54:27 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char *new_pwd(char *prev_pwd, char *path)
         else if(ft_strncmp(path,".",1) == 0)
              path++;
         else
-            new_pwd = append_pwd(new_pwd,&path); //todo 3/20
+            new_pwd = append_pwd(new_pwd,&path); 
     }
     return new_pwd;
 }

@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/23 00:34:37 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/23 13:14:55 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ static void execute_pipe(char **argv,t_var *env_map)
         else if (ft_strncmp(argv[0], "echo", 5) == 0)
             return builtin_echo(argv);
 	    else if (ft_strncmp(argv[0], "pwd", 4) == 0)
-            return builtin_pwd();
+            return builtin_pwd(env_map);
         else if(ft_strncmp(argv[0], "exit", 5) == 0)
             return builtin_exit(argv,prev_status);
     	else if (ft_strncmp(argv[0], "cd", 3) == 0)

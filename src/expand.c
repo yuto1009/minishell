@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/03/23 00:28:51 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/23 16:48:23 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ static bool is_env_variable(char *str)
     }
     return false;
 }
-bool is_alpha(char chr)
+static bool is_alpha(char chr)
 {
     return (('a'<=chr && chr<='z') || ('A'<= chr && chr<='Z'));
 }
@@ -233,7 +233,7 @@ static void append_env_variable(char **str, char **new_str, t_var *env_map)
     }
 }
 
-bool is_exit_status(char *str)
+static bool is_exit_status(char *str)
 {
     char *p;
     p = str;
@@ -326,15 +326,6 @@ static void expand_variable(t_token *token, t_var *env_map,int prev_status)
     token->str = new_str;
 
     expand_variable(token->next, env_map,prev_status);
-}
-
-void print_tokens(t_token *token)
-{
-    if (token == NULL || token->kind == TK_EOF)
-        return ;
-    if (token != NULL)
-        printf("token : %s\n", token->str);
-    return (print_tokens(token->next));
 }
 
 int expand(t_token *token, t_var *env_map, int prev_status)

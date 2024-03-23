@@ -3,22 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/21 23:51:11 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/23 17:03:58 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-bool is_operator(char *line)
+static bool is_operator(char *line)
 {
-    //operatorに<>追加しました　by kyoshida
     const char *operators[] = { "||", "&&", "&", ";", ";;", "(", ")", "|", "\n"};
-
     size_t i = 0;
-    while (i < sizeof(operators) / sizeof(*operators))//comment by kyoshida iを配列の要素数より小さいだけ回している？
+    
+    while (i < sizeof(operators) / sizeof(*operators))
     {
         if (ft_strncmp(line, operators[i], ft_strlen(operators[i])) == 0) 
         {
@@ -29,7 +28,7 @@ bool is_operator(char *line)
     return (false);
 }
 
-bool is_redirection_operator(char *line)
+static bool is_redirection_operator(char *line)
 {
     const char *operators[] = {">>","<<","<>","<",">"};
 
@@ -45,12 +44,12 @@ bool is_redirection_operator(char *line)
     return (false);
 
 }
-int is_blank(char c) 
+static int is_blank(char c) 
 {
     return (c == ' ' || c == '\t' || c == '\n');
 }
 
-bool is_metacharacter(char c)
+static bool is_metacharacter(char c)
 {
     const char *metacharacters = "| \t";
 
@@ -61,7 +60,7 @@ bool is_metacharacter(char c)
     return (false);
 }
 
-t_token *new_token(char *str, token_kind kind)
+static t_token *new_token(char *str, token_kind kind)
 {
     t_token *token;
 
@@ -75,7 +74,7 @@ t_token *new_token(char *str, token_kind kind)
     return (token);
 }
 
-t_token *tokenize_operator(char **line)
+static t_token *tokenize_operator(char **line)
 {
     const char *operators[] = {"||", "&&", ";;", "&", ";", "(", ")", "|", "\n"};
     char *operator;
@@ -98,7 +97,7 @@ t_token *tokenize_operator(char **line)
     return (new_token(operator, TK_OPERATOR));
 } 
 
-t_token *tokenize_redirection_operator(char **line)
+static t_token *tokenize_redirection_operator(char **line)
 {
     const char *operators[] = {">>","<<","<>","<",">"};
     char *operator;
@@ -120,7 +119,7 @@ t_token *tokenize_redirection_operator(char **line)
     *line += ft_strlen(operator);
     return (new_token(operator, TK_REDIRECTION));
 }
-bool is_metacharacter_token(char c)
+static bool is_metacharacter_token(char c)
 {
     const char *metacharacters = "|\t";
     
@@ -132,7 +131,7 @@ bool is_metacharacter_token(char c)
     }
     return (false);
 }
-bool is_multquote(char *line)
+static bool is_multquote(char *line)
 {
     int i =0;
     while(line[i]!='\0')
@@ -145,7 +144,7 @@ bool is_multquote(char *line)
     }
     return false;
 }
-t_token *tokenize_word(char **line) // クオート除去機能はexpand.cに移動しました　いつかこの関数のクオート除去機能は消さないといかない
+static t_token *tokenize_word(char **line) 
 {
     const size_t word_size = ft_strlen(*line) + 1;
     char *word;
@@ -256,33 +255,4 @@ t_token *tokenize(char *line)
         current->next->prev = current;
     }
     return (head);
-}
-
-char **token_to_argv(t_token *token)
-{
-    char **argv;
-    t_token *head = token;
-    size_t token_size;
-    size_t i;
-    
-    token_size = 0;
-    while (token->kind != TK_EOF)
-    {
-        token = token->next;
-        token_size++;
-    }
-    token_size++;
-    argv = (char **)ft_calloc(token_size+1, sizeof(char *));
-    if (argv == NULL)
-        fatal_error("malloc error");
-    token = head;
-    i = 0;
-    while (i < token_size)
-    {
-        argv[i] = token->str;
-        token = token->next;
-        i++;
-    }
-    argv[i] = NULL;
-    return (argv);
 }

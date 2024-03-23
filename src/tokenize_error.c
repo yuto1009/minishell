@@ -3,33 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_error.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:33:09 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/23 00:28:31 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/23 17:12:41 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-int unsupported_variable(t_token *token)
-{
-    if(ft_strncmp(token->str , "||",2) == 0)
-        return unsupported_token_msg("||");
-    else if(ft_strncmp(token->str , ";",1) == 0)
-        return unsupported_token_msg(";");
-    else if(ft_strncmp(token->str , "&&",2) == 0)
-        return unsupported_token_msg("&&");
-    else if(ft_strncmp(token->str , "(",1) == 0 || ft_strncmp(token->str , ")",1) == 0)
-        return unsupported_token_msg("()");
-    else if(ft_strncmp(token->str , "&",1) == 0)
-        return unsupported_token_msg("&");
-    else if(ft_strncmp(token->str , "<>",2) == 0)
-        return unsupported_token_msg("<>");
-    // unsupported = { "||", "&&", "&", ";", ";;", "(", ")"};
-    return 0;
-}
-
 
 int tokenize_error(t_token *token)
 {

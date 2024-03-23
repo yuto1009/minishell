@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/23 15:58:50 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/23 17:03:40 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ int	count_token_len(t_token *token)
 	}
 	free(tmp);
 	return (i - 1);
+}
+
+static int	is_blank(char c)
+{
+	return (c == ' ' || c == '\t' || c == '\n');
 }
 
 static bool	is_only_blank_character(char *line)

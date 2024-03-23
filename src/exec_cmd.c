@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/23 00:34:37 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/23 18:08:41 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 //execで使用中
 
 
-int get_listsize(t_var *env_map)
+static int get_listsize(t_var *env_map)
 {
     int count;
     count = 0;
@@ -29,7 +29,7 @@ int get_listsize(t_var *env_map)
 }
 
 
-char *list2join(t_var *map)
+static char *list2join(t_var *map)
 {
     char *namejoin;
     char *alljoin;
@@ -72,7 +72,7 @@ static char **envlist2char(t_var *env_map)
     ans[i] =NULL;
     return ans;
 }
-void check_access(char *args)
+static void check_access(char *args)
 {
     struct stat	st;
 	int			result;
@@ -103,21 +103,7 @@ static void execute_pipe(char **argv,t_var *env_map)
 }
 // envlist2char(env_map)
 
- int serch_endindex(t_node *node)
-{
-    t_node *tmp;
-    int count;
-    tmp = node;
-    count = 0;
-    while(tmp!=NULL)
-    {
-        count++;
-        tmp = tmp->next;
-    }
-    return count;
-}
-
- bool is_buildin(char  *str)
+ bool is_builtin(char  *str)
 {
     if (ft_strncmp(str, "echo", 5) == 0)
 		return (true);
@@ -136,7 +122,7 @@ static void execute_pipe(char **argv,t_var *env_map)
 	return (false);
 }
 
- int exec_buildin(char  **argv,t_var *env_map,int prev_status)
+ int exec_builtin(char  **argv,t_var *env_map,int prev_status)
 {
     
 	    if (ft_strncmp(argv[0], "export", 7) == 0)
@@ -170,12 +156,12 @@ int exec(t_node *node, t_var *env_map,int prev_status)
             else if (pid == 0)
             {
                 dup_child_pipe(node);
-                token2argv= serch_redir(node,count_token_len(node->token));
+                token2argv= search_redir(node,count_token_len(node->token));
                 if(!token2argv)
                     exit(1);
                 dup_fd(node);
-                if(is_buildin(token2argv[0]))
-                    exit(exec_buildin(token2argv,env_map,prev_status));
+                if(is_builtin(token2argv[0]))
+                    exit(exec_builtin(token2argv,env_map,prev_status));
                 else
                 {
                     execute_pipe(token2argv,env_map);

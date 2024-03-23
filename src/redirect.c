@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:20:06 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/22 14:14:13 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/23 17:56:15 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-int stashfd(int fd)
+static int stashfd(int fd)
 {
     int stashfd;
 
@@ -21,7 +21,7 @@ int stashfd(int fd)
     return (stashfd);
 }
 
-int heredoc(char *delimiter)
+static int heredoc(char *delimiter)
 {
     char    *line;
     int     pfd[2];
@@ -54,7 +54,7 @@ int heredoc(char *delimiter)
 }
 
 
-void open_file(t_node *node)
+static void open_file(t_node *node)
 {
     char *filename;
 
@@ -110,10 +110,10 @@ void reset_fd(t_node *node)
         close(node->currentin_fd);
     }
 }
-char **serch_redir(t_node *node,int len)
+char **search_redir(t_node *node,int len)
 {
     int i;
-    // t_node *tmp;
+    
     i = 0;
     char **token2argv;
     // tmp = node;

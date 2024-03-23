@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/23 16:01:26 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/23 18:09:34 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,19 @@
 
 #include "../libft/libft.h"
 #include "../built_in/include/built_in.h"
-// #include "parser.h"
-#include <stdio.h> // DEBUG
+#include <stdio.h> 
 # include <signal.h>
-#include <readline/readline.h> // readline, add_history
+#include <readline/readline.h> 
 #include <readline/history.h>
-#include <stdlib.h> // free exit getenv
-#include <unistd.h> // fork execve access 
-#include <stdbool.h> // boolean
-#include <sys/wait.h> // wait
-#include <errno.h> // errno
-#include <string.h> // strerror
+#include <stdlib.h> 
+#include <unistd.h> 
+#include <stdbool.h> 
+#include <sys/wait.h> 
+#include <errno.h> 
+#include <string.h> 
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-// #include <limits.h>
 
 # define MINISHELL_ERROR 255
 # define SYNTAX_ERROR 258
@@ -49,7 +47,6 @@ struct s_token {
     t_token *next;
 };
 
-// typedef struct s_token t_token;
 typedef struct s_node t_node;
 
 struct s_node {
@@ -59,8 +56,8 @@ struct s_node {
     t_node *prev;
     t_node *redirection;
     t_node *next;
-    int currentout_fd; // 現在のfd初期値はSTDIN
-    int currentin_fd; // 現在のfd初期値はSTDOUT
+    int currentout_fd; 
+    int currentin_fd; 
     int redirout_fd;
     int redirin_fd;
     int pipe_in[2];
@@ -88,48 +85,48 @@ int count_token_len(t_token *token);
 // interpret.c
 void	interpret(char *line, t_var *env_map);
 
+// tokenize.c
+t_token *tokenize(char *line);
+
+// tokenize_error.c
+int tokenize_error(t_token *token);
+
+// parser.c
+t_node *parser(t_token *token);
+
+// error.c
 void set_output_destination(FILE *dst);
 void fatal_error(char *message);
 void minishell_error(char *message);
+void cd_error(char *cmd);
 void cmd_error_exit(char *location, char *message, int exit_status);
 int syntax_error_exit(char *token_str);
 int unsupported_token_msg(char *str);
-void cd_error(char *cmd);
-// tokenize.c
-bool is_operator(char *line);
-int is_blank(char c) ;
-bool is_metacharacter(char c);
-t_token *new_token(char *str, token_kind kind);
-t_token *tokenize_operator(char **line);
-t_token *tokenize_word(char **line);
-t_token *tokenize(char *line);
-char **token_to_argv(t_token *token);
-int tokenize_error(t_token *token);
-//parser
-t_node *parser(t_token *token);
-t_node *get_next_node(t_node *node);
 
 // expand.c
 int expand(t_token *token, t_var *env_map,int prev_status);
 
-//pipe_utils.c
+// pipe_utils.c
 void set_pipe(t_node *node);
 void dup_child_pipe(t_node *node);
 void set_parent_pipe(t_node *node);
-void	signal_heredoc(void);
 
-//signal
+// signal.c
+void	signal_heredoc(void);
 void	signal_parent_init(void);
 void	signal_child_init(void);
 void setup_signal();
 
-//redirect
-int heredoc(char *delimiter);
-void open_file(t_node *node);
+// redirect.c
 void dup_fd(t_node *node);
-char **serch_redir(t_node *node,int len);
-int exec(t_node *node,t_var *env_map,int prev_status);
 void reset_fd(t_node *node);
+char **search_redir(t_node *node,int len);
+
+// exec_cmd.c
+bool is_builtin(char  *str);
+int exec_builtin(char **argv,t_var *env_map,int prev_status);
+int exec(t_node *node,t_var *env_map,int prev_status);
+
 //path
 char *search_path(char *filename);
 
@@ -145,11 +142,6 @@ t_var *export_env(t_var *map, char *env_name, char *env_value);
 
 
 void wait_pid(pid_t pid);
-
-int count_token_len(t_token *token);
-//buildin
- bool is_buildin(char  *str);
- int exec_buildin(char **argv,t_var *env_map,int prev_status);
 
 # define TK_WORD 0
 # define TK_OPERATOR 1

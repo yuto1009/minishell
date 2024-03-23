@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 15:54:37 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/23 16:06:21 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/23 18:08:46 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ static void	exec_command(t_node *node, t_var *env_map, int prev_status)
 	char	**token2argv;
 	pid_t	pid;
 
-	if (node->next == NULL && is_buildin(node->token->str))
+	if (node->next == NULL && is_builtin(node->token->str))
 	{
-		token2argv = serch_redir(node, count_token_len(node->token));
+		token2argv = search_redir(node, count_token_len(node->token));
 		if (!token2argv)
 			exit(1);
 		dup_fd(node);
-		g_status = exec_buildin(token2argv, env_map, prev_status);
+		g_status = exec_builtin(token2argv, env_map, prev_status);
 		reset_fd(node);
 	}
 	else

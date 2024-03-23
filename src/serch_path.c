@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   serch_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:34:41 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/22 17:53:15 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/23 20:28:29 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 
-bool is_path_executable(const char *path)
+static bool is_path_executable(const char *path)
 {
     int result = access(path, X_OK);
     if (result < 0)
@@ -45,7 +45,7 @@ static char *trim_single_path(char *paths)
     return path;
 }
 
-bool is_permit(char *executable,char *path)
+static bool is_permit(char *executable,char *path)
 {
     if(access(executable,F_OK) == 0)
     {

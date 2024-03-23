@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/23 18:09:34 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/23 20:28:59 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,9 +127,8 @@ bool is_builtin(char  *str);
 int exec_builtin(char **argv,t_var *env_map,int prev_status);
 int exec(t_node *node,t_var *env_map,int prev_status);
 
-//path
+// search_path.c
 char *search_path(char *filename);
-
 
 // map.c
 t_var * init_env_map(void);

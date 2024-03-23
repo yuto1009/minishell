@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/23 20:59:09 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/23 21:22:58 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,12 +146,17 @@ int						exec(t_node *node, t_var *env_map, int prev_status);
 char					*search_path(char *filename);
 
 // map.c
-char					*trim_env_value(char *env);
-t_var					*init_env_map(void);
-char					*get_env_value(char *env_name, t_var *map);
-void					unset_env(char *env_name, t_var *map);
 t_var					*export_env(t_var *map, char *env_name,
 							char *env_value);
+char					*trim_env_name(char *env);
+char					*trim_env_value(char *env);
+void					unset_env(char *env_name, t_var *map);
+
+// map_get.c
+char					*get_env_value(char *env_name, t_var *map);
+
+// map_init.c
+t_var					*init_env_map(void);
 
 // wait_pid.c
 void					wait_pid(pid_t pid);

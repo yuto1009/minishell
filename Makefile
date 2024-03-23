@@ -5,7 +5,7 @@ CC       = cc
 # INCLUDES = -I include -I$(RLDIR)/include
 CFLAGS   = -Wall -Wextra -Werror -g  -I include -I $(shell brew --prefix readline)/include
 LDFLAGS  = -lreadline -L$(shell brew --prefix readline)/lib
-SRCS     = src/main.c src/error.c src/tokenize.c built_in/builtin_exit.c built_in/builtin_env.c \
+SRCS     = src/main.c src/interpret.c src/error.c src/tokenize.c built_in/builtin_exit.c built_in/builtin_env.c \
 src/parser.c src/pipe_utils.c src/signal.c src/redirect.c \
 src/tokenize_error.c src/serch_path.c src/exec_cmd.c src/wait_pid.c src/expand.c src/map.c built_in/builtin_export.c\
 built_in/builtin_unset.c built_in/builtin_echo.c built_in/builtin_pwd.c built_in/builtin_cd.c\

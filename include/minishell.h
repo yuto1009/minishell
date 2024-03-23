@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/22 23:49:37 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/23 16:01:26 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 
 # define MINISHELL_ERROR 255
 # define SYNTAX_ERROR 258
+# define CMD_NOT_FOUND_ERROR 127
 # define GENERAL_ERRORS 1
 
 extern int g_status;
@@ -67,8 +68,7 @@ struct s_node {
     int index;
 
 };
-//main
-void roop_readline(void);
+
 
 // 環境変数マップ
 typedef struct s_var t_var;
@@ -82,8 +82,12 @@ struct s_var {
 
 extern bool is_sig_get;
 
-// volatile sig_atomic_t	sig = 0;
-// error.c
+// main.c
+int count_token_len(t_token *token);
+
+// interpret.c
+void	interpret(char *line, t_var *env_map);
+
 void set_output_destination(FILE *dst);
 void fatal_error(char *message);
 void minishell_error(char *message);
@@ -101,7 +105,6 @@ t_token *tokenize_word(char **line);
 t_token *tokenize(char *line);
 char **token_to_argv(t_token *token);
 int tokenize_error(t_token *token);
-int count_token_len(t_token *token);
 //parser
 t_node *parser(t_token *token);
 t_node *get_next_node(t_node *node);

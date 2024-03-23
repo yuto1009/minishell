@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/14 20:56:14 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/23 19:46:44 by yoshidakazu      ###   ########.fr       */
+/*   Created: 2024/03/23 21:23:23 by yutoendo          #+#    #+#             */
+/*   Updated: 2024/03/23 21:23:27 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

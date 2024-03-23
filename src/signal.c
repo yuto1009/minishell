@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:13:26 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/03/17 18:22:17 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/23 17:20:03 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 int g_status;
-void	handler_heredoc(int signum)
+static void	handler_heredoc(int signum)
 {
     if(signum)
     ;
@@ -21,7 +21,7 @@ void	handler_heredoc(int signum)
     exit(0);
 }
 
-void	handler_heredoQuit(int signum)
+static void	handler_heredoc_quit(int signum)
 {
     if(signum)
     ;    
@@ -38,12 +38,12 @@ void	signal_heredoc(void)
 	act1.sa_handler = handler_heredoc;
 	sigaction(SIGINT, &act1, NULL);
 	sigemptyset(&act2.sa_mask);
-	act2.sa_handler = handler_heredoQuit;
+	act2.sa_handler = handler_heredoc_quit;
 	sigaction(SIGQUIT, &act2, NULL);
 }
 
 
-void reset_sig(int sig)
+static void reset_sig(int sig)
 {
     struct sigaction	sa;
 
@@ -51,7 +51,7 @@ void reset_sig(int sig)
 	sa.sa_handler = SIG_DFL;
 	sigaction(sig, &sa, NULL);
 }
-void ignore_sig(int sig)
+static void ignore_sig(int sig)
 {
     struct sigaction	sa;
     sigemptyset(&sa.sa_mask);
@@ -70,7 +70,7 @@ void	signal_child_init(void)
     reset_sig(SIGQUIT);
 }
 
-void sigint_action()
+static void sigint_action()
 {
     printf("\n");
 	rl_on_new_line();
@@ -79,7 +79,7 @@ void sigint_action()
     g_status = GENERAL_ERRORS;
 }
 
-void sigquit_action()
+static void sigquit_action()
 {
     rl_on_new_line();
 	rl_redisplay();

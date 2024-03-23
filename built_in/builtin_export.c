@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 17:10:24 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/03/22 23:25:02 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/23 20:34:09 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int builtin_export(char **args,t_var *env_map)
     i = 1;
 	while(args[i]!=NULL)
 	{
-		char *env_name = trim_env_name(args[i]);
+		char *env_name = (args[i]);
         if(!env_name && is_identifier(args[i]))
             return 0;
 		char *env_value = trim_env_value(args[i]);

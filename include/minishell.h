@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/22 23:49:37 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/23 13:17:28 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 
 # define MINISHELL_ERROR 255
 # define SYNTAX_ERROR 258
+# define CMD_NOT_FOUND_ERROR 127
 # define GENERAL_ERRORS 1
 
 extern int g_status;

@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/23 17:03:58 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/23 20:47:13 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static bool is_metacharacter(char c)
     return (false);
 }
 
-static t_token *new_token(char *str, token_kind kind)
+static t_token *new_token(char *str, int kind)
 {
     t_token *token;
 

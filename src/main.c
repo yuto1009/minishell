@@ -6,11 +6,12 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/23 17:03:40 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/23 20:51:44 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include <stdio.h>
 
 int	count_token_len(t_token *token)
 {

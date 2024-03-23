@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 20:56:14 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/22 22:41:37 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/23 20:38:04 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_var *export_env(t_var *map, char *env_name, char *env_value);
 
 
-char *trim_env_name(char *env)
+static char *trim_env_name(char *env)
 {
     char * equal_pos;
     char *name;
@@ -93,39 +93,6 @@ char *get_env_value(char *env_name, t_var *map)
     }
     return NULL;
 }
-
-char *get_env_list(t_var *map)
-{
-    char *ans;
-    char *tmp;
-    ans =NULL;
-    tmp = NULL;
-    while(map!=NULL)
-    {
-        if(ans)
-        {
-            ans = ft_strjoin(ans, map->name);
-            tmp = ft_strjoin(ans, "=");
-            ans = tmp;
-            free(tmp);
-        }
-        else
-            ans = ft_strjoin(map->name, "=");
-            
-        tmp = ft_strjoin(ans , map->value);
-        free(ans);
-        ans = tmp;
-        free(tmp);
-        tmp = ft_strjoin(ans, "\n");
-        free(ans);
-        ans = tmp;
-        free(tmp);
-        map = map->next;
-    }
-    return ans;
-}
-
-
 
 void unset_env(char *env_name,t_var *map)
 {

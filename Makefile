@@ -9,7 +9,7 @@ SRCS     = src/main.c src/interpret.c src/error.c src/tokenize.c built_in/builti
 src/parser.c src/pipe_utils.c src/signal.c src/redirect.c \
 src/tokenize_error.c src/serch_path.c src/exec_cmd.c src/wait_pid.c src/expand.c src/map.c built_in/builtin_export.c\
 built_in/builtin_unset.c built_in/builtin_echo.c built_in/builtin_pwd.c built_in/builtin_cd.c src/map_get.c src/map_init.c\
-
+src/tokenize_is.c src/tokenize_line.c src/tokenize_new.c src/tokenize_operator.c src/tokenize_word.c
 OBJS = $(SRCS:.c=.o)
 
 LIBFT_PATH = ./libft

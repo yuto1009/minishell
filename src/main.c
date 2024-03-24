@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/23 20:51:44 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/24 11:54:16 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,6 @@ int	count_token_len(t_token *token)
 	return (i - 1);
 }
 
-static int	is_blank(char c)
-{
-	return (c == ' ' || c == '\t' || c == '\n');
-}
 
 static bool	is_only_blank_character(char *line)
 {

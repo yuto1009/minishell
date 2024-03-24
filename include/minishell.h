@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/24 11:51:53 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/24 11:59:27 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 # include "../libft/libft.h"
 # include <errno.h>
 # include <fcntl.h>
-# include <stdio.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/stat.h>
@@ -98,24 +98,24 @@ int						count_token_len(t_token *token);
 // interpret.c
 void					interpret(char *line, t_var *env_map);
 
-//tokenize_line.c
-t_token	*tokenize_line(char **line);
+// tokenize_line.c
+t_token					*tokenize_line(char **line);
 
-//tokenize_word.c
-t_token *tokenize_word(char **line);
+// tokenize_word.c
+t_token					*tokenize_word(char **line);
 
-//tokenize_new.c
-t_token	*new_token(char *str, int kind);
+// tokenize_new.c
+t_token					*new_token(char *str, int kind);
 
-//tokenize_is.c
-bool	is_operator(char *line);
-bool	is_redirection_operator(char *line);
-int	is_blank(char c);
-bool	is_metacharacter(char c);
+// tokenize_is.c
+bool					is_operator(char *line);
+bool					is_redirection_operator(char *line);
+int						is_blank(char c);
+bool					is_metacharacter(char c);
 
-//tokenize_operator.c
-t_token	*tokenize_operator(char **line);
-t_token	*tokenize_redirection_operator(char **line);
+// tokenize_operator.c
+t_token					*tokenize_operator(char **line);
+t_token					*tokenize_redirection_operator(char **line);
 // tokenize.c
 t_token					*tokenize(char *line);
 

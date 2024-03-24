@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/24 11:59:27 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/24 14:05:56 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 # include "../libft/libft.h"
 # include <errno.h>
 # include <fcntl.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <signal.h>
-# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <signal.h>
+# include <stdbool.h>
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -148,6 +148,9 @@ void					signal_heredoc(void);
 void					signal_parent_init(void);
 void					signal_child_init(void);
 void					setup_signal(void);
+
+//headoc.c
+int heredoc(char *delimiter);
 
 // redirect.c
 void					dup_fd(t_node *node);

@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/24 14:05:56 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/25 11:53:57 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,13 @@ bool					is_builtin(char *str);
 int						exec_builtin(char **argv, t_var *env_map,
 							int prev_status);
 int						exec(t_node *node, t_var *env_map, int prev_status);
+
+///exec_cmd.c
+int get_listsize(t_var *env_map);
+char *list2join(t_var *map);
+char **envlist2char(t_var *env_map);
+void check_access(char *args);
+
 
 // search_path.c
 char					*search_path(char *filename);

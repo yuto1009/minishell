@@ -6,13 +6,11 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/25 11:54:40 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/25 13:25:32 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-// execで使用中
 
 static void	execute_pipe(char **argv, t_var *env_map)
 {
@@ -24,11 +22,9 @@ static void	execute_pipe(char **argv, t_var *env_map)
 	else
 		executable = argv[0];
 	check_access(argv[0]);
-	// printf("argv %s\n",argv[0]);
 	execve(executable, argv, envlist2char(env_map));
 	cmd_error_exit(argv[0], "command not found", 127);
 }
-// envlist2char(env_map)
 
 bool	is_builtin(char *str)
 {

@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/25 11:53:57 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/25 13:24:56 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 # include "../libft/libft.h"
 # include <errno.h>
 # include <fcntl.h>
+# include <signal.h>
+# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <readline/readline.h>
 # include <readline/history.h>
-# include <signal.h>
-# include <stdbool.h>
+# include <readline/readline.h>
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -138,6 +138,33 @@ int						unsupported_token_msg(char *str);
 // expand.c
 int						expand(t_token *token, t_var *env_map, int prev_status);
 
+// expand_append.c
+void					append_variable(char **str, char **new_str,
+							t_var *env_map, int prev_status);
+
+// expand_append_utils.c
+void					append_question(char **str, char **new_str,
+							int prev_status);
+void					append_env_variable(char **str, char **new_str,
+							t_var *env_map);
+void					append_double_quote(char **str, char **new_str,
+							t_var *env_map, int prev_status);
+void					append_single_quote(char **str, char **new_str);
+void					append_char(char **str, char new_char);
+
+// expand_remove.c
+void					remove_void_tokens(t_token *token);
+void					remove_single_quote(char **str, char **new_str);
+void					remove_double_quote(char **str, char **new_str);
+void					remove_quotes(t_token *token);
+
+// expand_is.c
+bool					is_dollar_sign(char c);
+bool					is_single_dollar_sign(char *str);
+bool					is_env_variable(char *str);
+bool					is_alpha(char chr);
+bool					is_exit_status(char *str);
+
 // pipe_utils.c
 void					set_pipe(t_node *node);
 void					dup_child_pipe(t_node *node);
@@ -149,8 +176,8 @@ void					signal_parent_init(void);
 void					signal_child_init(void);
 void					setup_signal(void);
 
-//headoc.c
-int heredoc(char *delimiter);
+// headoc.c
+int						heredoc(char *delimiter);
 
 // redirect.c
 void					dup_fd(t_node *node);
@@ -163,12 +190,11 @@ int						exec_builtin(char **argv, t_var *env_map,
 							int prev_status);
 int						exec(t_node *node, t_var *env_map, int prev_status);
 
-///exec_cmd.c
-int get_listsize(t_var *env_map);
-char *list2join(t_var *map);
-char **envlist2char(t_var *env_map);
-void check_access(char *args);
-
+/// exec_cmd.c
+int						get_listsize(t_var *env_map);
+char					*list2join(t_var *map);
+char					**envlist2char(t_var *env_map);
+void					check_access(char *args);
 
 // search_path.c
 char					*search_path(char *filename);

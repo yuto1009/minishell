@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 12:08:13 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/26 17:34:46 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/26 19:50:53 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ static bool check_long_overflow(char *str,int sign)
 
 static void atol_exit(char *str)
 {
-    //256以上の場合終了コードは256で割ったあまりを返す
-  // char *tmpstr;
   int i;
   int sign;
   int num;

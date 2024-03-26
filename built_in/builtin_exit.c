@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 12:08:13 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/21 23:27:44 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/26 17:34:46 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ static void atol_exit(char *str)
     num = num*10 + (str[i++]-'0');
   if(num>256)
     num = num%256;
-    // printf("exit_status : %d\n", num);
   exit(num);
 }
 
@@ -80,10 +79,7 @@ int builtin_exit(char **args,int status)
     arg_len = count_args(args);
     printf("exit\n");
     if(arg_len>2)
-    {
-      minishell_error("exit : too many arguments");
-      return (1);
-    }
+      return minishell_error("exit : too many arguments");
     else if(arg_len == 2)
       atol_exit(args[1]);
     else

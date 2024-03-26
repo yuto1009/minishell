@@ -6,74 +6,51 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 15:22:40 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/20 10:15:06 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/26 17:32:39 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-/* Readlineの出力先をstderrに変更 
-Macに標準装備のReadlineはデフォルトで出力先がstderrになっているが、
-GNUのreadlineがはstdoutになっているため、変更が必要。
-rl_outstreamはGNU Readlineライブラリ内の変数 */
-void set_output_destination(FILE *dst)
+void	set_output_destination(FILE *dst)
 {
-    rl_outstream = dst;
+	rl_outstream = dst;
 }
 
-// 実装できないシステムコール関係のエラー
-// ex: malloc, free
-void fatal_error(char *message)
+int	minishell_error(char *message)
 {
-    ft_putendl_fd(message, STDERR_FILENO);
-    exit(EXIT_FAILURE);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putendl_fd(message, STDERR_FILENO);
+    return (1);
+	// write(1,"\n",1);
+	// exit(MINISHELL_ERROR);
+}
+int	cd_error(char *cmd)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd("cd: ", STDERR_FILENO);
+	ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+    return (1);
 }
 
-// bashでは実装されているが、minishellにおいて実装不要な部分で起こるエラーの時に呼び出す。
-void minishell_error(char *message)
+int	syntax_error_exit(char *token_str)
 {
-    ft_putstr_fd("minishell: ", STDERR_FILENO);
-    ft_putendl_fd(message, STDERR_FILENO);
-    // write(1,"\n",1);
-    // exit(MINISHELL_ERROR);
-}
-void cd_error(char *cmd)
-{
-    ft_putstr_fd("minishell: ", STDERR_FILENO);
-    ft_putstr_fd("cd: ", STDERR_FILENO);
-    ft_putstr_fd(cmd, STDERR_FILENO);
-    ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-    
+	const char	*join_str = ft_strjoin(token_str, "'");
 
-}
-// bashと同様の部分でエラーがある場合に呼び出す。
-// exit_statusもbashと同様の値を返す。
-void cmd_error_exit(char *location, char *message, int exit_status)
-{
-    const char *location_message = ft_strjoin(location, ": ");
-    ft_putstr_fd("minishell: ", STDERR_FILENO);
-    ft_putstr_fd((char *)location_message, STDERR_FILENO);
-    ft_putendl_fd(message, STDERR_FILENO);
-    free((char *)location_message);
-    exit(exit_status);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd("syntax error near unexpected token '", STDERR_FILENO);
+	ft_putstr_fd((char *)join_str, STDERR_FILENO);
+	write(1, "\n", 1);
+	free((char *)join_str);
+	return (258);
 }
 
-int syntax_error_exit(char *token_str)
+int	unsupported_token_msg(char *str)
 {
-    const char *join_str = ft_strjoin(token_str,"'");
-    ft_putstr_fd("minishell: ", STDERR_FILENO);    
-    ft_putstr_fd("syntax error near unexpected token '", STDERR_FILENO);
-    ft_putstr_fd((char *)join_str, STDERR_FILENO);
-    write(1,"\n",1);
-    free((char *)join_str);
-    return 258;
-    // exit(SYNTAX_ERROR);
-}
-
-int unsupported_token_msg(char *str)
-{
-    const char *join_str = ft_strjoin("sorry this command is unsupported : ", str);
-    ft_putstr_fd((char *)join_str,STDERR_FILENO);
-    write(1,"\n",1);
-    return -1;
+	const char *join_str = ft_strjoin("sorry this command is unsupported : ",
+			str);
+	ft_putstr_fd((char *)join_str, STDERR_FILENO);
+	write(1, "\n", 1);
+	return (-1);
 }

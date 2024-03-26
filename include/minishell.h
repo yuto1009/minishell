@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/25 13:24:56 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/26 18:58:40 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,8 @@ t_node					*parser(t_token *token);
 // error.c
 void					set_output_destination(FILE *dst);
 void					fatal_error(char *message);
-void					minishell_error(char *message);
-void					cd_error(char *cmd);
+int					    minishell_error(char *message);
+int					cd_error(char *cmd);
 void					cmd_error_exit(char *location, char *message,
 							int exit_status);
 int						syntax_error_exit(char *token_str);
@@ -172,9 +172,12 @@ void					set_parent_pipe(t_node *node);
 
 // signal.c
 void					signal_heredoc(void);
+void					setup_signal(void);
+void	sigquit_action(int signum);
+//signal_init.c
 void					signal_parent_init(void);
 void					signal_child_init(void);
-void					setup_signal(void);
+void                    sigint_action();
 
 // headoc.c
 int						heredoc(char *delimiter);

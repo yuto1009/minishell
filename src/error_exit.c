@@ -1,43 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wait_pid.c                                         :+:      :+:    :+:   */
+/*   error_exit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/29 18:02:20 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/26 17:28:01 by yoshidakazu      ###   ########.fr       */
+/*   Created: 2024/03/26 17:18:41 by yoshidakazu       #+#    #+#             */
+/*   Updated: 2024/03/26 17:19:20 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int		g_status;
-void	wait_pid(pid_t pid)
+void	fatal_error(char *message)
 {
-	pid_t	result;
-	int		wstatus;
+	ft_putendl_fd(message, STDERR_FILENO);
+	exit(EXIT_FAILURE);
+}
 
-	signal_parent_init();
-	while (1)
-	{
-		result = wait(&wstatus);
-		if (result == pid)
-		{
-			if (WIFSIGNALED(wstatus))
-				g_status = 128 + WTERMSIG(wstatus);
-			else
-				g_status = WEXITSTATUS(wstatus);
-		}
-		else if (result < 0)
-		{
-			if (errno == ECHILD)
-				break ;
-			else if (errno == EINTR)
-				continue ;
-			else
-				fatal_error("wait");
-		}
-	}
-	return ;
+void	cmd_error_exit(char *location, char *message, int exit_status)
+{
+	const char *location_message = ft_strjoin(location, ": ");
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd((char *)location_message, STDERR_FILENO);
+	ft_putendl_fd(message, STDERR_FILENO);
+	free((char *)location_message);
+	exit(exit_status);
 }

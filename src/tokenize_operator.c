@@ -3,24 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_operator.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 11:50:45 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/24 11:51:48 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/28 16:30:06 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-
 t_token	*tokenize_operator(char **line)
 {
-	const char	*operators[] = {"||", "&&", ";;", "&", ";", "(", ")", "|",
-			"\n"};
+	const char	*operators[] = {"||", "&&", ";;", "&", ";", "(", ")", "|", "\n"};
 	char		*operator;
 	size_t		i;
 
-	operator= NULL;
+	operator = NULL;
 	i = 0;
 	while (i < sizeof(operators) / sizeof(*operators))
 	{
@@ -30,13 +28,12 @@ t_token	*tokenize_operator(char **line)
 		}
 		i++;
 	}
-	operator= ft_substr(*line, 0, ft_strlen(operators[i]));
-	if (operator== NULL)
+	operator = ft_substr(*line, 0, ft_strlen(operators[i]));
+	if (operator == NULL)
 		fatal_error("malloc error");
 	*line += ft_strlen(operator);
 	return (new_token(operator, TK_OPERATOR));
 }
-
 
 t_token	*tokenize_redirection_operator(char **line)
 {
@@ -44,7 +41,7 @@ t_token	*tokenize_redirection_operator(char **line)
 	char		*operator;
 	size_t		i;
 
-	operator= NULL;
+	operator = NULL;
 	i = 0;
 	while (i < sizeof(operators) / sizeof(*operators))
 	{
@@ -54,8 +51,8 @@ t_token	*tokenize_redirection_operator(char **line)
 		}
 		i++;
 	}
-	operator= ft_substr(*line, 0, ft_strlen(operators[i]));
-	if (operator== NULL)
+	operator = ft_substr(*line, 0, ft_strlen(operators[i]));
+	if (operator == NULL)
 		fatal_error("malloc error");
 	*line += ft_strlen(operator);
 	return (new_token(operator, TK_REDIRECTION));

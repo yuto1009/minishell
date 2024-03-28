@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:20:06 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/24 14:37:28 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/28 17:07:57 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	dup_fd(t_node *node)
 		close(fileinfd);
 	}
 }
+
 void	reset_fd(t_node *node)
 {
 	if (node->currentout_fd != STDOUT_FILENO)
@@ -74,6 +75,7 @@ void	reset_fd(t_node *node)
 		close(node->currentin_fd);
 	}
 }
+
 char	**search_redir(t_node *node, int len)
 {
 	int		i;

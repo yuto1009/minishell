@@ -3,80 +3,90 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/03/23 17:10:56 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/28 15:52:07 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static t_node* create_command_node(t_token* startToken,int index) 
+static t_node	*create_command_node(t_token *start_token)
 {
-    t_node* newNode = (t_node*)malloc(sizeof(t_node));
-    if (!newNode) {
-        fatal_error("Malloc");
-    }
-    newNode->token = startToken;
-    newNode->next = NULL;
-    newNode->prev = NULL;
-    newNode->currentin_fd = 0;
-    newNode->currentout_fd = 1;
-    newNode->redirout_fd = 1;
-    newNode->redirin_fd = 0;
-    newNode->pipe_in[0] = STDIN_FILENO;
-    newNode->pipe_out[1] = STDOUT_FILENO;
-    newNode->pipe_out[0] = -1;
-    newNode->pipe_in[1] = -1;  
-    newNode->index = index;
-    return newNode;
+	t_node	*new_node;
+
+	new_node = (t_node *)malloc(sizeof(t_node));
+	if (!new_node)
+	{
+		fatal_error("Malloc");
+	}
+	new_node->token = start_token;
+	new_node->next = NULL;
+	new_node->prev = NULL;
+	new_node->currentin_fd = 0;
+	new_node->currentout_fd = 1;
+	new_node->redirout_fd = 1;
+	new_node->redirin_fd = 0;
+	new_node->pipe_in[0] = STDIN_FILENO;
+	new_node->pipe_out[1] = STDOUT_FILENO;
+	new_node->pipe_out[0] = -1;
+	new_node->pipe_in[1] = -1;
+	return (new_node);
 }
 
 // コマンドとしてトークンを切り出すための関数
-static t_token* cut_command_tokens(t_token** current, t_token** nextCommandStart) 
+static t_token	*cut_command_tokens(t_token **current,
+									t_token **next_command_start)
 {
-    if (!*current) 
-        return NULL;
-    t_token* start = *current;
-    t_token* end = start;
-    while (end->next!=NULL && end->next->kind!=TK_EOF && end->kind !=TK_OPERATOR) 
-    {
-        end = end->next;
-    }
-    if(end!=NULL&&end->kind==TK_OPERATOR)
-    {
-        *nextCommandStart = end->next;
-        end->kind =TK_EOF;
-        end = NULL;
-    }
-    else
-    *nextCommandStart =NULL;
-    return start;
+	t_token	*start;
+	t_token	*end;
+
+	if (!*current)
+		return (NULL);
+	start = *current;
+	end = start;
+	while (end->next != NULL && end->next->kind != TK_EOF
+		&& end->kind != TK_OPERATOR)
+	{
+		end = end->next;
+	}
+	if (end != NULL && end->kind == TK_OPERATOR)
+	{
+		*next_command_start = end->next;
+		end->kind = TK_EOF;
+		end = NULL;
+	}
+	else
+		*next_command_start = NULL;
+	return (start);
 }
 
-t_node* parser(t_token* tokens) 
+t_node	*parser(t_token *tokens)
 {
-    t_node* head = NULL;
-    t_node* tail = NULL;
-    int index = 1;
-    t_token* currentToken = tokens;
-    t_token* nextCommandStart = NULL;
+	t_node	*head;
+	t_node	*tail;
+	t_token	*current_token;
+	t_token	*next_command_start;
+	t_node	*new_command;
 
-    while (currentToken != NULL) 
-    {
-        t_token* commandStart = cut_command_tokens(&currentToken, &nextCommandStart);
-        
-        t_node* newCommand = create_command_node(commandStart,index);
-        if (head == NULL) {
-            head = newCommand;
-        } else {
-            tail->next = newCommand;
-            newCommand->prev = tail;
-        }
-        tail = newCommand;
-        index++;
-        currentToken = nextCommandStart;
-    }
-    return head;
+	head = NULL;
+	tail = NULL;
+	current_token = tokens;
+	next_command_start = NULL;
+	while (current_token != NULL)
+	{
+		new_command = create_command_node(cut_command_tokens(&current_token,
+					&next_command_start));
+		if (head == NULL)
+			head = new_command;
+		else
+		{
+			tail->next = new_command;
+			new_command->prev = tail;
+		}
+		tail = new_command;
+		current_token = next_command_start;
+	}
+	return (head);
 }

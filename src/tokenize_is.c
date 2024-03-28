@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_is.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 11:47:24 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/24 11:55:17 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/28 16:15:03 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 bool	is_operator(char *line)
 {
-	const char	*operators[] = {"||", "&&", "&", ";", ";;", "(", ")", "|",
-			"\n"};
+	const char	*operators[] = {"||", "&&", "&", ";", ";;", "(", ")", "|", "\n"};
 	size_t		i;
 
 	i = 0;
@@ -46,6 +45,7 @@ bool	is_redirection_operator(char *line)
 	}
 	return (false);
 }
+
 int	is_blank(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n');
@@ -53,8 +53,9 @@ int	is_blank(char c)
 
 bool	is_metacharacter(char c)
 {
-	const char *metacharacters = "| \t";
+	const char	*metacharacters;
 
+	metacharacters = "| \t";
 	if (ft_strchr(metacharacters, c) != NULL)
 	{
 		return (true);

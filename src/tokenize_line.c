@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 11:42:36 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/24 11:55:33 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/28 16:15:32 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 t_token	*tokenize_line(char **line)
 {
-	t_token *new;
+	t_token	*new;
 
 	new = NULL;
 	if (is_blank(**line))
 	{
 		(*line)++;
-		return (NULL); // 空白文字の後、次のトークンへ進む
+		return (NULL);
 	}
 	if (is_operator(*line))
 	{

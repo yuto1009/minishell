@@ -6,11 +6,11 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 12:08:13 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/28 15:57:29 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/28 16:42:16 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "include/built_in.h"
 
 int	count_args(char **args)
 {
@@ -74,7 +74,7 @@ static void	atol_exit(char *str)
 
 int	builtin_exit(char **args, int status)
 {
-	int arg_len;
+	int	arg_len;
 
 	arg_len = 0;
 	arg_len = count_args(args);
@@ -84,6 +84,6 @@ int	builtin_exit(char **args, int status)
 	else if (arg_len == 2)
 		atol_exit(args[1]);
 	else
-		exit(status); 
+		exit(status);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 23:03:00 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/26 17:34:06 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/28 16:02:55 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ char	*delete_pwd_elm(char *pwd)
 	free(pwd);
 	return (ans);
 }
+
 char	*append_pwd(char *pwd, char **path)
 {
 	int		i;
@@ -40,14 +41,12 @@ char	*append_pwd(char *pwd, char **path)
 	i = 0;
 	while ((*path)[i] != '\0' && (*path)[i] != '/')
 		i++;
-	// printf(".pwd: %c\n",pwd[ft_strlen(pwd) - 1]);
 	if (pwd[ft_strlen(pwd) - 1] != '/')
 		ft_strlcat(pwd, "/", ft_strlen(pwd) + 2);
 	ans = (char *)malloc(sizeof(char) * i + 1);
 	ft_strlcpy(ans, src, i + 1);
 	*path += i;
 	return (ft_strjoin(pwd, ans));
-	;
 }
 
 char	*new_pwd(char *prev_pwd, char *path)
@@ -73,7 +72,7 @@ char	*new_pwd(char *prev_pwd, char *path)
 		else if (ft_strncmp(path, ".", 1) == 0)
 			path++;
 		else
-			new_pwd = append_pwd(new_pwd, &path); // todo 3/20
+			new_pwd = append_pwd(new_pwd, &path);
 	}
 	return (new_pwd);
 }

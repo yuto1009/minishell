@@ -24,15 +24,6 @@ int	minishell_error(char *message)
 	return (1);
 }
 
-int	cd_error(char *cmd)
-{
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd("cd: ", STDERR_FILENO);
-	ft_putstr_fd(cmd, STDERR_FILENO);
-	ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-	return (1);
-}
-
 int	syntax_error_exit(char *token_str)
 {
 	const char	*join_str;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 21:23:23 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/23 21:23:27 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/03/28 16:47:48 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,35 +44,37 @@ t_var	*export_env(t_var *map, char *env_name, char *env_value)
 
 char	*trim_env_name(char *env)
 {
-	char			*equal_pos;
-	char			*name;
+	char	*equal_pos;
+	char	*name;
 
 	if (env == NULL)
 		return (NULL);
 	equal_pos = ft_strchr(env, EQUAL_SIGN);
 	if (equal_pos == NULL)
 		return (NULL);
-	name = (char *)ft_calloc( equal_pos - env + 1, sizeof(char));
+	name = (char *)ft_calloc(equal_pos - env + 1, sizeof(char));
 	if (name == NULL)
 		fatal_error("Malloc Error");
-	ft_strlcpy(name, env,  equal_pos - env + 1);
+	ft_strlcpy(name, env, equal_pos - env + 1);
 	return (name);
 }
 
 char	*trim_env_value(char *env)
 {
-	char			*equal_pos;
-	char			*value;
+	char	*equal_pos;
+	char	*value;
 
 	if (env == NULL)
 		return (NULL);
 	equal_pos = ft_strchr(env, EQUAL_SIGN);
 	if (equal_pos == NULL)
 		return (NULL);
-	value = (char *)ft_calloc(ft_strlen(env) - (equal_pos - env + 1) + 1, sizeof(char));
+	value = (char *)ft_calloc(ft_strlen(env) - (equal_pos - env + 1) + 1,
+			sizeof(char));
 	if (value == NULL)
 		fatal_error("Malloc Error");
-	ft_strlcpy(value, equal_pos + 1, ft_strlen(env) - (equal_pos - env + 1) + 1);
+	ft_strlcpy(value, equal_pos + 1, ft_strlen(env) - (equal_pos - env + 1)
+		+ 1);
 	return (value);
 }
 

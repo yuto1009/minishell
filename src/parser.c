@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/03/28 15:52:07 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/28 16:45:52 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static t_node	*create_command_node(t_token *start_token)
 	return (new_node);
 }
 
-// コマンドとしてトークンを切り出すための関数
 static t_token	*cut_command_tokens(t_token **current,
 									t_token **next_command_start)
 {

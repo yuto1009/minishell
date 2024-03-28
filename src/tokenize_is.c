@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 11:47:24 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/28 16:13:55 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/03/28 16:15:03 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 
 bool	is_operator(char *line)
 {
-	const char	*operators[];
+	const char	*operators[] = {"||", "&&", "&", ";", ";;", "(", ")", "|", "\n"};
 	size_t		i;
 
-	operators[] = {"||", "&&", "&", ";", ";;", "(", ")", "|", "\n"};
 	i = 0;
 	while (i < sizeof(operators) / sizeof(*operators))
 	{
@@ -32,10 +31,9 @@ bool	is_operator(char *line)
 
 bool	is_redirection_operator(char *line)
 {
-	const char	*operators[];
+	const char	*operators[] = {">>", "<<", "<>", "<", ">"};
 	size_t		i;
 
-	operators[] = {">>", "<<", "<>", "<", ">"};
 	i = 0;
 	while (i < sizeof(operators) / sizeof(*operators))
 	{

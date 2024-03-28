@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 14:04:23 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/24 14:38:30 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/26 19:55:02 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	heredoc(char *delimiter)
 			return (free_close(line, pfd));
 		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
 			return (free_close(line, pfd));
-		while (*line != '\0') // tempを使って文字列を操作
+		while (*line != '\0') 
 		{
 			write(pfd[1], line, 1);
 			line++;

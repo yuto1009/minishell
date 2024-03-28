@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/28 15:43:29 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/28 17:12:13 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 # include "../libft/libft.h"
 # include <errno.h>
 # include <fcntl.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <readline/history.h>
-# include <readline/readline.h>
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -127,8 +127,8 @@ t_node					*parser(t_token *token);
 // error.c
 void					set_output_destination(FILE *dst);
 void					fatal_error(char *message);
-int					    minishell_error(char *message);
-int					cd_error(char *cmd);
+int						minishell_error(char *message);
+int						cd_error(char *cmd);
 void					cmd_error_exit(char *location, char *message,
 							int exit_status);
 int						syntax_error_exit(char *token_str);
@@ -172,11 +172,11 @@ void					set_parent_pipe(t_node *node);
 // signal.c
 void					signal_heredoc(void);
 void					setup_signal(void);
-void	sigquit_action(int signum);
+void					sigquit_action(int signum);
 //signal_init.c
 void					signal_parent_init(void);
 void					signal_child_init(void);
-void                    sigint_action();
+void					sigint_action(void);
 
 // headoc.c
 int						heredoc(char *delimiter);

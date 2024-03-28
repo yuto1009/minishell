@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/28 17:12:13 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/03/28 17:17:01 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 # include "../libft/libft.h"
 # include <errno.h>
 # include <fcntl.h>
+# include <stdio.h>
+# include <stdbool.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
-# include <stdbool.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/stat.h>
@@ -176,7 +176,7 @@ void					sigquit_action(int signum);
 //signal_init.c
 void					signal_parent_init(void);
 void					signal_child_init(void);
-void					sigint_action(void);
+void					sigint_action(int signum);
 
 // headoc.c
 int						heredoc(char *delimiter);

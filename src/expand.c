@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/03/25 13:24:38 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/28 16:54:49 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ int	expand(t_token *token, t_var *env_map, int prev_status)
 	expand_variable(token, env_map, prev_status);
 	if (g_status == MINISHELL_ERROR)
 		return (-1);
-	// print_tokens(token);
 	if (token->str == NULL)
 	{
 		g_status = 0;

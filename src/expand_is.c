@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expand_is.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 12:46:18 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/25 12:47:01 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/28 16:57:18 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
 
 bool	is_dollar_sign(char c)
 {
@@ -45,11 +44,11 @@ bool	is_env_variable(char *str)
 	}
 	return (false);
 }
+
 bool	is_alpha(char chr)
 {
 	return (('a' <= chr && chr <= 'z') || ('A' <= chr && chr <= 'Z'));
 }
-
 
 bool	is_exit_status(char *str)
 {

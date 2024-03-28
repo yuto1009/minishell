@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_append_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 12:40:30 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/25 12:44:03 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/28 16:59:03 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	append_question(char **str, char **new_str, int prev_status)
 {
 	char	*exit_status;
 
-	(*str)++; 
+	(*str)++;
 	exit_status = ft_itoa(prev_status);
 	if (exit_status == NULL)
 		fatal_error("MALLOC ERROR");
@@ -124,4 +124,3 @@ void	append_question(char **str, char **new_str, int prev_status)
 		exit_status++;
 	}
 }
-

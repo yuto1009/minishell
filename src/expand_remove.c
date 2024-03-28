@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_remove.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 12:44:38 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/25 12:45:21 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/28 16:56:04 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	remove_void_tokens(t_token *token)
 {
-		t_token *void_token;
+	t_token	*void_token;
 
 	if (token->kind == TK_EOF)
 		return ;
@@ -68,7 +68,7 @@ void	remove_double_quote(char **str, char **new_str)
 	}
 	fatal_error("Expected double quote");
 }
-// クオートの削除
+
 void	remove_quotes(t_token *token)
 {
 	char	*str;
@@ -76,12 +76,10 @@ void	remove_quotes(t_token *token)
 
 	str = token->str;
 	if (token == NULL || token->str == NULL)
-		// delete token->kind != TK_WORD because TK_REDIRECTION
 		return ;
 	new_str = (char *)ft_calloc(1, sizeof(char));
 	if (new_str == NULL)
 		fatal_error("Malloc Error");
-	// シングルとダブルクオートを削除
 	while (*str != '\0')
 	{
 		if (*str == SINGLE_QUOTE)

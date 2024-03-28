@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   wait_pid.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 18:02:20 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/26 17:28:01 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/28 17:08:52 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int		g_status;
 void	wait_pid(pid_t pid)
 {
 	pid_t	result;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/24 11:54:16 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/28 17:07:52 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	count_token_len(t_token *token)
 	free(tmp);
 	return (i - 1);
 }
-
 
 static bool	is_only_blank_character(char *line)
 {

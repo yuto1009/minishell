@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   headoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 14:04:23 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/26 19:55:02 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/28 17:03:20 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static int	free_close(char *line, int pfd[2])
 
 int	heredoc(char *delimiter)
 {
-	char *line;
-	int pfd[2];
+	char	*line;
+	int		pfd[2];
 
 	pipe(pfd);
 	signal_heredoc();
@@ -33,7 +33,7 @@ int	heredoc(char *delimiter)
 			return (free_close(line, pfd));
 		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
 			return (free_close(line, pfd));
-		while (*line != '\0') 
+		while (*line != '\0')
 		{
 			write(pfd[1], line, 1);
 			line++;
@@ -41,6 +41,5 @@ int	heredoc(char *delimiter)
 		write(pfd[1], "\n", 1);
 	}
 	close(pfd[1]);
-
 	return (pfd[0]);
 }

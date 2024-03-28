@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 11:51:41 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/25 11:54:23 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/28 17:06:07 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,12 @@ char	**envlist2char(t_var *env_map)
 	ans[i] = NULL;
 	return (ans);
 }
+
 void	check_access(char *args)
 {
-	struct stat st;
-	int result;
+	struct stat	st;
+	int			result;
+
 	result = stat(args, &st);
 	if (result)
 		;

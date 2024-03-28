@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interpret.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 15:54:37 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/24 11:57:44 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/28 17:07:27 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@ static void	exec_command(t_node *node, t_var *env_map, int prev_status)
 {
 	char	**token2argv;
 	pid_t	pid;
-    if(!node)
-        return;
+
+	if (!node)
+		return ;
 	if (node->next == NULL && is_builtin(node->token->str))
 	{
 		token2argv = search_redir(node, count_token_len(node->token));

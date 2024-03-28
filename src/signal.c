@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:13:26 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/03/26 18:58:20 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/28 17:10:22 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int			g_status;
 static void	handler_heredoc(int signum)
 {
 	if (signum)
@@ -45,11 +44,12 @@ void	signal_heredoc(void)
 
 void	sigquit_action(int signum)
 {
-    if(signum)
-    ;
+	if (signum)
+		;
 	rl_on_new_line();
 	rl_redisplay();
 }
+
 void	setup_signal(void)
 {
 	struct sigaction	sa1;

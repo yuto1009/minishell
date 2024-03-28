@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_signal.c                                      :+:      :+:    :+:   */
+/*   signal_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:15:11 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/26 17:17:29 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/03/28 17:13:26 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,13 @@ static void	ignore_sig(int sig)
 	sa.sa_handler = SIG_IGN;
 	sigaction(sig, &sa, NULL);
 }
+
 void	signal_parent_init(void)
 {
 	ignore_sig(SIGINT);
 	ignore_sig(SIGQUIT);
 }
+
 void	signal_child_init(void)
 {
 	reset_sig(SIGINT);

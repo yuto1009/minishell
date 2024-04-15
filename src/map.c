@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 21:23:23 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/28 16:47:48 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/04/15 20:23:23 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,23 +77,30 @@ char	*trim_env_value(char *env)
 		+ 1);
 	return (value);
 }
-
 void	unset_env(char *env_name, t_var *map)
 {
-	if (map == NULL)
-		return ;
-	if (ft_strncmp(map->name, env_name, ft_strlen(map->name)) == 0)
-	{
-		if (map->prev != NULL && map->next != NULL)
-		{
-			map->prev->next = map->next;
-			map->next->prev = map->prev;
-		}
-		else if (map->prev != NULL)
-			map->prev->next = NULL;
-		else
-			map->next->prev = NULL;
-		free(map);
-	}
-	return (unset_env(env_name, map->next));
+    if (map == NULL)
+        return;
+    
+    t_var *next = map->next;  
+
+    if (ft_strncmp(map->name, env_name, ft_strlen(map->name)) == 0)
+    {
+        if (map->prev != NULL && map->next != NULL)
+        {
+            map->prev->next = map->next;
+            map->next->prev = map->prev;
+        }
+        else if (map->prev != NULL)
+            map->prev->next = NULL;
+        else if (map->next != NULL)
+            map->next->prev = NULL;  
+
+        free(map);
+        unset_env(env_name, next);  
+        return;  
+    }
+    
+    unset_env(env_name, next);  
 }
+

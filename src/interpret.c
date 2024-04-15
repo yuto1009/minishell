@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interpret.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 15:54:37 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/03/28 17:07:27 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/04/15 17:40:22 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,17 @@ static t_token	*interpret_line2token(char *line, t_var *env_map,
 	return (token);
 }
 
+void free_token2argv(char **token2argv)
+{
+    int i;
+    i = 0;
+    while(token2argv[i]!=NULL)
+    {
+        free(token2argv[i]);
+        i++;
+    }
+}
+
 static void	exec_command(t_node *node, t_var *env_map, int prev_status)
 {
 	char	**token2argv;
@@ -46,6 +57,7 @@ static void	exec_command(t_node *node, t_var *env_map, int prev_status)
 		dup_fd(node);
 		g_status = exec_builtin(token2argv, env_map, prev_status);
 		reset_fd(node);
+        free_token2argv(token2argv);
 	}
 	else
 	{
@@ -53,7 +65,21 @@ static void	exec_command(t_node *node, t_var *env_map, int prev_status)
 		wait_pid(pid);
 	}
 }
+void free_node(t_node *node) {
+    t_token *currentToken, *tmpToken;
 
+    // まずnode内のtokenリストを解放
+    currentToken = node->token;
+    while (currentToken != NULL) {
+        free(currentToken->str);   // token内の文字列を解放
+        tmpToken = currentToken;
+        currentToken = currentToken->next;  // 次のtokenへ移動
+        free(tmpToken);  // 現在のtokenを解放
+    }
+
+    // 最後にnode自体を解放
+    free(node);
+}
 void	interpret(char *line, t_var *env_map)
 {
 	struct s_node	*node;
@@ -65,5 +91,6 @@ void	interpret(char *line, t_var *env_map)
 	token = interpret_line2token(line, env_map, prev_status);
 	node = parser(token);
 	exec_command(node, env_map, prev_status);
+    free_node(node);
 	return ;
 }

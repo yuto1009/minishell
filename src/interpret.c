@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 15:54:37 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/15 17:40:22 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/04/17 11:12:52 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void free_token2argv(char **token2argv)
         free(token2argv[i]);
         i++;
     }
+    free(token2argv);
 }
 
 static void	exec_command(t_node *node, t_var *env_map, int prev_status)
@@ -68,16 +69,14 @@ static void	exec_command(t_node *node, t_var *env_map, int prev_status)
 void free_node(t_node *node) {
     t_token *currentToken, *tmpToken;
 
-    // まずnode内のtokenリストを解放
     currentToken = node->token;
     while (currentToken != NULL) {
-        free(currentToken->str);   // token内の文字列を解放
+        free(currentToken->str);   
         tmpToken = currentToken;
-        currentToken = currentToken->next;  // 次のtokenへ移動
-        free(tmpToken);  // 現在のtokenを解放
+        currentToken = currentToken->next;  
+        free(tmpToken);  
     }
-
-    // 最後にnode自体を解放
+    
     free(node);
 }
 void	interpret(char *line, t_var *env_map)

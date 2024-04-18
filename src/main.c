@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/17 22:59:53 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/04/18 20:55:36 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,12 @@ static void	roop_readline(void)
 		setup_signal();
 		line = readline("minishell$ ");
 		if (line == NULL)
-		{
 			break ;
-		}
 		if (is_only_blank_character(line))
+		{
+			free(line);
 			continue ;
+		}
 		if (*line)
 			add_history(line);
 		interpret(line, env_map);

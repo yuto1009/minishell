@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 21:23:23 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/15 20:23:23 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/04/17 23:14:00 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static t_var	*create_map(char *name, char *value)
 		fatal_error("malloc error");
 	map->name = name;
 	map->value = value;
+    map->ispwd = 0;
 	map->prev = NULL;
 	map->next = NULL;
 	return (map);
@@ -56,6 +57,7 @@ char	*trim_env_name(char *env)
 	if (name == NULL)
 		fatal_error("Malloc Error");
 	ft_strlcpy(name, env, equal_pos - env + 1);
+   
 	return (name);
 }
 

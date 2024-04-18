@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/17 22:31:40 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/04/17 22:59:53 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void free_env(t_var *env_map)
     t_var *tmp;
     while (env_map != NULL)
     {
-        if(ft_strncmp(env_map->name,"PWD",3)!=0 && ft_strncmp(env_map->name,"OLDPWD",6) != 0)
+        // if(ft_strncmp(env_map->name,"PWD",3)!=0 && ft_strncmp(env_map->name,"OLDPWD",6) != 0)
             free(env_map->name);   
         free(env_map->value);  
         tmp = env_map;         

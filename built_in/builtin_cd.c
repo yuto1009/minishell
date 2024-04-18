@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 23:03:00 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/17 11:18:24 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/04/17 23:16:09 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int	builtin_cd(char **args, t_var *env_map)
 	char	*path;
 	char	*prev_pwd;
 
+    env_map->ispwd = 1;
 	prev_pwd = get_env_value("PWD", env_map);
 	unset_env("OLDPWD", env_map);
 	export_env(env_map, "OLDPWD", prev_pwd);

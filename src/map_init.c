@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 19:04:31 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/04/15 09:12:15 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/04/17 23:13:35 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ t_var	*init_env_map(void)
 		name = trim_env_name(*env_p);
 		value = trim_env_value(*env_p);
 		env_map = export_env(env_map, name, value);
+         if(ft_strncmp(name,"PWD",3) == 0 ||ft_strncmp(name,"OLDPWD",6) == 0)
+            env_map->ispwd = 1;
 		env_p++;
 	}
 	return (env_map);

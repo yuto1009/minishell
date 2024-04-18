@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/15 10:35:38 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/04/18 15:24:45 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,12 @@ static void	roop_readline(void)
 		setup_signal();
 		line = readline("minishell$ ");
 		if (line == NULL)
-		{
 			break ;
-		}
 		if (is_only_blank_character(line))
+		{
+			free(line);
 			continue ;
+		}
 		if (*line)
 			add_history(line);
 		interpret(line, env_map);

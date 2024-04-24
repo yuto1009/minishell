@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/18 20:55:36 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/04/24 15:22:16 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	count_token_len(t_token *token)
 		i++;
 		tmp = tmp->next;
 	}
-	free(tmp);
+	// free(tmp);
 	return (i - 1);
 }
 
@@ -51,7 +51,7 @@ void free_env(t_var *env_map)
     while (env_map != NULL)
     {
         // if(ft_strncmp(env_map->name,"PWD",3)!=0 && ft_strncmp(env_map->name,"OLDPWD",6) != 0)
-            free(env_map->name);   
+        free(env_map->name);   
         free(env_map->value);  
         tmp = env_map;         
         env_map = env_map->next; 
@@ -84,6 +84,7 @@ static void	roop_readline(void)
 			add_history(line);
 		interpret(line, env_map);
 		free(line);
+
 	}
     free_env(env_map);
 	return ;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interpret.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 15:54:37 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/17 11:12:52 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/04/24 17:48:33 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static t_token	*interpret_line2token(char *line, t_var *env_map,
 	int		status;
 
 	token = tokenize(line);
+
 	if (expand(token, env_map, prev_status) < 0)
 		return (NULL);
 	status = tokenize_error(token);
@@ -70,8 +71,9 @@ void free_node(t_node *node) {
     t_token *currentToken, *tmpToken;
 
     currentToken = node->token;
+	free(node->token->prev);
     while (currentToken != NULL) {
-        free(currentToken->str);   
+        free(currentToken->str);
         tmpToken = currentToken;
         currentToken = currentToken->next;  
         free(tmpToken);  

@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 15:54:37 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/25 18:20:55 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/04/25 19:44:30 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ static void	exec_command(t_node *node, t_var *env_map, int prev_status)
 		return ;
 	if (node->next == NULL && is_builtin(node->token->str))
 	{
+		free(node->token->prev);
 		token2argv = search_redir(node, count_token_len(node->token));
 		if (!token2argv)
 			exit(1);
@@ -125,6 +126,7 @@ void	interpret(char *line, t_var *env_map)
 		return;
 	node = parser(token);
 	exec_command(node, env_map, prev_status);
+			
 	// while(node!=NULL)//nodeの構造がおかしいからチェックする
 	// {
 	// 	while(node->token!=NULL && node->token->kind!=TK_EOF)

@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/28 16:30:03 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/04/25 19:40:21 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	execute_pipe(char **argv, t_var *env_map)
 	execve(executable, argv, envlist2char(env_map));
 	cmd_error_exit(argv[0], "command not found", 127);
 }
-
+        
 bool	is_builtin(char *str)
 {
 	if (ft_strncmp(str, "echo", 5) == 0)

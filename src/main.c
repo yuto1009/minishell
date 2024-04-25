@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/25 15:58:25 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/04/25 19:38:01 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ static void	roop_readline(void)
 			add_history(line);
 		interpret(line, env_map);
 		free(line);
-
 	}
     free_env(env_map);
 	return ;

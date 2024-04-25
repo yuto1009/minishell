@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:20:06 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/28 17:07:57 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/04/25 18:28:19 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	**search_redir(t_node *node, int len)
 	char	**token2argv;
 
 	i = 0;
-	token2argv = (char **)ft_calloc(len + 1, sizeof(char *));
+	token2argv = (char **)ft_calloc(len+1, sizeof(char *));
 	if (!token2argv)
 		return (NULL);
 	while (node->token->kind != TK_EOF)

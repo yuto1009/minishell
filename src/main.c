@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/24 15:22:16 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/04/25 15:58:25 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,10 @@ static void	roop_readline(void)
 	return ;
 }
 
-__attribute__((destructor))
-static void destructor() {
-    system("leaks -q minishell");
-}
+// __attribute__((destructor))
+// static void destructor() {
+//     system("leaks -q minishell");
+// }
 
 int	main(void)
 {

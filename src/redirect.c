@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:20:06 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/04/25 18:28:19 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/04/29 13:11:58 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,24 +80,30 @@ char	**search_redir(t_node *node, int len)
 {
 	int		i;
 	char	**token2argv;
+    t_node *tmp;
+    t_token *current_token;
 
 	i = 0;
 	token2argv = (char **)ft_calloc(len+1, sizeof(char *));
-	if (!token2argv)
+    if (!token2argv)
 		return (NULL);
-	while (node->token->kind != TK_EOF)
+
+    tmp = node;
+    current_token = tmp->token; // 初期設定
+
+	while (current_token && current_token->kind != TK_EOF)
 	{
-		if (node->token->kind == TK_REDIRECTION)
+		if (current_token->kind == TK_REDIRECTION)
 		{
-			open_file(node);
-			node->token = node->token->next;
+			open_file(tmp);  // 注意: open_file 関数が tmp を変更しないことを確認してください
+			current_token = current_token->next; // 次のトークンに進む
 		}
 		else
 		{
-			token2argv[i] = node->token->str;
-			i++;
+			token2argv[i++] = current_token->str; // トークンを配列に保存
+			current_token = current_token->next; // 次のトークンに進む
 		}
-		node->token = node->token->next;
 	}
 	return (token2argv);
 }
+

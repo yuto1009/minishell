@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 18:57:26 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/25 19:32:00 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/04/25 21:51:28 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static t_token	*build_token_list(char *line)
 	}
 	if (head == NULL)
 		head = new_token(NULL, TK_EOF);
-	 if (current != NULL)
+	else if (current != NULL)
 	{
 		current->next = new_token(NULL, TK_EOF);
 		current->next->prev = current;

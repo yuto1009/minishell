@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 23:03:00 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/29 22:01:43 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/04/29 22:42:31 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,12 @@ int	builtin_cd(char **args, t_var *env_map)
 
     current_pwd = ft_strdup("PWD");
     old_pwd = ft_strdup("OLDPWD");
-    env_map->ispwd = 1;
 	prev_pwd = get_env_value(current_pwd, env_map);
 	unset_env(old_pwd, env_map);
 	export_env(env_map, old_pwd, prev_pwd);
-	if (args[1] == NULL)
+	if (args[1] == NULL || ft_strncmp(args[1],"~",2) == 0 || ft_strncmp(args[1],"~\\",2) == 0 )
 	{
+        printf("hogehoge\n");
 		home = get_env_value("HOME", env_map);
 		path = (char *)malloc(sizeof(char) * ft_strlen(home) + 1);
 		if (!home)
@@ -109,7 +109,10 @@ int	builtin_cd(char **args, t_var *env_map)
 		ft_strlcpy(path, args[1], ft_strlen(args[1]) + 1);
 	}
 	if (chdir(path) < 0)
+    {
+        free(current_pwd);
 		return (cd_error(path));
+    }
 	unset_env(current_pwd, env_map);
 	export_env(env_map, current_pwd, new_pwd(prev_pwd, path));
     printf("current %p\n",current_pwd);

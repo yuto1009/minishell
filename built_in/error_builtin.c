@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_builtin.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 16:10:19 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/03/28 16:41:37 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/04/29 22:43:14 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	cd_error(char *cmd)
 	ft_putstr_fd("cd: ", STDERR_FILENO);
 	ft_putstr_fd(cmd, STDERR_FILENO);
 	ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+    free(cmd);
 	return (1);
 }
 

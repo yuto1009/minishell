@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 21:23:23 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/29 14:58:50 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/04/29 22:02:15 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,9 @@ void	unset_env(char *env_name, t_var *map)
             map->prev->next = NULL;
         else if (map->next != NULL)
             map->next->prev = NULL;  
-            free(map->name);
-            free(map->value);
+            printf("name? %p\n",map->value);
+            // free(map->name);
+            // free(map->value);
         free(map);
         unset_env(env_name, next);  
         return;  

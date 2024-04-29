@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 23:03:00 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/17 23:16:09 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/04/29 22:01:43 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*append_pwd(char *pwd, char **path)
 	int		i;
 	char	*src;
 	char	*ans;
-
+    char    *joinans;
 	src = *path;
 	i = 0;
 	while ((*path)[i] != '\0' && (*path)[i] != '/')
@@ -46,7 +46,10 @@ char	*append_pwd(char *pwd, char **path)
 	ans = (char *)malloc(sizeof(char) * i + 1);
 	ft_strlcpy(ans, src, i + 1);
 	*path += i;
-	return (ft_strjoin(pwd, ans));
+    joinans =ft_strjoin(pwd, ans);
+    free(pwd);
+    free(ans);
+	return (joinans);
 }
 
 char	*new_pwd(char *prev_pwd, char *path)
@@ -74,6 +77,7 @@ char	*new_pwd(char *prev_pwd, char *path)
 		else
 			new_pwd = append_pwd(new_pwd, &path);
 	}
+    printf("new_pwd %p\n",new_pwd);
 	return (new_pwd);
 }
 
@@ -82,11 +86,15 @@ int	builtin_cd(char **args, t_var *env_map)
 	char	*home;
 	char	*path;
 	char	*prev_pwd;
+    char    *current_pwd;
+    char    *old_pwd;
 
+    current_pwd = ft_strdup("PWD");
+    old_pwd = ft_strdup("OLDPWD");
     env_map->ispwd = 1;
-	prev_pwd = get_env_value("PWD", env_map);
-	unset_env("OLDPWD", env_map);
-	export_env(env_map, "OLDPWD", prev_pwd);
+	prev_pwd = get_env_value(current_pwd, env_map);
+	unset_env(old_pwd, env_map);
+	export_env(env_map, old_pwd, prev_pwd);
 	if (args[1] == NULL)
 	{
 		home = get_env_value("HOME", env_map);
@@ -102,7 +110,9 @@ int	builtin_cd(char **args, t_var *env_map)
 	}
 	if (chdir(path) < 0)
 		return (cd_error(path));
-	unset_env("PWD", env_map);
-	export_env(env_map, "PWD", new_pwd(prev_pwd, path));
+	unset_env(current_pwd, env_map);
+	export_env(env_map, current_pwd, new_pwd(prev_pwd, path));
+    printf("current %p\n",current_pwd);
+    free(path);
 	return (0);
 }

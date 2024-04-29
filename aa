@@ -1,10 +1,1 @@
-()
-Makefile
-aa
-built_in
-exit_script.zsh
-include
-libft
-minishell
-src
-test.sh
+hello

@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 21:23:23 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/29 22:05:45 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/01 00:13:14 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static t_var	*create_map(char *name, char *value)
 		fatal_error("malloc error");
 	map->name = name;
 	map->value = value;
-    map->ispwd = 0;
 	map->prev = NULL;
 	map->next = NULL;
 	return (map);
@@ -79,32 +78,58 @@ char	*trim_env_value(char *env)
 		+ 1);
 	return (value);
 }
-void	unset_env(char *env_name, t_var *map)
+// void	unset_env(char *env_name, t_var *map)
+// {
+//     if (map == NULL)
+//         return;
+    
+//     t_var *next = map->next;  
+
+//     if (ft_strncmp(map->name, env_name, ft_strlen(map->name)) == 0)
+//     {
+//         if (map->prev != NULL && map->next != NULL)
+//         {
+//             map->prev->next = map->next;
+//             map->next->prev = map->prev;
+//         }
+//         else if (map->prev != NULL)
+//             map->prev->next = NULL;
+//         else if (map->next != NULL)
+//             map->next->prev = NULL;  
+//             printf("name? %p\n",map->value);
+//         free(map->name);
+//         free(map->value);
+//         free(map);
+//         unset_env(env_name, next);  
+//         return;  
+//     }
+    
+//     unset_env(env_name, next);  
+// }
+
+void unset_env(char *env_name, t_var *map)
 {
-    if (map == NULL)
-        return;
-    
-    t_var *next = map->next;  
+    t_var *current = map;
+    t_var *next;
 
-    if (ft_strncmp(map->name, env_name, ft_strlen(map->name)) == 0)
-    {
-        if (map->prev != NULL && map->next != NULL)
+    while (current != NULL) {
+        next = current->next; // 次の要素を保持
+
+        if (ft_strncmp(current->name, env_name, ft_strlen(current->name)) == 0)
         {
-            map->prev->next = map->next;
-            map->next->prev = map->prev;
-        }
-        else if (map->prev != NULL)
-            map->prev->next = NULL;
-        else if (map->next != NULL)
-            map->next->prev = NULL;  
-            printf("name? %p\n",map->value);
-            free(map->name);
-            free(map->value);
-        free(map);
-        unset_env(env_name, next);  
-        return;  
-    }
-    
-    unset_env(env_name, next);  
-}
+            if (current->prev != NULL)
+                current->prev->next = current->next;
+            if (current->next != NULL)
+                current->next->prev = current->prev;
 
+            free(current->name);
+            free(current->value);
+            free(current);
+            
+            // 指定された環境変数名が見つかったら、リンクの更新が完了したのでループを抜ける
+            break;
+        }
+
+        current = next; // 次の要素へ移動
+    }
+}

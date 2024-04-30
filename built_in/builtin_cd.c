@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 23:03:00 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/29 22:42:31 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/01 00:14:41 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int	builtin_cd(char **args, t_var *env_map)
 		if (!home)
 			return (minishell_error("HOME not set"));
 		ft_strlcpy(path, home, ft_strlen(home) + 1);
+        free(home);
 	}
 	else
 	{

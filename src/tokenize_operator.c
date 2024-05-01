@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_operator.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 11:50:45 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/28 16:30:06 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/04/29 14:10:50 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_token	*tokenize_redirection_operator(char **line)
 	size_t		i;
 
 	operator = NULL;
+    
 	i = 0;
 	while (i < sizeof(operators) / sizeof(*operators))
 	{

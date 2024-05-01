@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_append_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 12:40:30 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/28 16:59:03 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/05/01 00:20:42 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void	append_question(char **str, char **new_str, int prev_status)
 	while (*exit_status)
 	{
 		append_char(new_str, *exit_status);
+        free(exit_status);
 		exit_status++;
 	}
 }

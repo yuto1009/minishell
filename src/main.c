@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:08:35 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/14 11:01:54 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/04/25 19:38:01 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	count_token_len(t_token *token)
 		i++;
 		tmp = tmp->next;
 	}
-	free(tmp);
+	// free(tmp);
 	return (i - 1);
 }
 
@@ -45,6 +45,21 @@ static bool	is_only_blank_character(char *line)
 		ans = false;
 	return (ans);
 }
+void free_env(t_var *env_map)
+{
+    t_var *tmp;
+    while (env_map != NULL)
+    {
+        // if(ft_strncmp(env_map->name,"PWD",3)!=0 && ft_strncmp(env_map->name,"OLDPWD",6) != 0)
+        free(env_map->name);   
+        free(env_map->value);  
+        tmp = env_map;         
+        env_map = env_map->next; 
+
+        free(tmp);  
+    }
+}
+
 
 static void	roop_readline(void)
 {
@@ -59,23 +74,25 @@ static void	roop_readline(void)
 		setup_signal();
 		line = readline("minishell$ ");
 		if (line == NULL)
-		{
 			break ;
-		}
 		if (is_only_blank_character(line))
+		{
+			free(line);
 			continue ;
+		}
 		if (*line)
 			add_history(line);
 		interpret(line, env_map);
 		free(line);
 	}
+    free_env(env_map);
 	return ;
 }
 
-__attribute__((destructor))
-static void destructor() {
-    system("leaks -q minishell");
-}
+// __attribute__((destructor))
+// static void destructor() {
+//     system("leaks -q minishell");
+// }
 
 int	main(void)
 {

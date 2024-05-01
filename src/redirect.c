@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:20:06 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/28 17:07:57 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/04/29 14:07:10 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,28 +76,34 @@ void	reset_fd(t_node *node)
 	}
 }
 
+
 char	**search_redir(t_node *node, int len)
 {
 	int		i;
 	char	**token2argv;
-
+    t_node *tmp;
+    t_token *current_token;
 	i = 0;
-	token2argv = (char **)ft_calloc(len + 1, sizeof(char *));
+	token2argv = (char **)ft_calloc(len+1, sizeof(char *));
+    tmp = node;
+    current_token = node->token;
 	if (!token2argv)
 		return (NULL);
-	while (node->token->kind != TK_EOF)
+	while (tmp->token->kind != TK_EOF)
 	{
-		if (node->token->kind == TK_REDIRECTION)
+		if (tmp->token->kind == TK_REDIRECTION)
 		{
-			open_file(node);
-			node->token = node->token->next;
+			open_file(tmp);
+			tmp->token = tmp->token->next;
 		}
 		else
 		{
-			token2argv[i] = node->token->str;
+			token2argv[i] = tmp->token->str;
 			i++;
 		}
-		node->token = node->token->next;
+		tmp->token = tmp->token->next;
 	}
+    node->token = current_token;
 	return (token2argv);
 }
+

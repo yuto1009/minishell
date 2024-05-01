@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_new.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 11:45:56 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/28 16:16:19 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/04/29 13:25:23 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

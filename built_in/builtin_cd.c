@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 23:03:00 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/01 00:14:41 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/01 22:07:13 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ char	*new_pwd(char *prev_pwd, char *path)
 		else
 			new_pwd = append_pwd(new_pwd, &path);
 	}
-    printf("new_pwd %p\n",new_pwd);
 	return (new_pwd);
 }
 
@@ -96,7 +95,6 @@ int	builtin_cd(char **args, t_var *env_map)
 	export_env(env_map, old_pwd, prev_pwd);
 	if (args[1] == NULL || ft_strncmp(args[1],"~",2) == 0 || ft_strncmp(args[1],"~\\",2) == 0 )
 	{
-        printf("hogehoge\n");
 		home = get_env_value("HOME", env_map);
 		path = (char *)malloc(sizeof(char) * ft_strlen(home) + 1);
 		if (!home)
@@ -116,7 +114,6 @@ int	builtin_cd(char **args, t_var *env_map)
     }
 	unset_env(current_pwd, env_map);
 	export_env(env_map, current_pwd, new_pwd(prev_pwd, path));
-    printf("current %p\n",current_pwd);
     free(path);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 15:54:37 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/02 23:06:23 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/02 23:09:07 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,6 @@ void	free_node(t_node *node)
 	t_node	*tmpnode;
 	t_token	*tmp_token;
 
-	if (!node)
-		return ;
 	free(node->token->prev);
 	while (node != NULL)
 	{
@@ -115,6 +113,7 @@ void	interpret(char *line, t_var *env_map)
 		return ;
 	node = parser(token);
 	exec_command(node, env_map, prev_status);
-	free_node(node);
+	if (node)
+		free_node(node);
 	return ;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/04/29 10:39:34 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/02 23:24:47 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ static void	expand_variable(t_token *token, t_var *env_map, int prev_status)
 		return ;
 	free(token->str);
 	token->str = new_str;
-
 	expand_variable(token->next, env_map, prev_status);
 }
 

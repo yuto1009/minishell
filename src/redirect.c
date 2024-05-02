@@ -3,16 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:20:06 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/04/29 14:07:10 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/02 23:34:40 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static int	stashfd(int fd)
+static void	dup_fd(t_node *node)
+{
+	int	fileoutfd;
+	int	fileinfd;
+
+	fileoutfd = node->redirout_fd;
+	fileinfd = node->redirin_fd;
+	if (fileoutfd != 1)
+	{
+		node->currentout_fd = stashfd(STDOUT_FILENO);
+		dup2(fileoutfd, STDOUT_FILENO);
+		close(fileoutfd);
+	}
+	if (fileinfd != 0)
+	{
+		node->currentin_fd = stashfd(STDIN_FILENO);
+		dup2(fileinfd, STDIN_FILENO);
+		close(fileinfd);
+	}
+}
+
+static void	reset_fd(t_node *node)
+{
+	if (node->currentout_fd != STDOUT_FILENO)
+	{
+		dup2(node->currentout_fd, STDOUT_FILENO);
+		close(node->currentout_fd);
+	}
+	if (node->currentin_fd != STDIN_FILENO)
+	{
+		dup2(node->currentin_fd, STDIN_FILENO);
+		close(node->currentin_fd);
+	}
+}
+
+int	stashfd(int fd)
 {
 	int	stashfd;
 
@@ -41,55 +76,18 @@ static void	open_file(t_node *node)
 		cmd_error_exit(filename, "Permission denied", 1);
 }
 
-void	dup_fd(t_node *node)
-{
-	int	fileoutfd;
-	int	fileinfd;
-
-	fileoutfd = node->redirout_fd;
-	fileinfd = node->redirin_fd;
-	if (fileoutfd != 1)
-	{
-		node->currentout_fd = stashfd(STDOUT_FILENO);
-		dup2(fileoutfd, STDOUT_FILENO);
-		close(fileoutfd);
-	}
-	if (fileinfd != 0)
-	{
-		node->currentin_fd = stashfd(STDIN_FILENO);
-		dup2(fileinfd, STDIN_FILENO);
-		close(fileinfd);
-	}
-}
-
-void	reset_fd(t_node *node)
-{
-	if (node->currentout_fd != STDOUT_FILENO)
-	{
-		dup2(node->currentout_fd, STDOUT_FILENO);
-		close(node->currentout_fd);
-	}
-	if (node->currentin_fd != STDIN_FILENO)
-	{
-		dup2(node->currentin_fd, STDIN_FILENO);
-		close(node->currentin_fd);
-	}
-}
-
-
 char	**search_redir(t_node *node, int len)
 {
 	int		i;
 	char	**token2argv;
-    t_node *tmp;
-    t_token *current_token;
+	t_node	*tmp;
+	t_token	*current_token;
+
 	i = 0;
-	token2argv = (char **)ft_calloc(len+1, sizeof(char *));
-    tmp = node;
-    current_token = node->token;
-	if (!token2argv)
-		return (NULL);
-	while (tmp->token->kind != TK_EOF)
+	token2argv = (char **)ft_calloc(len + 1, sizeof(char *));
+	tmp = node;
+	current_token = node->token;
+	while (token2argv != NULL && tmp->token->kind != TK_EOF)
 	{
 		if (tmp->token->kind == TK_REDIRECTION)
 		{
@@ -103,7 +101,6 @@ char	**search_redir(t_node *node, int len)
 		}
 		tmp->token = tmp->token->next;
 	}
-    node->token = current_token;
+	node->token = current_token;
 	return (token2argv);
 }
-

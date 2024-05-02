@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 16:29:10 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/04/29 13:29:58 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/02 23:24:31 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static t_node	*create_command_node(t_token *start_token)
 		fatal_error("Malloc");
 	}
 	new_node->token = start_token;
-
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	new_node->currentin_fd = 0;

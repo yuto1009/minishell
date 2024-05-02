@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 11:51:41 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/04/15 20:08:55 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/02 23:25:28 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	**envlist2char(t_var *env_map)
 	int		i;
 	char	*joinrow;
 
-    ans = (char **)malloc(sizeof(char *) * (get_listsize(env_map) + 1));
+	ans = (char **)malloc(sizeof(char *) * (get_listsize(env_map) + 1));
 	if (!ans)
 		return (NULL);
 	tmp = env_map;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_is.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 11:47:24 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/04/29 14:27:03 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/02 22:27:13 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ bool	is_redirection_operator(char *line)
 {
 	const char	*operators[] = {">>", "<<", "<>", "<", ">"};
 	size_t		i;
+
 	i = 0;
 	while (i < sizeof(operators) / sizeof(*operators))
 	{

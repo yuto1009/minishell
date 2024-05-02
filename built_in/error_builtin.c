@@ -18,7 +18,7 @@ int	cd_error(char *cmd)
 	ft_putstr_fd("cd: ", STDERR_FILENO);
 	ft_putstr_fd(cmd, STDERR_FILENO);
 	ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-    free(cmd);
+	free(cmd);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 12:40:30 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/01 00:20:42 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/03 00:01:07 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	append_single_quote(char **str, char **new_str)
 			if (**str == '\0')
 			{
 				minishell_error("Unclosed single quote");
+                free(*new_str);
 				g_status = MINISHELL_ERROR;
 				return ;
 			}
@@ -67,6 +68,7 @@ void	append_double_quote(char **str, char **new_str, t_var *env_map,
 			if (**str == '\0')
 			{
 				minishell_error("Unclosed double quote");
+                free(*new_str);
 				g_status = MINISHELL_ERROR;
 				return ;
 			}

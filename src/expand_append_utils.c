@@ -121,7 +121,7 @@ void	append_question(char **str, char **new_str, int prev_status)
 	while (*exit_status)
 	{
 		append_char(new_str, *exit_status);
-        free(exit_status);
+		free(exit_status);
 		exit_status++;
 	}
 }

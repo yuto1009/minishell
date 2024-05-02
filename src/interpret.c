@@ -3,29 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   interpret.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 15:54:37 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/04/29 13:29:06 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/02 23:09:07 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void free_token_error(t_token *token)
+void	free_token_error(t_token *token)
 {
-	t_token *tmp;
+	t_token	*tmp;
+
 	free(token->prev);
-	while(token!=NULL)
+	while (token != NULL)
 	{
 		free(token->str);
 		tmp = token;
 		token = token->next;
 		free(tmp);
 	}
-
 }
-
 
 static t_token	*interpret_line2token(char *line, t_var *env_map,
 		int prev_status)
@@ -39,7 +38,6 @@ static t_token	*interpret_line2token(char *line, t_var *env_map,
 		free_token_error(token);
 		return (NULL);
 	}
-		
 	status = tokenize_error(token);
 	if (status == SYNTAX_ERROR || status == CMD_NOT_FOUND_ERROR)
 	{
@@ -59,15 +57,13 @@ static void	exec_command(t_node *node, t_var *env_map, int prev_status)
 		return ;
 	if (node->next == NULL && is_builtin(node->token->str))
 	{
-		// free(node->token->prev);
-       
 		token2argv = search_redir(node, count_token_len(node->token));
 		if (!token2argv)
 			exit(1);
 		dup_fd(node);
 		g_status = exec_builtin(token2argv, env_map, prev_status);
 		reset_fd(node);
-        free(token2argv);
+		free(token2argv);
 	}
 	else
 	{
@@ -75,33 +71,35 @@ static void	exec_command(t_node *node, t_var *env_map, int prev_status)
 		wait_pid(pid);
 	}
 }
-void free_node(t_node *node) {
-    t_token *current_token = NULL, *tmpToken;
-	t_node *tmpnode;
-	if(!node)
-		return;
-    free(node->token->prev); 
-	while (node != NULL) {
-    	current_token = node->token;
 
-    while (current_token != NULL)
+void	free_node(t_node *node)
+{
+	t_token	*current_token;
+	t_node	*tmpnode;
+	t_token	*tmp_token;
+
+	free(node->token->prev);
+	while (node != NULL)
 	{
-		if( current_token->kind == TK_EOF){
-			free(current_token);
-			break;
+		current_token = node->token;
+		while (current_token != NULL)
+		{
+			if (current_token->kind == TK_EOF)
+			{
+				free(current_token);
+				break ;
+			}
+			free(current_token->str);
+			tmp_token = current_token;
+			current_token = current_token->next;
+			free(tmp_token);
 		}
-		free(current_token->str);
-        tmpToken = current_token;
-        current_token = current_token->next;
-        free(tmpToken);
-    }
-
-    tmpnode = node;     
-    node = node->next;  
-    free(tmpnode);      
+		tmpnode = node;
+		node = node->next;
+		free(tmpnode);
+	}
 }
 
-}
 void	interpret(char *line, t_var *env_map)
 {
 	struct s_node	*node;
@@ -111,10 +109,11 @@ void	interpret(char *line, t_var *env_map)
 	prev_status = g_status;
 	g_status = 0;
 	token = interpret_line2token(line, env_map, prev_status);
-	if(!token)
-		return;
+	if (!token)
+		return ;
 	node = parser(token);
 	exec_command(node, env_map, prev_status);
-    free_node(node);
+	if (node)
+		free_node(node);
 	return ;
 }

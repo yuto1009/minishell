@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 11:42:36 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/04/29 14:26:46 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/02 23:25:54 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 t_token	*tokenize_line(char **line)
 {
 	t_token	*new;
+
 	new = NULL;
 	if (is_blank(**line))
 	{

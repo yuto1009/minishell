@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/02 23:35:53 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/02 23:43:51 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 
 # include "../built_in/include/built_in.h"
 # include "../libft/libft.h"
+# include <stdio.h>
+# include <stdbool.h>
 # include <errno.h>
+# include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <fcntl.h>
 # include <signal.h>
-# include <stdbool.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/stat.h>
@@ -180,6 +180,8 @@ void					sigint_action(int signum);
 int						heredoc(char *delimiter);
 
 // redirect.c
+void					dup_fd(t_node *node);
+void					reset_fd(t_node *node);
 int						stashfd(int fd);
 char					**search_redir(t_node *node, int len);
 

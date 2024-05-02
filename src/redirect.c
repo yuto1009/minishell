@@ -6,13 +6,13 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:20:06 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/02 23:34:40 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/02 23:43:00 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void	dup_fd(t_node *node)
+void	dup_fd(t_node *node)
 {
 	int	fileoutfd;
 	int	fileinfd;
@@ -33,7 +33,7 @@ static void	dup_fd(t_node *node)
 	}
 }
 
-static void	reset_fd(t_node *node)
+void	reset_fd(t_node *node)
 {
 	if (node->currentout_fd != STDOUT_FILENO)
 	{

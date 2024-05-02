@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 23:03:00 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/02 22:17:56 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/02 23:04:51 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char	*get_target_path(char **args, t_var *env_map)
 	{
 		home = get_env_value("HOME", env_map);
 		if (!home)
-			return (NULL); 
+			return (NULL);
 		path = (char *)malloc(sizeof(char) * ft_strlen(home) + 1);
 		ft_strlcpy(path, home, ft_strlen(home) + 1);
 		free(home);
@@ -35,40 +35,28 @@ static char	*get_target_path(char **args, t_var *env_map)
 	return (path);
 }
 
-static int	change_directory_and_update_env(char *path, t_var *env_map,
-		char *prev_pwd)
+int	builtin_cd(char **args, t_var *env_map)
 {
+	char	*path;
+	char	*prev_pwd;
 	char	*current_pwd;
 	char	*old_pwd;
 
 	current_pwd = ft_strdup("PWD");
 	old_pwd = ft_strdup("OLDPWD");
+	prev_pwd = get_env_value(current_pwd, env_map);
+	unset_env(old_pwd, env_map);
+	export_env(env_map, old_pwd, prev_pwd);
+	path = get_target_path(args, env_map);
+	if (!path)
+		return (minishell_error("HOME not set"));
 	if (chdir(path) < 0)
 	{
 		free(current_pwd);
-		free(old_pwd);
 		return (cd_error(path));
 	}
-	unset_env(old_pwd, env_map);
-	export_env(env_map, old_pwd, prev_pwd);
 	unset_env(current_pwd, env_map);
 	export_env(env_map, current_pwd, new_pwd(prev_pwd, path));
-	free(current_pwd);
-	free(old_pwd);
-	return (0);
-}
-
-int	builtin_cd(char **args, t_var *env_map)
-{
-	char	*prev_pwd;
-	char	*path;
-	int		result;
-
-	prev_pwd = get_env_value(ft_strdup("PWD"), env_map);
-	path = get_target_path(args, env_map);
-	if (!path)
-		return (minishell_error("HOME not set or path allocation failed"));
-	result = change_directory_and_update_env(path, env_map, prev_pwd);
 	free(path);
-	return (result);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 15:54:37 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/02 22:32:37 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/02 23:06:23 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ void	free_node(t_node *node)
 	t_node	*tmpnode;
 	t_token	*tmp_token;
 
-	current_token = NULL;
 	if (!node)
 		return ;
 	free(node->token->prev);

@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 12:40:30 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/03 00:01:07 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/03 22:11:42 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	append_env_variable(char **str, char **new_str, t_var *env_map)
 {
 	char	*env_name;
 	char	*ans;
+    char    *head;
 
 	env_name = ft_calloc(1, sizeof(char));
 	while (**str != '\0' && is_alpha(**str))
@@ -99,9 +100,13 @@ void	append_env_variable(char **str, char **new_str, t_var *env_map)
 		(*str)++;
 	}
 	ans = get_env_value(env_name, env_map);
+    head = ans;
 	free(env_name);
 	if (!ans)
-		*new_str = NULL;
+    {
+        free(*new_str);
+        *new_str = NULL;
+    }
 	if (ans)
 	{
 		while (*ans)
@@ -109,6 +114,7 @@ void	append_env_variable(char **str, char **new_str, t_var *env_map)
 			append_char(new_str, *ans);
 			ans++;
 		}
+    free(head);
 	}
 }
 

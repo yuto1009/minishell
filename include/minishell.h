@@ -15,13 +15,13 @@
 
 # include "../built_in/include/built_in.h"
 # include "../libft/libft.h"
-# include <stdio.h>
-# include <stdbool.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
+# include <stdbool.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/stat.h>
@@ -150,7 +150,8 @@ void					append_single_quote(char **str, char **new_str);
 void					append_char(char **str, char new_char);
 
 // expand_append_env.c
-void	append_env_variable(char **str, char **new_str, t_var *env_map);
+void					append_env_variable(char **str, char **new_str,
+							t_var *env_map);
 
 // expand_remove.c
 void					remove_void_tokens(t_token *token);
@@ -219,5 +220,5 @@ t_var					*init_env_map(void);
 // wait_pid.c
 void					wait_pid(pid_t pid);
 
-int                     my_strcmp(const char *s1, const char *s2);
+int						my_strcmp(const char *s1, const char *s2);
 #endif

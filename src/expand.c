@@ -29,7 +29,6 @@ static void	expand_loop(char **str, char **new_str, t_var *env_map,
 			(*str)++;
 		}
 	}
-
 }
 
 static void	expand_variable(t_token *token, t_var *env_map, int prev_status)
@@ -49,14 +48,13 @@ static void	expand_variable(t_token *token, t_var *env_map, int prev_status)
 	if (g_status == MINISHELL_ERROR)
 		return ;
 	free(token->str);
-
-    if(new_str && my_strcmp(new_str,"\"") == 0)
-    {
-        token->str = NULL;
-        free(new_str);
-    }
-    else
-	    token->str = new_str;    
+	if (new_str && my_strcmp(new_str, "\"") == 0)
+	{
+		token->str = NULL;
+		free(new_str);
+	}
+	else
+		token->str = new_str;
 	expand_variable(token->next, env_map, prev_status);
 }
 
@@ -70,7 +68,6 @@ int	expand(t_token *token, t_var *env_map, int prev_status)
 		g_status = 0;
 		return (-1);
 	}
-
 	remove_quotes(token);
 	remove_void_tokens(token);
 	return (0);

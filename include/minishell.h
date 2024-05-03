@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/03 21:59:16 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/03 22:39:08 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,9 @@ void					append_double_quote(char **str, char **new_str,
 							t_var *env_map, int prev_status);
 void					append_single_quote(char **str, char **new_str);
 void					append_char(char **str, char new_char);
+
+// expand_append_env.c
+void	append_env_variable(char **str, char **new_str, t_var *env_map);
 
 // expand_remove.c
 void					remove_void_tokens(t_token *token);

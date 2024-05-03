@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_append_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 12:40:30 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/03 22:11:42 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/03 22:41:24 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	append_single_quote(char **str, char **new_str)
 			if (**str == '\0')
 			{
 				minishell_error("Unclosed single quote");
-                free(*new_str);
+				free(*new_str);
 				g_status = MINISHELL_ERROR;
 				return ;
 			}
@@ -56,6 +56,31 @@ void	append_single_quote(char **str, char **new_str)
 	fatal_error("Expected single quote");
 }
 
+static void process_double_quote_contents(char **str, char **new_str, t_var *env_map, int prev_status)
+{
+    while (**str != DOUBLE_QUOTE)
+    {
+        if (**str == '\0')
+        {
+            minishell_error("Unclosed double quote");
+            free(*new_str);
+            g_status = MINISHELL_ERROR;
+            return;
+        }
+        else if (is_dollar_sign(**str))
+        {
+            append_variable(str, new_str, env_map, prev_status);
+        }
+        else
+        {
+            append_char(new_str, **str);
+            (*str)++;
+        }
+    }
+    append_char(new_str, **str);
+    (*str)++;
+}
+
 void	append_double_quote(char **str, char **new_str, t_var *env_map,
 		int prev_status)
 {
@@ -63,58 +88,11 @@ void	append_double_quote(char **str, char **new_str, t_var *env_map,
 	{
 		append_char(new_str, **str);
 		(*str)++;
-		while (**str != DOUBLE_QUOTE)
-		{
-			if (**str == '\0')
-			{
-				minishell_error("Unclosed double quote");
-                free(*new_str);
-				g_status = MINISHELL_ERROR;
-				return ;
-			}
-			else if (is_dollar_sign(**str))
-				append_variable(str, new_str, env_map, prev_status);
-			else
-			{
-				append_char(new_str, **str);
-				(*str)++;
-			}
-		}
-		append_char(new_str, **str);
-		(*str)++;
-		return ;
+		process_double_quote_contents(str, new_str, env_map, prev_status);
 	}
-	fatal_error("Expected double quote");
-}
-
-void	append_env_variable(char **str, char **new_str, t_var *env_map)
-{
-	char	*env_name;
-	char	*ans;
-    char    *head;
-
-	env_name = ft_calloc(1, sizeof(char));
-	while (**str != '\0' && is_alpha(**str))
+	else
 	{
-		append_char(&env_name, **str);
-		(*str)++;
-	}
-	ans = get_env_value(env_name, env_map);
-    head = ans;
-	free(env_name);
-	if (!ans)
-    {
-        free(*new_str);
-        *new_str = NULL;
-    }
-	if (ans)
-	{
-		while (*ans)
-		{
-			append_char(new_str, *ans);
-			ans++;
-		}
-    free(head);
+		fatal_error("Expected double quote");
 	}
 }
 

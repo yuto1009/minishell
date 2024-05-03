@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 12:40:30 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/03 22:41:24 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/03 22:48:23 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,29 +56,30 @@ void	append_single_quote(char **str, char **new_str)
 	fatal_error("Expected single quote");
 }
 
-static void process_double_quote_contents(char **str, char **new_str, t_var *env_map, int prev_status)
+static void	process_double_quote_contents(char **str, char **new_str,
+		t_var *env_map, int prev_status)
 {
-    while (**str != DOUBLE_QUOTE)
-    {
-        if (**str == '\0')
-        {
-            minishell_error("Unclosed double quote");
-            free(*new_str);
-            g_status = MINISHELL_ERROR;
-            return;
-        }
-        else if (is_dollar_sign(**str))
-        {
-            append_variable(str, new_str, env_map, prev_status);
-        }
-        else
-        {
-            append_char(new_str, **str);
-            (*str)++;
-        }
-    }
-    append_char(new_str, **str);
-    (*str)++;
+	while (**str != DOUBLE_QUOTE)
+	{
+		if (**str == '\0')
+		{
+			minishell_error("Unclosed double quote");
+			free(*new_str);
+			g_status = MINISHELL_ERROR;
+			return ;
+		}
+		else if (is_dollar_sign(**str))
+		{
+			append_variable(str, new_str, env_map, prev_status);
+		}
+		else
+		{
+			append_char(new_str, **str);
+			(*str)++;
+		}
+	}
+	append_char(new_str, **str);
+	(*str)++;
 }
 
 void	append_double_quote(char **str, char **new_str, t_var *env_map,

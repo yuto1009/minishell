@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_append.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 12:39:38 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/28 16:57:27 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/05/03 21:06:37 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

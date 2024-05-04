@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/05/02 23:24:47 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/03 22:26:30 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,13 @@ static void	expand_variable(t_token *token, t_var *env_map, int prev_status)
 	if (g_status == MINISHELL_ERROR)
 		return ;
 	free(token->str);
-	token->str = new_str;
+	if (new_str && my_strcmp(new_str, "\"") == 0)
+	{
+		token->str = NULL;
+		free(new_str);
+	}
+	else
+		token->str = new_str;
 	expand_variable(token->next, env_map, prev_status);
 }
 

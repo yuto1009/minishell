@@ -6,26 +6,68 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 12:44:38 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/03 22:00:40 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/05 13:12:01 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	remove_void_tokens(t_token *token)
-{
-	t_token	*void_token;
+// void	remove_void_tokens(t_token *token)
+// {
+// 	t_token	*void_token;
 
-	if (token->kind == TK_EOF)
-		return ;
-	if (token->kind == TK_WORD && token->str == NULL)
-	{
-		void_token = token;
-		token = token->prev;
-		token->next = token->next->next;
-		free(void_token);
-	}
-	return (remove_void_tokens(token->next));
+// 	if (token->kind == TK_EOF)
+// 		return ;
+//     if(token->prev->kind == TK_EOF && token->str == NULL)
+//     {
+        
+//         token = token->next;
+//     printf("token : %s\n",token->str);
+//     }
+// 	else if (token->kind == TK_WORD && token->str == NULL)
+// 	{
+// 		void_token = token;
+// 		token = token->prev;
+// 		token->next = token->next->next;
+// 		free(void_token);
+// 	}
+// 	return (remove_void_tokens(token->next));
+// }
+t_token *remove_void_tokens(t_token *token)
+{
+    t_token *temp_token;
+    t_token *tmp;
+    t_token *head;
+    // 先頭トークンが終端トークンであることを前提とする
+    if(token->prev->kind ==TK_EOF&&token->str[0] == '\0')
+    {
+        tmp = token;
+        token = token->next;
+        token->prev = tmp->prev;
+        head = token;
+        free(tmp->str);
+        free(tmp);
+    }
+    else
+    head = token;
+    while (token != NULL && token->kind != TK_EOF)
+    {
+        if (token->str != NULL && token->str[0] == '\0')  // token->strが空文字の場合
+        {
+            temp_token = token;
+            token->prev->next = token->next;
+            if (token->next != NULL)  // 次のトークンがNULLでない場合
+            {
+                token->next->prev = token->prev;
+            }
+            token = token->next; 
+            free(temp_token->str);
+            free(temp_token);  // 現在のトークンを解放
+        }
+        else
+            token = token->next;  // 次のトークンに進む
+    }
+    return head;
 }
 
 void	remove_single_quote(char **str, char **new_str)

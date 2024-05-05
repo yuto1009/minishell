@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interpret.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 15:54:37 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/02 23:09:07 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/05 17:00:53 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static t_token	*interpret_line2token(char *line, t_var *env_map,
 		free_token_error(token);
 		return (NULL);
 	}
+    token = remove_void_tokens(token);
 	status = tokenize_error(token);
 	if (status == SYNTAX_ERROR || status == CMD_NOT_FOUND_ERROR)
 	{

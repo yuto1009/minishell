@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/05/05 17:01:57 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/05 22:13:59 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,6 @@ static void	expand_variable(t_token *token, t_var *env_map, int prev_status)
 	expand_variable(token->next, env_map, prev_status);
 }
 
-void print_token(t_token *token)
-{
-    t_token *tmp;
-    tmp = token;
-    while(tmp !=NULL)
-    {
-        printf("token->str : [%s]\n",tmp->str);
-        tmp  = tmp->next;
-    }
-}
-
 int	expand(t_token *token, t_var *env_map, int prev_status)
 {
 	expand_variable(token, env_map, prev_status);
@@ -79,9 +68,6 @@ int	expand(t_token *token, t_var *env_map, int prev_status)
 		g_status = 0;
 		return (-1);
 	}
-            print_token(token);
 	remove_quotes(token);
-
-    // printf("after token %s\n", token->str);
 	return (0);
 }

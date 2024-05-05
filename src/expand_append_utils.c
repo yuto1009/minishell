@@ -63,7 +63,7 @@ static void	process_double_quote_contents(char **str, char **new_str,
 	{
 		if (**str == '\0')
 		{
-        printf("token->str %s\n",*str);
+			printf("token->str %s\n", *str);
 			minishell_error("Unclosed double quote");
 			free(*new_str);
 			g_status = MINISHELL_ERROR;

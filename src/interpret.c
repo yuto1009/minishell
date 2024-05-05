@@ -38,7 +38,7 @@ static t_token	*interpret_line2token(char *line, t_var *env_map,
 		free_token_error(token);
 		return (NULL);
 	}
-    token = remove_void_tokens(token);
+	token = remove_void_tokens(token);
 	status = tokenize_error(token);
 	if (status == SYNTAX_ERROR || status == CMD_NOT_FOUND_ERROR)
 	{

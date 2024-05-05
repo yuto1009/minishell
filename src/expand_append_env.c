@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_append_env.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 22:37:00 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/05 10:29:40 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/05 22:12:33 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	process_env_variable_value(char *ans, char **new_str)
 
 	head = ans;
 	if (!ans)
-        return;
+		return ;
 	else
 	{
 		while (*ans)
@@ -44,7 +44,7 @@ void	append_env_variable(char **str, char **new_str, t_var *env_map)
 {
 	char	*env_name;
 	char	*ans;
-    // printf("now newstr %s\n",*new_str);
+
 	extract_env_variable_name(str, &env_name);
 	ans = get_env_value(env_name, env_map);
 	process_env_variable_value(ans, new_str);

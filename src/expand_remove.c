@@ -3,29 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   expand_remove.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 12:44:38 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/03 22:00:40 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/05 22:19:47 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	remove_void_tokens(t_token *token)
+static t_token	*remove_initial_void_token(t_token *token)
 {
-	t_token	*void_token;
+	t_token	*tmp;
 
-	if (token->kind == TK_EOF)
-		return ;
-	if (token->kind == TK_WORD && token->str == NULL)
+	if (token->prev->kind == TK_EOF && token->str[0] == '\0')
 	{
-		void_token = token;
-		token = token->prev;
-		token->next = token->next->next;
-		free(void_token);
+		tmp = token;
+		token = token->next;
+		token->prev = tmp->prev;
+		free(tmp->str);
+		free(tmp);
 	}
-	return (remove_void_tokens(token->next));
+	return (token);
+}
+
+t_token	*remove_void_tokens(t_token *token)
+{
+	t_token	*head;
+	t_token	*temp_token;
+
+	head = remove_initial_void_token(token);
+	while (token != NULL && token->kind != TK_EOF)
+	{
+		if (token->str != NULL && token->str[0] == '\0')
+		{
+			temp_token = token;
+			token->prev->next = token->next;
+			if (token->next != NULL)
+			{
+				token->next->prev = token->prev;
+			}
+			token = token->next;
+			free(temp_token->str);
+			free(temp_token);
+		}
+		else
+		{
+			token = token->next;
+		}
+	}
+	return (head);
 }
 
 void	remove_single_quote(char **str, char **new_str)

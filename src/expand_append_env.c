@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 22:37:00 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/03 22:46:15 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/05 22:12:33 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,7 @@ static void	process_env_variable_value(char *ans, char **new_str)
 
 	head = ans;
 	if (!ans)
-	{
-		free(*new_str);
-		*new_str = NULL;
-	}
+		return ;
 	else
 	{
 		while (*ans)

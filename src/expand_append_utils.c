@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_append_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 12:40:30 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/03 22:48:23 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/05 17:05:32 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static void	process_double_quote_contents(char **str, char **new_str,
 	{
 		if (**str == '\0')
 		{
+			printf("token->str %s\n", *str);
 			minishell_error("Unclosed double quote");
 			free(*new_str);
 			g_status = MINISHELL_ERROR;

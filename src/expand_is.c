@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_is.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 12:46:18 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/28 16:57:18 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/05/06 21:59:10 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ bool	is_alpha(char chr)
 bool	is_exit_status(char *str)
 {
 	char	*p;
-
 	p = str;
 	if (*p == DOLLAR_SIGN)
 	{

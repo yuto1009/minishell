@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 12:40:30 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/06 22:17:25 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/07 08:33:19 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ void	append_question(char **str, char **new_str, int prev_status)
 	char	*exit_status;
     int     i;
 	(*str)++;
-
 	exit_status = ft_itoa(prev_status);
     i = 0;
 	if (exit_status == NULL)

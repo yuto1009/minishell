@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_append.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 12:39:38 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/05 22:09:30 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/07 21:38:11 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,16 @@ bool	is_lower_case(char *str)
 	return ('a' <= *str && *str <= 'z');
 }
 
-static void	handle_quotes_and_end(char **str)
+static int	handle_quotes_and_end(char **str)
 {
 	(*str)++;
 	if (ft_strchr(*str, '"') != NULL)
 	{
 		while (**str != '\"')
 			(*str)++;
+        return -1;
 	}
-	else
-	{
-		while (**str != '\0')
-			(*str)++;
-	}
+    return 0;
 }
 
 void	append_variable(char **str, char **new_str, t_var *env_map,
@@ -52,6 +49,10 @@ void	append_variable(char **str, char **new_str, t_var *env_map,
 	}
 	else
 	{
-		handle_quotes_and_end(str);
+        if(handle_quotes_and_end(str) == -1)
+            return ;
+    	while (**str != '\0')
+			(*str)++;
+        return;
 	}
 }

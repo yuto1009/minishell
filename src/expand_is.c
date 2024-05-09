@@ -53,6 +53,7 @@ bool	is_alpha(char chr)
 bool	is_exit_status(char *str)
 {
 	char	*p;
+
 	p = str;
 	if (*p == DOLLAR_SIGN)
 	{

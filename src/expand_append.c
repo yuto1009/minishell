@@ -24,9 +24,9 @@ static int	handle_quotes_and_end(char **str)
 	{
 		while (**str != '\"')
 			(*str)++;
-        return -1;
+		return (-1);
 	}
-    return 0;
+	return (0);
 }
 
 void	append_variable(char **str, char **new_str, t_var *env_map,
@@ -49,10 +49,10 @@ void	append_variable(char **str, char **new_str, t_var *env_map,
 	}
 	else
 	{
-        if(handle_quotes_and_end(str) == -1)
-            return ;
-    	while (**str != '\0')
+		if (handle_quotes_and_end(str) == -1)
+			return ;
+		while (**str != '\0')
 			(*str)++;
-        return;
+		return ;
 	}
 }

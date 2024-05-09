@@ -39,12 +39,12 @@ static t_token	*interpret_line2token(char *line, t_var *env_map,
 		return (NULL);
 	}
 	token = remove_void_tokens(token);
-    if(token->kind == TK_EOF)
-    {
-        free(token->str);
-        free(token);
-        return (NULL);
-    }
+	if (token->kind == TK_EOF)
+	{
+		free(token->str);
+		free(token);
+		return (NULL);
+	}
 	status = tokenize_error(token);
 	if (status == SYNTAX_ERROR || status == CMD_NOT_FOUND_ERROR)
 	{

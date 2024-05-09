@@ -101,16 +101,17 @@ void	append_double_quote(char **str, char **new_str, t_var *env_map,
 void	append_question(char **str, char **new_str, int prev_status)
 {
 	char	*exit_status;
-    int     i;
+	int		i;
+
 	(*str)++;
 	exit_status = ft_itoa(prev_status);
-    i = 0;
+	i = 0;
 	if (exit_status == NULL)
 		fatal_error("MALLOC ERROR");
 	while (exit_status[i])
 	{
 		append_char(new_str, exit_status[i]);
-        i++;
+		i++;
 	}
-		free(exit_status);
+	free(exit_status);
 }

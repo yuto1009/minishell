@@ -81,7 +81,6 @@ static void	roop_readline(void)
 		if (*line)
 			add_history(line);
 		interpret(line, env_map);
-
 		free(line);
 	}
 	free_env(env_map);

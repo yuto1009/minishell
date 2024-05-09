@@ -24,14 +24,14 @@ static t_token	*remove_initial_void_token(t_token *token)
 		free(tmp->str);
 		free(tmp);
 	}
-    while(token->kind != TK_EOF && token->str[0] == '\0')
-    {
-        tmp = token;
-        token = token->next;
-        token->prev = tmp->prev;
-        free(tmp->str);
-        free(tmp);
-    }
+	while (token->kind != TK_EOF && token->str[0] == '\0')
+	{
+		tmp = token;
+		token = token->next;
+		token->prev = tmp->prev;
+		free(tmp->str);
+		free(tmp);
+	}
 	return (token);
 }
 
@@ -41,9 +41,9 @@ t_token	*remove_void_tokens(t_token *token)
 	t_token	*temp_token;
 
 	head = remove_initial_void_token(token);
-    if(head->kind == TK_EOF)
-        return head;
-    token = head;
+	if (head->kind == TK_EOF)
+		return (head);
+	token = head;
 	while (token != NULL && token->kind != TK_EOF)
 	{
 		if (token->str != NULL && token->str[0] == '\0')

@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 12:40:30 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/05 17:05:32 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/07 08:33:19 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,15 +101,17 @@ void	append_double_quote(char **str, char **new_str, t_var *env_map,
 void	append_question(char **str, char **new_str, int prev_status)
 {
 	char	*exit_status;
+	int		i;
 
 	(*str)++;
 	exit_status = ft_itoa(prev_status);
+	i = 0;
 	if (exit_status == NULL)
 		fatal_error("MALLOC ERROR");
-	while (*exit_status)
+	while (exit_status[i])
 	{
-		append_char(new_str, *exit_status);
-		free(exit_status);
-		exit_status++;
+		append_char(new_str, exit_status[i]);
+		i++;
 	}
+	free(exit_status);
 }

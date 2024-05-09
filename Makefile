@@ -1,5 +1,5 @@
 NAME     = minishell
-CC       = cc -g 
+CC       = cc 
 #  -fsanitize=address
 # RLDIR    = $(shell brew --prefix readline)
 # INCLUDES = -I include -I$(RLDIR)/include

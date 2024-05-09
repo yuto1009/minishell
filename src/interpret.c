@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 15:54:37 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/05 17:00:53 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/07 22:17:24 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,12 @@ static t_token	*interpret_line2token(char *line, t_var *env_map,
 		return (NULL);
 	}
 	token = remove_void_tokens(token);
+	if (token->kind == TK_EOF)
+	{
+		free(token->str);
+		free(token);
+		return (NULL);
+	}
 	status = tokenize_error(token);
 	if (status == SYNTAX_ERROR || status == CMD_NOT_FOUND_ERROR)
 	{

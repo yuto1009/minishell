@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 12:08:13 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/11 00:21:12 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/11 09:40:33 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ static bool	check_long_overflow(char *str, int sign)
 	i = 0;
 	while (str[i])
 	{
-		if (i == 19)
+		if (i == 18)
 		{
 			if (sign == 1 && str[i] > '7')
 				return (false);
 			else if (sign == -1 && str[i] > '8')
 				return (false);
 		}
-		else if (i > 19)
+		else if (i > 18)
 			return (false);
 		i++;
 	}

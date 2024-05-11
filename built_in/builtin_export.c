@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 17:10:24 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/03/28 16:42:42 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/05/11 09:27:53 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,7 @@ int	builtin_export(char **args, t_var *env_map)
 			return (command_error(args[i], "export"));
 		}
 		if (is_env_exists(env_map, env_name))
-		{
-			i++;
-			continue ;
-		}
+			unset_env(env_name, env_map);
 		export_env(env_map, env_name, env_value);
 		i++;
 	}

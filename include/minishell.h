@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/05 12:39:59 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/12 22:25:29 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,13 @@ extern int				g_status;
 # define DOLLAR_SIGN '$'
 # define EQUAL_SIGN '='
 # define QUESTION '?'
+
+// Export operators
+# define INVALID_OP 0 
+# define ASSIGN_OP_STR "="
+# define ASSIGN_OP 1
+# define APPEND_OP_STR "+="
+# define APPEND_OP 2 
 
 // Token
 typedef struct s_token	t_token;
@@ -207,8 +214,7 @@ char					*search_path(char *filename);
 // map.c
 t_var					*export_env(t_var *map, char *env_name,
 							char *env_value);
-char					*trim_env_name(char *env);
-char					*trim_env_value(char *env);
+t_var	*append_env(t_var *map, char *env_name, char *additional_value);							
 void					unset_env(char *env_name, t_var *map);
 
 // map_get.c
@@ -216,6 +222,11 @@ char					*get_env_value(char *env_name, t_var *map);
 
 // map_init.c
 t_var					*init_env_map(void);
+
+// trim_env.c
+int    find_env_operator(char *str);
+char					*trim_env_name(char *env, const int env_operator);
+char					*trim_env_value(char *env);
 
 // wait_pid.c
 void					wait_pid(pid_t pid);

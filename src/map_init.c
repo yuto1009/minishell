@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 19:04:31 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/04/29 22:54:49 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/12 22:28:38 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_var	*init_env_map(void)
 	env_map = NULL;
 	while (*env_p != NULL)
 	{
-		name = trim_env_name(*env_p);
+		name = trim_env_name(*env_p, ASSIGN_OP);
 		value = trim_env_value(*env_p);
 		env_map = export_env(env_map, name, value);
 		env_p++;

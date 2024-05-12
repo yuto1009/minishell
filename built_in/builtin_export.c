@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 17:10:24 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/03/28 16:42:42 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/05/12 23:16:29 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ bool	is_env_exists(t_var *env_map, char *name)
 	return (false);
 }
 
+// static int builtin_export_case_assign();
+// static int builtin_export_case_append();
+
 int	builtin_export(char **args, t_var *env_map)
 {
 	int		i;
@@ -52,21 +55,26 @@ int	builtin_export(char **args, t_var *env_map)
 	i = 1;
 	while (args[i] != NULL)
 	{
-		env_name = trim_env_name(args[i]);
+		const int env_operator = find_env_operator(args[i]);
+		// if (env_operator == INVALID_OP)
+			// anything?
+		env_name = trim_env_name(args[i], env_operator);
 		if (!env_name && is_identifier(args[i]))
 			return (0);
 		env_value = trim_env_value(args[i]);
-		if (!is_identifier(env_name) || (!env_name && !is_identifier(args[i])))
+		if (!is_identifier(env_name) || (!env_name && !is_identifier(args[i])) || env_operator == INVALID_OP)
 		{
 			g_status = GENERAL_ERRORS;
 			return (command_error(args[i], "export"));
 		}
-		if (is_env_exists(env_map, env_name))
+		// if (is_env_exists(env_map, env_name))
+		if (env_operator == ASSIGN_OP)
 		{
-			i++;
-			continue ;
+			unset_env(env_name, env_map);
+			export_env(env_map, env_name, env_value);
 		}
-		export_env(env_map, env_name, env_value);
+		if (env_operator == APPEND_OP)
+			append_env(env_map, env_name, env_value);
 		i++;
 	}
 	return (0);

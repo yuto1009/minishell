@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 21:23:23 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/12 23:04:52 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/12 23:24:14 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ t_var	*export_env(t_var *map, char *env_name, char *env_value)
 
 t_var	*append_env(t_var *map, char *env_name, char *additional_value)
 {
+	// char *tmp_env_name; nameは消しちゃダメじゃね？
 	char *tmp_env_value;
 	t_var *head;
 	
@@ -56,12 +57,16 @@ t_var	*append_env(t_var *map, char *env_name, char *additional_value)
 		{
 			if (ft_strncmp(map->name, env_name, ft_strlen(env_name)) == 0 && ft_strlen(map->name) == ft_strlen(env_name))
 			{
+				// tmp_env_name = map->name;
 				tmp_env_value = map->value;
 				map->value = ft_strjoin(map->value, additional_value);
+				free(env_name);
+				// free(tmp_env_name);
 				free(tmp_env_value);
+				free(additional_value);
 				return (head);
 			}
-			if (map->next == NULL)
+			if (map->next == NULL)	// ここの中身export呼び出せば良くね？
 			{
 				map->next = create_map(env_name, additional_value);
 				map->next->prev = map;

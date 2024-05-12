@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 17:10:24 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/05/12 23:09:35 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/12 23:16:29 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ bool	is_env_exists(t_var *env_map, char *name)
 	}
 	return (false);
 }
+
+// static int builtin_export_case_assign();
+// static int builtin_export_case_append();
 
 int	builtin_export(char **args, t_var *env_map)
 {

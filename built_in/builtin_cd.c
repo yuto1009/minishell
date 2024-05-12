@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 23:03:00 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/02 23:04:51 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/12 19:24:08 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,14 @@ static char	*get_target_path(char **args, t_var *env_map)
 	}
 	return (path);
 }
+void check_access_path()
+{
+    char *path;
+    path = getcwd(NULL, 0);
+    if(path == NULL)
+       printf("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n");
+    free(path);
+}
 
 int	builtin_cd(char **args, t_var *env_map)
 {
@@ -55,6 +63,7 @@ int	builtin_cd(char **args, t_var *env_map)
 		free(current_pwd);
 		return (cd_error(path));
 	}
+    check_access_path();
 	unset_env(current_pwd, env_map);
 	export_env(env_map, current_pwd, new_pwd(prev_pwd, path));
 	free(path);

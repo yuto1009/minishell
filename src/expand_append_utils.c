@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 12:40:30 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/07 08:33:19 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/14 23:03:41 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ static void	process_double_quote_contents(char **str, char **new_str,
 	{
 		if (**str == '\0')
 		{
-			printf("token->str %s\n", *str);
 			minishell_error("Unclosed double quote");
 			free(*new_str);
 			g_status = MINISHELL_ERROR;

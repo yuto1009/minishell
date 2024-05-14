@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 21:23:23 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/12 23:24:14 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/14 23:36:08 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,11 @@ void	unset_env(char *env_name, t_var *map)
 	t_var	*current;
 	t_var	*next;
 
-	current = map;
+    current = map;
 	while (current != NULL)
 	{
 		next = current->next;
-		if (ft_strncmp(current->name, env_name, ft_strlen(current->name)) == 0)
+        if(my_strcmp(current->name, env_name) == 0)
 		{
 			if (current->prev != NULL)
 				current->prev->next = current->next;
@@ -96,6 +96,7 @@ void	unset_env(char *env_name, t_var *map)
 			free(current->name);
 			free(current->value);
 			free(current);
+            current = NULL;
 			break ;
 		}
 		current = next;

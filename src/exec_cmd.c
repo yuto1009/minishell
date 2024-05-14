@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/02 22:25:38 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/14 23:54:48 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void	execute_pipe(char **argv, t_var *env_map)
 		executable = argv[0];
 	check_access(argv[0]);
 	execve(executable, argv, envlist2char(env_map));
+    
 	cmd_error_exit(argv[0], "command not found", 127);
 }
 

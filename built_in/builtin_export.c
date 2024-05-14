@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 17:10:24 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/05/12 23:16:29 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/14 23:36:16 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	builtin_export(char **args, t_var *env_map)
 		// if (is_env_exists(env_map, env_name))
 		if (env_operator == ASSIGN_OP)
 		{
-			unset_env(env_name, env_map);
+    			unset_env(env_name, env_map);
 			export_env(env_map, env_name, env_value);
 		}
 		if (env_operator == APPEND_OP)

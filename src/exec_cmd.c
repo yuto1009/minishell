@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/15 09:58:03 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/15 14:13:01 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	execute_pipe(char **argv, t_var *env_map)
 	if (ft_strchr(argv[0], '/') == NULL)
 		executable = search_path(argv[0]);
 	else
-		executable = argv[0];
+		executable = argv[0];        
 	check_access(argv[0]);
 	execve(executable, argv, envlist2char(env_map));
     

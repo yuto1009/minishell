@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/15 09:57:49 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/15 10:59:19 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ extern int				g_status;
 
 // Export operators
 # define INVALID_OP 0 
+# define IS_BLANK -1
 # define ASSIGN_OP_STR "="
 # define ASSIGN_OP 1
 # define APPEND_OP_STR "+="

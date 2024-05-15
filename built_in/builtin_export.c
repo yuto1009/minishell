@@ -6,11 +6,13 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 17:10:24 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/05/14 23:36:16 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/15 11:44:46 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/built_in.h"
+
+
 
 static bool	is_identifier(char *name)
 {
@@ -22,6 +24,8 @@ static bool	is_identifier(char *name)
 	{
 		if (!ft_isalnum(*name) && *name != '_')
 			return (false);
+        // if(is_blank(*name))
+        //     return (false);
 		name++;
 	}
 	return (true);
@@ -53,13 +57,21 @@ int	builtin_export(char **args, t_var *env_map)
 	char	*env_value;
 
 	i = 1;
+    g_status = 0;
 	while (args[i] != NULL)
 	{
 		const int env_operator = find_env_operator(args[i]);
-		// if (env_operator == INVALID_OP)
+		if (env_operator == INVALID_OP &&find_env_operator(args[i+1]))
+        {
+            g_status = GENERAL_ERRORS;
+            command_error(args[i+1], "export");
+            i+=2;
+            continue;
+        }
 			// anything?
 		env_name = trim_env_name(args[i], env_operator);
-		if (!env_name && is_identifier(args[i]))
+        
+		if (!env_name && is_identifier(args[i]) )
 			return (0);
 		env_value = trim_env_value(args[i]);
 		if (!is_identifier(env_name) || (!env_name && !is_identifier(args[i])) || env_operator == INVALID_OP)
@@ -77,5 +89,5 @@ int	builtin_export(char **args, t_var *env_map)
 			append_env(env_map, env_name, env_value);
 		i++;
 	}
-	return (0);
+	return (g_status);
 }

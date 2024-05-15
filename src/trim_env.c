@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trim_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 23:11:52 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/12 23:04:43 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/15 11:30:49 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

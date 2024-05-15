@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 16:44:38 by yuendo            #+#    #+#             */
-/*   Updated: 2024/05/14 23:56:46 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/15 00:41:08 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ char	*search_path(char *filename)
 	char		*executable;
 
 	paths = getenv("PATH");
+    // printf("hoge\n");
 	while (paths != NULL)
 	{
 		path = trim_single_path(paths);
@@ -59,5 +60,7 @@ char	*search_path(char *filename)
 		free(executable);
 		free(path);
 	}
+    if(paths == NULL)
+        minishell_error("no such file or directory\n");
 	return (NULL);
 }

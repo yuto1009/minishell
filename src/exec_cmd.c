@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/14 23:54:48 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/15 09:58:03 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static void	execute_pipe(char **argv, t_var *env_map)
 {
 	extern char	**environ;
 	char		*executable;
-
 	if (ft_strchr(argv[0], '/') == NULL)
 		executable = search_path(argv[0]);
 	else
@@ -75,7 +74,7 @@ int	exec(t_node *node, t_var *env_map, int prev_status)
 		set_pipe(node);
 		pid = fork();
 		if (pid < 0)
-			cmd_error_exit("fork", "fork error", 1);
+			return(cmd_error_return("fork", "fork error", 1));
 		else if (pid == 0)
 		{
 			dup_child_pipe(node);

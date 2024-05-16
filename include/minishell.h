@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/12 22:25:29 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/15 10:59:19 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ extern int				g_status;
 
 // Export operators
 # define INVALID_OP 0 
+# define IS_BLANK -1
 # define ASSIGN_OP_STR "="
 # define ASSIGN_OP 1
 # define APPEND_OP_STR "+="
@@ -138,6 +139,7 @@ void					cmd_error_exit(char *location, char *message,
 							int exit_status);
 int						syntax_error_exit(char *token_str);
 int						unsupported_token_msg(char *str);
+int cmd_error_return(char *location, char *message, int exit_status);
 
 // expand.c
 int						expand(t_token *token, t_var *env_map, int prev_status);

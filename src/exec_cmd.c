@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/14 23:54:48 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/15 14:17:43 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,14 @@ static void	execute_pipe(char **argv, t_var *env_map)
 {
 	extern char	**environ;
 	char		*executable;
-
 	if (ft_strchr(argv[0], '/') == NULL)
 		executable = search_path(argv[0]);
 	else
-		executable = argv[0];
+    {
+		executable = argv[0];        
+         if (access(executable, F_OK) != 0)
+            cmd_error_exit(executable, "No such file or directory", 127);
+    }
 	check_access(argv[0]);
 	execve(executable, argv, envlist2char(env_map));
     
@@ -75,7 +78,7 @@ int	exec(t_node *node, t_var *env_map, int prev_status)
 		set_pipe(node);
 		pid = fork();
 		if (pid < 0)
-			cmd_error_exit("fork", "fork error", 1);
+			return(cmd_error_return("fork", "fork error", 1));
 		else if (pid == 0)
 		{
 			dup_child_pipe(node);

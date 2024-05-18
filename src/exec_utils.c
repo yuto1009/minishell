@@ -85,5 +85,4 @@ void	check_access(char *args)
 		cmd_error_exit(args, "Permission denied", 126);
 	if (ft_strncmp(args, "./", 2) == 0 && (st.st_mode & S_IFMT) == S_IFDIR)
 		cmd_error_exit(args, "is a Directry", 126);
-   
 }

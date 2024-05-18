@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interpret.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 15:54:37 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/07 22:17:24 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/18 18:16:37 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ static void	exec_command(t_node *node, t_var *env_map, int prev_status)
 		return ;
 	if (node->next == NULL && is_builtin(node->token->str))
 	{
-		token2argv = search_redir(node, count_token_len(node->token));
+		token2argv = search_redir(node, count_token_len(node->token),1);
 		if (!token2argv)
-			exit(1);
+			return;
 		dup_fd(node);
 		g_status = exec_builtin(token2argv, env_map, prev_status);
 		reset_fd(node);
@@ -84,8 +84,8 @@ void	free_node(t_node *node)
 	t_token	*current_token;
 	t_node	*tmpnode;
 	t_token	*tmp_token;
-
 	free(node->token->prev);
+	
 	while (node != NULL)
 	{
 		current_token = node->token;
@@ -112,7 +112,6 @@ void	interpret(char *line, t_var *env_map)
 	struct s_node	*node;
 	int				prev_status;
 	t_token			*token;
-
 	prev_status = g_status;
 	g_status = 0;
 	token = interpret_line2token(line, env_map, prev_status);

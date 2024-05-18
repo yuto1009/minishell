@@ -6,11 +6,13 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 17:10:24 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/05/18 18:19:05 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/05/18 18:38:43 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/built_in.h"
+
+
 
 static bool	is_identifier(char *name)
 {
@@ -42,6 +44,7 @@ bool	is_env_exists(t_var *env_map, char *name)
 	}
 	return (false);
 }
+
 
 void	handle_env_operation(t_var *env_map, int env_operator, char *env_name,
 		char *env_value)
@@ -84,6 +87,7 @@ int	builtin_export(char **args, t_var *env_map)
 	int	i;
 
 	i = 1;
+    g_status = 0;
 	while (args[i] != NULL)
 	{
 		if (!process_env_argument(args[i], env_map))

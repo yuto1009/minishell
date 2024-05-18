@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 14:04:23 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/28 17:03:20 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/05/18 18:36:19 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,10 @@ int	heredoc(char *delimiter)
 		line = readline("> ");
 		if (line == NULL)
 			return (free_close(line, pfd));
-		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
+		if (my_strcmp(line, delimiter) == 0)
 			return (free_close(line, pfd));
-		while (*line != '\0')
-		{
-			write(pfd[1], line, 1);
-			line++;
-		}
+			write(pfd[1], line, ft_strlen(line));
+			free(line);
 		write(pfd[1], "\n", 1);
 	}
 	close(pfd[1]);

@@ -3,6 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
@@ -197,7 +198,7 @@ int						heredoc(char *delimiter);
 void					dup_fd(t_node *node);
 void					reset_fd(t_node *node);
 int						stashfd(int fd);
-char					**search_redir(t_node *node, int len);
+char					**search_redir(t_node *node, int len, int is_builtin);
 
 // exec_cmd.c
 bool					is_builtin(char *str);
@@ -236,4 +237,6 @@ char					*trim_env_value(char *env);
 void					wait_pid(pid_t pid);
 
 int						my_strcmp(const char *s1, const char *s2);
+int return_error(char *message, char *filename, t_node *node);
+void	free_node(t_node *node);
 #endif

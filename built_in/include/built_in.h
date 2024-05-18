@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 16:34:36 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/02 22:18:43 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/18 15:01:11 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define BUILT_IN_H
 
 # include "../../include/minishell.h"
-
 typedef struct s_var	t_var;
 typedef struct s_token	t_token;
 # define OP_N "-n"
@@ -31,4 +30,5 @@ char					*new_pwd(char *prev_pwd, char *path);
 int						builtin_cd(char **args, t_var *env_map);
 int						cd_error(char *cmd);
 int						command_error(char *args, char *command);
+
 #endif

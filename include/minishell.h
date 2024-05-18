@@ -3,10 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/18 15:55:04 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/05/18 18:36:52 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +17,13 @@
 # include "../built_in/include/built_in.h"
 # include "../libft/libft.h"
 # include <stdio.h>
-# include <stdlib.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <stdlib.h>
 # include <string.h>
 # include <sys/stat.h>
 # include <sys/types.h>
@@ -52,12 +53,12 @@ extern int				g_status;
 # define QUESTION '?'
 
 // Export operators
-# define INVALID_OP 0 
+# define INVALID_OP 0
 # define IS_BLANK -1
 # define ASSIGN_OP_STR "="
 # define ASSIGN_OP 1
 # define APPEND_OP_STR "+="
-# define APPEND_OP 2 
+# define APPEND_OP 2
 
 // Token
 typedef struct s_token	t_token;
@@ -139,7 +140,8 @@ void					cmd_error_exit(char *location, char *message,
 							int exit_status);
 int						syntax_error_exit(char *token_str);
 int						unsupported_token_msg(char *str);
-int cmd_error_return(char *location, char *message, int exit_status);
+int						cmd_error_return(char *location, char *message,
+							int exit_status);
 
 // expand.c
 int						expand(t_token *token, t_var *env_map, int prev_status);
@@ -216,7 +218,8 @@ char					*search_path(char *filename);
 // map.c
 t_var					*export_env(t_var *map, char *env_name,
 							char *env_value);
-t_var	*append_env(t_var *map, char *env_name, char *additional_value);							
+t_var					*append_env(t_var *map, char *env_name,
+							char *additional_value);
 void					unset_env(char *env_name, t_var *map);
 
 // map_get.c
@@ -226,7 +229,7 @@ char					*get_env_value(char *env_name, t_var *map);
 t_var					*init_env_map(void);
 
 // trim_env.c
-int    find_env_operator(char *str);
+int						find_env_operator(char *str);
 char					*trim_env_name(char *env, const int env_operator);
 char					*trim_env_value(char *env);
 

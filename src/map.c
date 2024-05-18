@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 21:23:23 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/14 23:36:08 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/18 14:58:52 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,23 @@ t_var	*export_env(t_var *map, char *env_name, char *env_value)
 	return (map);
 }
 
+static char	*update_env_value(t_var *map, char *env_name,
+		char *additional_value)
+{
+	char	*tmp_env_value;
+
+	tmp_env_value = map->value;
+	map->value = ft_strjoin(map->value, additional_value);
+	free(env_name);
+	free(tmp_env_value);
+	free(additional_value);
+	return (map->value);
+}
+
 t_var	*append_env(t_var *map, char *env_name, char *additional_value)
 {
-	// char *tmp_env_name; nameは消しちゃダメじゃね？
-	char *tmp_env_value;
-	t_var *head;
-	
+	t_var	*head;
+
 	if (map == NULL)
 		return (create_map(env_name, additional_value));
 	else
@@ -55,18 +66,13 @@ t_var	*append_env(t_var *map, char *env_name, char *additional_value)
 		head = map;
 		while (map != NULL)
 		{
-			if (ft_strncmp(map->name, env_name, ft_strlen(env_name)) == 0 && ft_strlen(map->name) == ft_strlen(env_name))
+			if (ft_strncmp(map->name, env_name, ft_strlen(env_name)) == 0
+				&& ft_strlen(map->name) == ft_strlen(env_name))
 			{
-				// tmp_env_name = map->name;
-				tmp_env_value = map->value;
-				map->value = ft_strjoin(map->value, additional_value);
-				free(env_name);
-				// free(tmp_env_name);
-				free(tmp_env_value);
-				free(additional_value);
+				map->value = update_env_value(map, env_name, additional_value);
 				return (head);
 			}
-			if (map->next == NULL)	// ここの中身export呼び出せば良くね？
+			if (map->next == NULL)
 			{
 				map->next = create_map(env_name, additional_value);
 				map->next->prev = map;
@@ -83,11 +89,11 @@ void	unset_env(char *env_name, t_var *map)
 	t_var	*current;
 	t_var	*next;
 
-    current = map;
+	current = map;
 	while (current != NULL)
 	{
 		next = current->next;
-        if(my_strcmp(current->name, env_name) == 0)
+		if (my_strcmp(current->name, env_name) == 0)
 		{
 			if (current->prev != NULL)
 				current->prev->next = current->next;
@@ -96,10 +102,9 @@ void	unset_env(char *env_name, t_var *map)
 			free(current->name);
 			free(current->value);
 			free(current);
-            current = NULL;
+			current = NULL;
 			break ;
 		}
 		current = next;
 	}
 }
-

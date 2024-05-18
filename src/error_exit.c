@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_exit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:18:41 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/15 09:57:16 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/18 14:47:07 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,24 @@ void	fatal_error(char *message)
 
 void	cmd_error_exit(char *location, char *message, int exit_status)
 {
-	const char	*location_message = ft_strjoin(location, ": ");
+	const char	*location_message;
 
+	location_message = ft_strjoin(location, ": ");
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd((char *)location_message, STDERR_FILENO);
 	ft_putendl_fd(message, STDERR_FILENO);
 	free((char *)location_message);
 	exit(exit_status);
 }
-int cmd_error_return(char *location, char *message, int exit_status)
-{
-    const char	*location_message = ft_strjoin(location, ": ");
 
-    ft_putstr_fd("minishell: ", STDERR_FILENO);
-    ft_putstr_fd((char *)location_message, STDERR_FILENO);
-    ft_putendl_fd(message, STDERR_FILENO);
-    free((char *)location_message);
-    return (exit_status);
+int	cmd_error_return(char *location, char *message, int exit_status)
+{
+	const char	*location_message;
+
+	location_message = ft_strjoin(location, ": ");
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd((char *)location_message, STDERR_FILENO);
+	ft_putendl_fd(message, STDERR_FILENO);
+	free((char *)location_message);
+	return (exit_status);
 }

@@ -3,32 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   trim_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 23:11:52 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/15 11:30:49 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/18 14:46:18 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int    find_env_operator(char *str)
+int	find_env_operator(char *str)
 {
-    if (str == NULL)
-        return (INVALID_OP);
+	if (str == NULL)
+		return (INVALID_OP);
 	while (*str != '\0' && *str != '+' && *str != '=')
 		str++;
 	if (*str == '\0')
 		return (INVALID_OP);
-    if (ft_strnstr(str, APPEND_OP_STR, ft_strlen(APPEND_OP_STR)))
-        return (APPEND_OP);
-    else if (ft_strnstr(str, ASSIGN_OP_STR, ft_strlen(ASSIGN_OP_STR)))
-        return (ASSIGN_OP);
-    else
-        return (INVALID_OP);
+	if (ft_strnstr(str, APPEND_OP_STR, ft_strlen(APPEND_OP_STR)))
+		return (APPEND_OP);
+	else if (ft_strnstr(str, ASSIGN_OP_STR, ft_strlen(ASSIGN_OP_STR)))
+		return (ASSIGN_OP);
+	else
+		return (INVALID_OP);
 }
 
-static char *configure_operator_pos(char *env, const int env_operator)
+static char	*configure_operator_pos(char *env, const int env_operator)
 {
 	if (env_operator == ASSIGN_OP)
 		return (ft_strchr(env, '='));

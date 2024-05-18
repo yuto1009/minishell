@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 12:08:13 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/11 09:40:33 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/18 14:39:49 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,21 @@ static bool	check_long_overflow(char *str, int sign)
 	}
 	return (true);
 }
-bool str_is_digit(char *str)
-{
-    int i;
 
-    i = 0;
-    while (str[i])
-    {
-        if (!ft_isdigit(str[i]))
-            return (false);
-        i++;
-    }
-    return (true);
+bool	str_is_digit(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str == NULL)
+		return (true);
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (false);
+		i++;
+	}
+	return (true);
 }
 
 static void	atol_exit(char *str)
@@ -73,7 +76,7 @@ static void	atol_exit(char *str)
 	}
 	if (!ft_isdigit(str[i]) || !check_long_overflow(str, sign))
 	{
-		printf("minishell: exit: %s: numeric argument required",str);
+		printf("minishell: exit: %s: numeric argument required", str);
 		exit(255);
 	}
 	while (str[i])
@@ -92,14 +95,14 @@ int	builtin_exit(char **args, int status)
 	arg_len = 0;
 	arg_len = count_args(args);
 	printf("exit\n");
-    if(!str_is_digit(args[1]) )
-    {
-		printf("minishell: exit: %s: numeric argument required",args[1]);
+	if (!str_is_digit(args[1]))
+	{
+		printf("minishell: exit: %s: numeric argument required", args[1]);
 		exit(255);
 	}
-    if(arg_len > 2)
+	if (arg_len > 2)
 		return (minishell_error("exit : too many arguments"));
-    if(arg_len == 2)
+	if (arg_len == 2)
 		atol_exit(args[1]);
 	else
 		exit(status);

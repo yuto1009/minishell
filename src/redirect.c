@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:20:06 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/02 23:43:00 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/18 18:37:46 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	stashfd(int fd)
 	return (stashfd);
 }
 
-static void	open_file(t_node *node)
+static int	open_file(t_node *node, int is_builtin)
 {
 	char	*filename;
 
@@ -71,12 +71,17 @@ static void	open_file(t_node *node)
 	else if (ft_strncmp(node->token->str, "<", 1) == 0)
 		node->redirin_fd = open(filename, O_RDONLY);
 	if (node->redirin_fd < 0)
+	{
+		if (is_builtin == 1)
+			return (return_error("No such file or directory", filename, node));
 		cmd_error_exit(filename, "No such file or directory", 1);
+	}
 	if (node->redirout_fd < 0)
 		cmd_error_exit(filename, "Permission denied", 1);
+	return (0);
 }
 
-char	**search_redir(t_node *node, int len)
+char	**search_redir(t_node *node, int len, int is_builtin)
 {
 	int		i;
 	char	**token2argv;
@@ -91,7 +96,8 @@ char	**search_redir(t_node *node, int len)
 	{
 		if (tmp->token->kind == TK_REDIRECTION)
 		{
-			open_file(tmp);
+			if (open_file(tmp, is_builtin) == 1)
+				return (free(token2argv), node->token = current_token, NULL);
 			tmp->token = tmp->token->next;
 		}
 		else
@@ -101,6 +107,5 @@ char	**search_redir(t_node *node, int len)
 		}
 		tmp->token = tmp->token->next;
 	}
-	node->token = current_token;
-	return (token2argv);
+	return (node->token = current_token, token2argv);
 }

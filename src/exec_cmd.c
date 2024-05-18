@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/15 14:17:43 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/18 15:48:01 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	exec(t_node *node, t_var *env_map, int prev_status)
 		else if (pid == 0)
 		{
 			dup_child_pipe(node);
-			token2argv = search_redir(node, count_token_len(node->token));
+			token2argv = search_redir(node, count_token_len(node->token),0);
 			if (!token2argv)
 				exit(1);
 			dup_fd(node);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 17:10:24 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/05/18 15:12:11 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/05/18 18:19:05 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ static bool	is_identifier(char *name)
 	{
 		if (!ft_isalnum(*name) && *name != '_')
 			return (false);
-		// if(is_blank(*name))
-		//     return (false);
 		name++;
 	}
 	return (true);
@@ -45,10 +43,8 @@ bool	is_env_exists(t_var *env_map, char *name)
 	return (false);
 }
 
-// static int builtin_export_case_assign();
-// static int builtin_export_case_append();
-
-void handle_env_operation(t_var *env_map, int env_operator, char *env_name, char *env_value)
+void	handle_env_operation(t_var *env_map, int env_operator, char *env_name,
+		char *env_value)
 {
 	if (env_operator == ASSIGN_OP)
 	{
@@ -59,36 +55,42 @@ void handle_env_operation(t_var *env_map, int env_operator, char *env_name, char
 		append_env(env_map, env_name, env_value);
 }
 
+static int	process_env_argument(char *arg, t_var *env_map)
+{
+	const int	env_operator = find_env_operator(arg);
+	char		*env_name;
+	char		*env_value;
+
+	if (env_operator == INVALID_OP)
+		return (0);
+	env_name = trim_env_name(arg, env_operator);
+	if (!env_name && is_identifier(arg))
+		return (0);
+	env_value = trim_env_value(arg);
+	if (!is_identifier(env_name) || (!env_name && !is_identifier(arg))
+		|| env_operator == INVALID_OP)
+	{
+		free(env_name);
+		free(env_value);
+		g_status = GENERAL_ERRORS;
+		return (command_error(arg, "export"));
+	}
+	handle_env_operation(env_map, env_operator, env_name, env_value);
+	return (1);
+}
 
 int	builtin_export(char **args, t_var *env_map)
 {
-	int			i;
-	char		*env_name;
-	char		*env_value;
-	int	env_operator;
+	int	i;
 
 	i = 1;
 	while (args[i] != NULL)
 	{
-		env_operator = find_env_operator(args[i]);
-		if (env_operator == INVALID_OP && find_env_operator(args[i + 1]))
+		if (!process_env_argument(args[i], env_map))
 		{
-			g_status = GENERAL_ERRORS;
-			command_error(args[i + 1], "export");
-			i += 2;
+			i++;
 			continue ;
 		}
-		env_name = trim_env_name(args[i], env_operator);
-		if (!env_name && is_identifier(args[i]))
-			return (0);
-		env_value = trim_env_value(args[i]);
-		if (!is_identifier(env_name) || (!env_name && !is_identifier(args[i]))
-			|| env_operator == INVALID_OP)
-		{
-			g_status = GENERAL_ERRORS;
-			return (command_error(args[i], "export"));
-		}
-		handle_env_operation(env_map, env_operator, env_name, env_value);
 		i++;
 	}
 	return (g_status);

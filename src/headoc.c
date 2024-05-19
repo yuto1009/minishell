@@ -33,8 +33,8 @@ int	heredoc(char *delimiter)
 			return (free_close(line, pfd));
 		if (my_strcmp(line, delimiter) == 0)
 			return (free_close(line, pfd));
-			write(pfd[1], line, ft_strlen(line));
-			free(line);
+		write(pfd[1], line, ft_strlen(line));
+		free(line);
 		write(pfd[1], "\n", 1);
 	}
 	close(pfd[1]);

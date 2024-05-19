@@ -3,11 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/18 18:36:52 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/05/19 22:23:16 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +185,7 @@ void					set_parent_pipe(t_node *node);
 void					signal_heredoc(void);
 void					setup_signal(void);
 void					sigquit_action(int signum);
-//signal_init.c
+// signal_init.c
 void					signal_parent_init(void);
 void					signal_child_init(void);
 void					sigint_action(int signum);
@@ -237,6 +236,7 @@ char					*trim_env_value(char *env);
 void					wait_pid(pid_t pid);
 
 int						my_strcmp(const char *s1, const char *s2);
-int return_error(char *message, char *filename, t_node *node);
-void	free_node(t_node *node);
+int						return_error(char *message, char *filename,
+							t_node *node);
+void					free_node(t_node *node);
 #endif

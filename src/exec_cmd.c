@@ -82,7 +82,7 @@ int	exec(t_node *node, t_var *env_map, int prev_status)
 		else if (pid == 0)
 		{
 			dup_child_pipe(node);
-			token2argv = search_redir(node, count_token_len(node->token),0);
+			token2argv = search_redir(node, count_token_len(node->token), 0);
 			if (!token2argv)
 				exit(1);
 			dup_fd(node);

@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   search_path.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 16:44:38 by yuendo            #+#    #+#             */
-/*   Updated: 2024/05/15 14:09:49 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/23 18:06:41 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+static char	*get_paths(t_var *env_map)
+{
+	while (env_map != NULL)
+	{
+		if (my_strcmp(env_map->name, "PATH") == 0)
+			return (env_map->value);
+		env_map = env_map->next;
+	}
+	return (NULL);
+}
 
 static char	*trim_single_path(char *paths)
 {
@@ -34,14 +45,13 @@ static char	*trim_single_path(char *paths)
 	return (path);
 }
 
-char	*search_path(char *filename)
+char	*search_path(char *filename, t_var *env_map)
 {
-	extern char	**environ;
 	char		*paths;
 	char		*path;
 	char		*executable;
 
-	paths = getenv("PATH");
+	paths = get_paths(env_map);
 	while (paths != NULL)
 	{
 		path = trim_single_path(paths);

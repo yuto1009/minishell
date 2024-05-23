@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/19 22:23:16 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/23 17:45:51 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ char					**envlist2char(t_var *env_map);
 void					check_access(char *args);
 
 // search_path.c
-char					*search_path(char *filename);
+char					*search_path(char *filename, t_var *env_map);
 
 // map.c
 t_var					*export_env(t_var *map, char *env_name,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/18 15:48:01 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/05/23 18:06:02 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	execute_pipe(char **argv, t_var *env_map)
 	char		*executable;
 
 	if (ft_strchr(argv[0], '/') == NULL)
-		executable = search_path(argv[0]);
+		executable = search_path(argv[0], env_map);
 	else
 	{
 		executable = argv[0];
@@ -27,7 +27,7 @@ static void	execute_pipe(char **argv, t_var *env_map)
 	}
 	check_access(argv[0]);
 	execve(executable, argv, envlist2char(env_map));
-	cmd_error_exit(argv[0], "command not found", 127);
+	cmd_error_exit(executable, "No such file or directory", 127);
 }
 
 bool	is_builtin(char *str)

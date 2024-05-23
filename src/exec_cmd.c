@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/23 18:15:33 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/05/23 18:28:46 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,17 @@ static void	execute_pipe(char **argv, t_var *env_map)
 	char		*executable;
 
 	if (ft_strchr(argv[0], '/') == NULL)
+	{
 		executable = search_path(argv[0], env_map);
+		if (access(executable, F_OK) != 0)
+			cmd_error_exit(argv[0], "No such file or directory", 127);
+	}
 	else
+	{
 		executable = argv[0];
-	if (access(executable, F_OK) != 0)
-		cmd_error_exit(executable, "No such file or directory", 127);
+		if (access(executable, F_OK) != 0)
+			cmd_error_exit(executable, "No such file or directory", 127);
+	}
 	check_access(argv[0]);
 	execve(executable, argv, envlist2char(env_map));
 	cmd_error_exit(argv[0], "command not found", 127);

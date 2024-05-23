@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 16:30:50 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/05/23 13:27:31 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/05/23 19:29:09 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ void	process_unset(char *arg, t_var *head)
 	{
 		if (ft_strncmp(arg, env_map->name, ft_strlen(arg)) == 0)
 		{
-			if (my_strcmp(arg, "PWD") == 0)
-				break ;
 			unset_env(arg, env_map);
 			break ;
 		}

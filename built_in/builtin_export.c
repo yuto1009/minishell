@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 17:10:24 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/05/19 22:23:32 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/23 13:28:52 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,11 @@ static int	process_env_argument(char *arg, t_var *env_map)
 	if (env_operator == INVALID_OP)
 		return (0);
 	env_name = trim_env_name(arg, env_operator);
+	if (my_strcmp(env_name, "PWD") == 0)
+	{
+		free(env_name);
+		return (0);
+	}
 	if (!env_name && is_identifier(arg))
 		return (0);
 	env_value = trim_env_value(arg);

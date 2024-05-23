@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/23 18:28:46 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/05/23 18:52:05 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ static void	execute_pipe(char **argv, t_var *env_map)
 	extern char	**environ;
 	char		*executable;
 
-	if (ft_strchr(argv[0], '/') == NULL)
+	if (ft_strchr(argv[0], '/') == NULL )
 	{
 		executable = search_path(argv[0], env_map);
-		if (access(executable, F_OK) != 0)
+		if (access(executable, F_OK) != 0 && !is_env_exists(env_map, "PATH"))
 			cmd_error_exit(argv[0], "No such file or directory", 127);
 	}
 	else

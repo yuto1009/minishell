@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/18 15:48:01 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/05/23 18:52:05 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,12 @@ static void	execute_pipe(char **argv, t_var *env_map)
 	extern char	**environ;
 	char		*executable;
 
-	if (ft_strchr(argv[0], '/') == NULL)
-		executable = search_path(argv[0]);
+	if (ft_strchr(argv[0], '/') == NULL )
+	{
+		executable = search_path(argv[0], env_map);
+		if (access(executable, F_OK) != 0 && !is_env_exists(env_map, "PATH"))
+			cmd_error_exit(argv[0], "No such file or directory", 127);
+	}
 	else
 	{
 		executable = argv[0];

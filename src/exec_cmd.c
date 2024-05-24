@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/23 18:52:05 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/05/23 22:59:31 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
 
 static void	execute_pipe(char **argv, t_var *env_map)
 {
@@ -36,19 +37,19 @@ static void	execute_pipe(char **argv, t_var *env_map)
 
 bool	is_builtin(char *str)
 {
-	if (ft_strncmp(str, "echo", 5) == 0)
+	if (str && ft_strncmp(str, "echo", 5) == 0)
 		return (true);
-	else if (ft_strncmp(str, "cd", 3) == 0)
+	else if (str && ft_strncmp(str, "cd", 3) == 0)
 		return (true);
-	else if (ft_strncmp(str, "pwd", 4) == 0)
+	else if (str && ft_strncmp(str, "pwd", 4) == 0)
 		return (true);
-	else if (ft_strncmp(str, "export", 7) == 0)
+	else if (str && ft_strncmp(str, "export", 7) == 0)
 		return (true);
-	else if (ft_strncmp(str, "unset", 6) == 0)
+	else if (str && ft_strncmp(str, "unset", 6) == 0)
 		return (true);
-	else if (ft_strncmp(str, "env", 4) == 0)
+	else if (str && ft_strncmp(str, "env", 4) == 0)
 		return (true);
-	else if (ft_strncmp(str, "exit", 5) == 0)
+	else if (str && ft_strncmp(str, "exit", 5) == 0)
 		return (true);
 	return (false);
 }
@@ -72,6 +73,19 @@ int	exec_builtin(char **argv, t_var *env_map, int prev_status)
 	return (0);
 }
 
+void handlee(int sig)
+{
+    (void)sig;
+    printf("www\n");
+    g_status = 130;
+}
+
+void prosess_signal(void)
+{
+    signal(SIGINT, handlee);
+    signal(SIGQUIT, handlee);
+}
+
 int	exec(t_node *node, t_var *env_map, int prev_status)
 {
 	int		pid;
@@ -85,6 +99,7 @@ int	exec(t_node *node, t_var *env_map, int prev_status)
 			return (cmd_error_return("fork", "fork error", 1));
 		else if (pid == 0)
 		{
+            prosess_signal();
 			dup_child_pipe(node);
 			token2argv = search_redir(node, count_token_len(node->token), 0);
 			if (!token2argv)

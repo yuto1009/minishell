@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wait_pid.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 18:02:20 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/03/28 17:08:52 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/05/23 23:01:22 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

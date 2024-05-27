@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 23:03:00 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/27 20:19:03 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/27 20:23:59 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	builtin_cd(char **args, t_var *env_map)
 	oldpwd = ft_strdup("OLDPWD");
 	oldpwd_value = get_env_value(pwd, env_map);
 	unset_env(oldpwd, env_map);
-	printf("DEBUG\n");
 	export_env(env_map, oldpwd, oldpwd_value);
 	path = get_target_path(args, env_map);
 	if (!path)

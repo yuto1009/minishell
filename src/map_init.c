@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 19:04:31 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/14 23:17:14 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/27 19:53:32 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ t_var	*init_env_map(void)
 	while (*env_p != NULL)
 	{
 		name = trim_env_name(*env_p, ASSIGN_OP);
+		if (my_strcmp(name, "OLDPWD") == 0)
+		{
+			free(name);
+			env_p++;
+			continue;
+		}
 		value = trim_env_value(*env_p);
 		env_map = export_env(env_map, name, value);
 		env_p++;

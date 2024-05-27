@@ -6,7 +6,7 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 23:03:00 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/02 23:04:51 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/05/27 19:39:39 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,26 @@ static char	*get_target_path(char **args, t_var *env_map)
 int	builtin_cd(char **args, t_var *env_map)
 {
 	char	*path;
-	char	*prev_pwd;
-	char	*current_pwd;
-	char	*old_pwd;
+	char	*oldpwd_value;
+	char	*pwd;
+	char	*oldpwd;
 
-	current_pwd = ft_strdup("PWD");
-	old_pwd = ft_strdup("OLDPWD");
-	prev_pwd = get_env_value(current_pwd, env_map);
-	unset_env(old_pwd, env_map);
-	export_env(env_map, old_pwd, prev_pwd);
+	pwd = ft_strdup("PWD");
+	oldpwd = ft_strdup("OLDPWD");
+	oldpwd_value = get_env_value(pwd, env_map);
+	unset_env(oldpwd, env_map);
+	export_env(env_map, oldpwd, oldpwd_value);
 	path = get_target_path(args, env_map);
 	if (!path)
 		return (minishell_error("HOME not set"));
 	if (chdir(path) < 0)
 	{
-		free(current_pwd);
+		free(pwd);
 		return (cd_error(path));
 	}
-	unset_env(current_pwd, env_map);
-	export_env(env_map, current_pwd, new_pwd(prev_pwd, path));
+	unset_env(pwd, env_map);
+	if (oldpwd_value != NULL)
+		export_env(env_map, pwd, new_pwd(oldpwd_value, path));
 	free(path);
 	return (0);
 }

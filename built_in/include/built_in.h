@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 16:34:36 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/23 18:50:21 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/05/27 19:15:47 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ typedef struct s_token	t_token;
 int						builtin_unset(char **args, t_var *env_map);
 int						builtin_env(t_var *env_map);
 int						builtin_export(char **args, t_var *env_map);
-int						builtin_pwd(t_var *env_map);
+int						builtin_pwd();
 int						builtin_echo(char **args);
 int						builtin_exit(char **args, int status);
 char					*delete_pwd_elm(char *pwd);

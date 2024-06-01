@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 11:51:41 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/15 14:17:20 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/05/23 22:02:09 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,12 @@ void	check_access(char *args)
 	result = stat(args, &st);
 	if (result)
 		;
+    if(args){
 	if (ft_strncmp(args, "./", 2) == 0 && access(args, F_OK) != 0)
 		cmd_error_exit(args, "NO such file or directory", 127);
 	if (ft_strncmp(args, "./", 2) == 0 && access(args, X_OK) != 0)
 		cmd_error_exit(args, "Permission denied", 126);
 	if (ft_strncmp(args, "./", 2) == 0 && (st.st_mode & S_IFMT) == S_IFDIR)
 		cmd_error_exit(args, "is a Directry", 126);
+    }
 }

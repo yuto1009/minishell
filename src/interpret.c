@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 15:54:37 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/06/01 18:44:04 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/06/01 18:57:25 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,9 @@ static t_token	*interpret_line2token(char *line, t_var *env_map,
 	token = remove_void_tokens(token);
 	if (token->kind == TK_EOF)
 	{
-		free(token->str);
-		free(token);
-		free(token->prev);
-		return (NULL);
+		if (token->prev)
+			free(token->prev);
+		return (free(token->str), free(token), NULL);
 	}
 	status = tokenize_error(token);
 	if (status == SYNTAX_ERROR || status == CMD_NOT_FOUND_ERROR)

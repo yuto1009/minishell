@@ -6,19 +6,18 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/06/01 16:04:32 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/06/01 17:36:58 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-
-static void	execute_pipe(char **argv, t_var *env_map)
+void	execute_pipe(char **argv, t_var *env_map)
 {
 	extern char	**environ;
 	char		*executable;
 
-	if (ft_strchr(argv[0], '/') == NULL )
+	if (ft_strchr(argv[0], '/') == NULL)
 	{
 		executable = search_path(argv[0], env_map);
 		if (access(executable, F_OK) != 0 && !is_env_exists(env_map, "PATH"))
@@ -73,45 +72,11 @@ int	exec_builtin(char **argv, t_var *env_map, int prev_status)
 	return (0);
 }
 
-void handlee(int sig)
+void	handler(int signum)
 {
-    (void)sig;
-    printf("www\n");
-    g_status = 130;
-}
-
-void prosess_signal(void)
-{
-    signal(SIGINT, handlee);
-    signal(SIGQUIT, handlee);
-}
-
-int	exec(t_node *node, t_var *env_map, int prev_status)
-{
-	int		pid;
-	char	**token2argv;
-
-	while (node != NULL)
-	{
-		set_pipe(node);
-		pid = fork();
-		if (pid < 0)
-			return (cmd_error_return("fork", "fork error", 1));
-		else if (pid == 0)
-		{
-            prosess_signal();
-			dup_child_pipe(node);
-			token2argv = search_redir(node, count_token_len(node->token), 0);
-			if (!token2argv)
-				exit(1);
-			dup_fd(node);
-			if (is_builtin(token2argv[0]))
-				exit(exec_builtin(token2argv, env_map, prev_status));
-			else
-				execute_pipe(token2argv, env_map);
-		}
-		set_parent_pipe(node);
-		node = node->next;
-	}
-	return (pid);
+	if (signum == SIGQUIT)
+		printf("Quit: 3\n");
+	else if (signum == SIGINT)
+		printf("\n");
+	rl_redisplay();
 }

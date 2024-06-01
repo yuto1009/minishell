@@ -29,7 +29,7 @@ t_var	*init_env_map(void)
 		{
 			free(name);
 			env_p++;
-			continue;
+			continue ;
 		}
 		value = trim_env_value(*env_p);
 		env_map = export_env(env_map, name, value);

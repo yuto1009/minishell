@@ -21,8 +21,9 @@ void	fatal_error(char *message)
 void	cmd_error_exit(char *location, char *message, int exit_status)
 {
 	const char	*location_message;
-    if(!location)
-        exit(0);
+
+	if (!location)
+		exit(0);
 	location_message = ft_strjoin(location, ": ");
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd((char *)location_message, STDERR_FILENO);

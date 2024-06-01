@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_get.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 19:02:57 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/03 10:32:13 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/06/01 16:42:22 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*get_env_value(char *env_name, t_var *map)
 {
 	while (map != NULL)
 	{
-		if (my_strcmp(map->name, env_name) == 0)
+		if (my_strcmp(map->name, env_name) == 0 && map->value!=NULL)
 			return (ft_strdup(map->value));
 		map = map->next;
 	}

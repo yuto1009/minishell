@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wait_pid.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 18:02:20 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/23 23:01:22 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/06/01 18:49:43 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	wait_pid(pid_t pid)
 	pid_t	result;
 	int		wstatus;
 
-	signal_parent_init();
 	while (1)
 	{
+		signal_parent_init();
 		result = wait(&wstatus);
 		if (result == pid)
 		{

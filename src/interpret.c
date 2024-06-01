@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 15:54:37 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/18 18:16:37 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/06/01 18:44:04 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static t_token	*interpret_line2token(char *line, t_var *env_map,
 	{
 		free(token->str);
 		free(token);
+		free(token->prev);
 		return (NULL);
 	}
 	status = tokenize_error(token);

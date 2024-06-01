@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/27 19:15:57 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/06/01 16:04:32 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	exec_builtin(char **argv, t_var *env_map, int prev_status)
 	else if (ft_strncmp(argv[0], "echo", 5) == 0)
 		return (builtin_echo(argv));
 	else if (ft_strncmp(argv[0], "pwd", 4) == 0)
-		return (builtin_pwd());
+		return (builtin_pwd(env_map));
 	else if (ft_strncmp(argv[0], "exit", 5) == 0)
 		return (builtin_exit(argv, prev_status));
 	else if (ft_strncmp(argv[0], "cd", 3) == 0)

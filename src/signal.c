@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:13:26 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/05/18 14:59:57 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/06/01 18:18:16 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static void	handler_heredoc(int signum)
 {
 	if (signum)
 		;
-	write(1, "\n", 1);
 	close(0);
 	exit(0);
 }
@@ -27,6 +26,7 @@ static void	handler_heredoc_quit(int signum)
 		;
 	rl_on_new_line();
 	rl_redisplay();
+	exit(0);
 }
 
 void	signal_heredoc(void)

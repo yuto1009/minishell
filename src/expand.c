@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:00:29 by yuendo            #+#    #+#             */
-/*   Updated: 2024/06/01 18:44:33 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/06/01 18:48:51 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,6 @@ int	expand(t_token *token, t_var *env_map, int prev_status)
 		g_status = 0;
 		return (-1);
 	}
-	remove_quotes(token);	
+	remove_quotes(token);
 	return (0);
 }

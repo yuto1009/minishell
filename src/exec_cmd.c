@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/06/01 18:07:14 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/06/01 18:48:29 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,5 @@ void	handler(int signum)
 		printf("Quit: 3\n");
 	else if (signum == SIGINT)
 		printf("\n");
-		// rl_replace_line("", 0);
 	rl_redisplay();
 }

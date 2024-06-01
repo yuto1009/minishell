@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:15:11 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/06/01 18:16:41 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/06/01 18:50:10 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,13 @@ static void	ignore_sig(int sig)
 	sigemptyset(&sa.sa_mask);
 	sa.sa_handler = handler;
 	sigaction(sig, &sa, NULL);
-		sa.sa_handler = SIG_IGN;
-
+	sa.sa_handler = SIG_IGN;
 }
 
 void	signal_parent_init(void)
 {
 	ignore_sig(SIGINT);
 	ignore_sig(SIGQUIT);
-	// reset_sig(SIGINT);
-	// reset_sig(SIGQUIT);
 }
 
 void	signal_child_init(void)

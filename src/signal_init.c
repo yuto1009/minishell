@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:15:11 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/23 23:12:03 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/06/01 17:35:32 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,6 @@ void	sigint_action(int signum)
 	rl_replace_line("", 0);
 	rl_redisplay();
 	g_status = GENERAL_ERRORS;
-}
-
-static void handler(int signum)
-{
-    if (signum == SIGQUIT)
-        printf("Quit: 3\n");
-    else if (signum == SIGINT)
-        printf("\n");
-    // rl_on_new_line();
-    rl_redisplay();
 }
 
 static void	ignore_sig(int sig)

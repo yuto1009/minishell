@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/05/23 17:45:51 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/06/01 17:37:13 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,9 +200,13 @@ int						stashfd(int fd);
 char					**search_redir(t_node *node, int len, int is_builtin);
 
 // exec_cmd.c
+void					execute_pipe(char **argv, t_var *env_map);
 bool					is_builtin(char *str);
 int						exec_builtin(char **argv, t_var *env_map,
 							int prev_status);
+void					handler(int signum);
+
+// exec.c
 int						exec(t_node *node, t_var *env_map, int prev_status);
 
 /// exec_cmd.c

@@ -26,7 +26,7 @@ char	*get_env_value(char *env_name, t_var *map)
 {
 	while (map != NULL)
 	{
-		if (my_strcmp(map->name, env_name) == 0 && map->value!=NULL)
+		if (my_strcmp(map->name, env_name) == 0 && map->value != NULL)
 			return (ft_strdup(map->value));
 		map = map->next;
 	}

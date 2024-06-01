@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 16:34:36 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/06/01 16:02:06 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/06/01 17:08:21 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../../include/minishell.h"
 # include <stdbool.h>
+
 typedef struct s_var	t_var;
 typedef struct s_token	t_token;
 # define OP_N "-n"

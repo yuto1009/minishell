@@ -6,7 +6,7 @@
 /*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 23:03:00 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/06/01 16:45:35 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/06/01 17:06:47 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,15 @@ static char	*get_target_path(char **args, t_var *env_map)
 	return (path);
 }
 
-static void check_access_path()
+static void	check_access_path(void)
 {
-    char *path;
-	
-    path = getcwd(NULL, 0);
-    if(path == NULL)
-       printf("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n");
-    free(path);
+	char	*path;
+
+	path = getcwd(NULL, 0);
+	if (path == NULL)
+		printf("cd: error retrieving current directory: getcwd: cannot\
+			access parent directories: No such file or directory\n");
+	free(path);
 }
 
 int	builtin_cd(char **args, t_var *env_map)
@@ -50,11 +51,12 @@ int	builtin_cd(char **args, t_var *env_map)
 	char	*path;
 	char	*pwd;
 	char	*oldpwd;
+	char	*oldpwd_value;
 
 	pwd = ft_strdup("PWD");
 	oldpwd = ft_strdup("OLDPWD");
 	unset_env(oldpwd, env_map);
-	char *oldpwd_value = get_env_value(pwd, env_map);
+	oldpwd_value = get_env_value(pwd, env_map);
 	export_env(env_map, oldpwd, oldpwd_value);
 	path = get_target_path(args, env_map);
 	if (!path)

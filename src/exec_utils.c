@@ -79,12 +79,13 @@ void	check_access(char *args)
 	result = stat(args, &st);
 	if (result)
 		;
-    if(args){
-	if (ft_strncmp(args, "./", 2) == 0 && access(args, F_OK) != 0)
-		cmd_error_exit(args, "NO such file or directory", 127);
-	if (ft_strncmp(args, "./", 2) == 0 && access(args, X_OK) != 0)
-		cmd_error_exit(args, "Permission denied", 126);
-	if (ft_strncmp(args, "./", 2) == 0 && (st.st_mode & S_IFMT) == S_IFDIR)
-		cmd_error_exit(args, "is a Directry", 126);
-    }
+	if (args)
+	{
+		if (ft_strncmp(args, "./", 2) == 0 && access(args, F_OK) != 0)
+			cmd_error_exit(args, "NO such file or directory", 127);
+		if (ft_strncmp(args, "./", 2) == 0 && access(args, X_OK) != 0)
+			cmd_error_exit(args, "Permission denied", 126);
+		if (ft_strncmp(args, "./", 2) == 0 && (st.st_mode & S_IFMT) == S_IFDIR)
+			cmd_error_exit(args, "is a Directry", 126);
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   headoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 14:04:23 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/06/01 19:13:42 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/06/02 22:07:24 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static int	free_close(char *line, int pfd[2])
 	free(line);
 	close(pfd[1]);
 	rl_on_new_line();
-	rl_redisplay();
 	return (pfd[0]);
 }
 

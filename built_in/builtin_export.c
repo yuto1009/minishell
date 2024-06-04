@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 17:10:24 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/05/23 19:29:24 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/06/04 14:02:28 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ int	builtin_export(char **args, t_var *env_map)
 
 	i = 1;
 	g_status = 0;
+	if (*args != NULL && args[1] == NULL)
+		export_no_args(env_map);
 	while (args[i] != NULL)
 	{
 		if (!process_env_argument(args[i], env_map))

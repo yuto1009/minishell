@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 16:34:36 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/06/01 17:08:21 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/06/04 14:04:49 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,5 @@ int						builtin_cd(char **args, t_var *env_map);
 int						cd_error(char *cmd);
 int						command_error(char *args, char *command);
 bool					is_env_exists(t_var *env_map, char *name);
+void export_no_args(t_var *env_map);
 #endif

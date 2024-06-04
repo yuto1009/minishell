@@ -6,13 +6,13 @@
 /*   By: yutoendo <yutoendo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 16:30:50 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/05/27 20:13:09 by yutoendo         ###   ########.fr       */
+/*   Updated: 2024/06/04 22:45:44 by yutoendo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/built_in.h"
 
-static bool	is_identifier(char *name)
+static bool is_identifier(char *name)
 {
 	if (name == NULL || *name == '\0')
 		return (false);

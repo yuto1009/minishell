@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 22:09:07 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/06/01 17:37:13 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/06/05 20:59:28 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ int						syntax_error_exit(char *token_str);
 int						unsupported_token_msg(char *str);
 int						cmd_error_return(char *location, char *message,
 							int exit_status);
+void	                check_access_path(void);
 
 // expand.c
 int						expand(t_token *token, t_var *env_map, int prev_status);

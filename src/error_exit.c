@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:18:41 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/05/23 22:09:57 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/06/05 21:03:25 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,14 @@ int	cmd_error_return(char *location, char *message, int exit_status)
 	ft_putendl_fd(message, STDERR_FILENO);
 	free((char *)location_message);
 	return (exit_status);
+}
+void	check_access_path(void)
+{
+	char	*path;
+
+	path = getcwd(NULL, 0);
+	if (path == NULL)
+		printf("cd: error retrieving current directory: getcwd: cannot\
+access parent directories: No such file or directory\n");
+	free(path);
 }

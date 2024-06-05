@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 13:36:33 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/06/01 18:48:29 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/06/05 10:29:02 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,4 @@ int	exec_builtin(char **argv, t_var *env_map, int prev_status)
 	return (0);
 }
 
-void	handler(int signum)
-{
-	if (signum == SIGQUIT)
-		printf("Quit: 3\n");
-	else if (signum == SIGINT)
-		printf("\n");
-	rl_redisplay();
-}
+

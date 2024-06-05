@@ -3,43 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:13:26 by kyoshida          #+#    #+#             */
-/*   Updated: 2024/06/01 18:18:16 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/06/05 10:29:04 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void	handler_heredoc(int signum)
-{
-	if (signum)
-		;
-	close(0);
-	exit(0);
-}
 
-static void	handler_heredoc_quit(int signum)
+void	handler(int signum)
 {
-	if (signum)
-		;
-	rl_on_new_line();
+	if (signum == SIGQUIT)
+		printf("Quit: 3\n");
+	else if (signum == SIGINT)
+		printf("\n");
 	rl_redisplay();
-	exit(0);
-}
-
-void	signal_heredoc(void)
-{
-	struct sigaction	act1;
-	struct sigaction	act2;
-
-	sigemptyset(&act1.sa_mask);
-	act1.sa_handler = handler_heredoc;
-	sigaction(SIGINT, &act1, NULL);
-	sigemptyset(&act2.sa_mask);
-	act2.sa_handler = handler_heredoc_quit;
-	sigaction(SIGQUIT, &act2, NULL);
 }
 
 void	sigquit_action(int signum)

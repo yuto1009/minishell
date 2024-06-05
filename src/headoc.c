@@ -6,7 +6,7 @@
 /*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 14:04:23 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/06/02 22:07:24 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/06/05 10:32:23 by yoshidakazu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,23 @@ static int	free_close(char *line, int pfd[2])
 	rl_on_new_line();
 	return (pfd[0]);
 }
+void sigquit_handler(int signum)
+{
+    (void)signum; 
+}
 
+static void	sigint_handler(int signum)
+{
+	if (signum)
+		;
+	close(0);
+	exit(0);
+}
+void signal_heredoc(void)
+{
+    signal(SIGINT, sigint_handler); 
+    signal(SIGQUIT, sigquit_handler); 
+}
 int	heredoc(char *delimiter)
 {
 	char	*line;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   headoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 14:04:23 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/06/06 11:03:38 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/06/06 13:38:42 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ static void	sigint_handler(int signum)
 
 void	signal_heredoc(void)
 {
-	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigquit_handler);
+	signal(SIGINT, sigint_handler);
 }
 
 int	heredoc(char *delimiter)

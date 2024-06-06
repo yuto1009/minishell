@@ -33,5 +33,5 @@ int						builtin_cd(char **args, t_var *env_map);
 int						cd_error(char *cmd);
 int						command_error(char *args, char *command);
 bool					is_env_exists(t_var *env_map, char *name);
-void export_no_args(t_var *env_map);
+void					export_no_args(t_var *env_map);
 #endif

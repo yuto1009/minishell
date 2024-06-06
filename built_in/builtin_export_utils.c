@@ -12,11 +12,11 @@
 
 #include "include/built_in.h"
 
-void export_no_args(t_var *env_map)
+void	export_no_args(t_var *env_map)
 {
-    while (env_map != NULL)
+	while (env_map != NULL)
 	{
-        printf("declare -x ");
+		printf("declare -x ");
 		if (env_map->value == NULL)
 			printf("%s=\n", env_map->name);
 		else

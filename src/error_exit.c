@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_exit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:18:41 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/06/05 21:03:25 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/06/06 11:02:53 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	cmd_error_return(char *location, char *message, int exit_status)
 	free((char *)location_message);
 	return (exit_status);
 }
+
 void	check_access_path(void)
 {
 	char	*path;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   headoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 14:04:23 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/06/05 10:32:23 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/06/06 11:03:38 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@ static int	free_close(char *line, int pfd[2])
 	rl_on_new_line();
 	return (pfd[0]);
 }
-void sigquit_handler(int signum)
+
+void	sigquit_handler(int signum)
 {
-    (void)signum; 
+	(void)signum;
 }
 
 static void	sigint_handler(int signum)
@@ -31,11 +32,13 @@ static void	sigint_handler(int signum)
 	close(0);
 	exit(0);
 }
-void signal_heredoc(void)
+
+void	signal_heredoc(void)
 {
-    signal(SIGINT, sigint_handler); 
-    signal(SIGQUIT, sigquit_handler); 
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigquit_handler);
 }
+
 int	heredoc(char *delimiter)
 {
 	char	*line;

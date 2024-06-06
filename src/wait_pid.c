@@ -6,7 +6,7 @@
 /*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 18:02:20 by yoshidakazu       #+#    #+#             */
-/*   Updated: 2024/06/01 18:49:43 by kyoshida         ###   ########.fr       */
+/*   Updated: 2024/06/06 13:32:25 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	wait_pid(pid_t pid)
 
 	while (1)
 	{
-		signal_parent_init();
 		result = wait(&wstatus);
 		if (result == pid)
 		{

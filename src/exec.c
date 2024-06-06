@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 17:11:58 by yuendo            #+#    #+#             */
-/*   Updated: 2024/06/01 17:39:44 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/06/06 13:38:32 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	exec(t_node *node, t_var *env_map, int prev_status)
 
 	while (node != NULL)
 	{
+		signal_parent_init();
 		set_pipe(node);
 		pid = fork();
 		if (pid < 0)

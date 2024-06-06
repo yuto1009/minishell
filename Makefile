@@ -1,5 +1,5 @@
 NAME     = minishell
-CC       = cc
+CC       = cc 
 CFLAGS   = -Wall -Wextra -Werror -g -I include -I $(shell brew --prefix readline)/include
 LDFLAGS  = -lreadline -L$(shell brew --prefix readline)/lib
 SRCS     = src/main.c src/interpret.c src/error.c src/tokenize.c built_in/builtin_exit.c built_in/builtin_env.c \

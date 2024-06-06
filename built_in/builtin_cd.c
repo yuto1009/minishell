@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kyoshida <kyoshida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 23:03:00 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/06/06 10:59:44 by yuendo           ###   ########.fr       */
+/*   Updated: 2024/06/06 14:05:14 by kyoshida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	builtin_cd(char **args, t_var *env_map)
 	if (!path)
 		return (minishell_error("HOME not set"));
 	if (check_is_directory(path) < 0)
-		return (free(pwd), free(oldpwd), free(path), 1);
+		return (free(pwd), free(path), 1);
 	if (chdir(path) < 0)
 	{
 		free(pwd);

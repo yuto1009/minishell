@@ -12,7 +12,7 @@
 
 #include "include/built_in.h"
 
-static bool is_identifier(char *name)
+static bool	is_identifier(char *name)
 {
 	if (name == NULL || *name == '\0')
 		return (false);

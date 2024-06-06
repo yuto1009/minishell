@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoshidakazushi <yoshidakazushi@student.    +#+  +:+       +#+        */
+/*   By: yuendo <yuendo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 23:03:00 by yutoendo          #+#    #+#             */
-/*   Updated: 2024/06/05 20:58:53 by yoshidakazu      ###   ########.fr       */
+/*   Updated: 2024/06/06 10:59:44 by yuendo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,25 +35,28 @@ static char	*get_target_path(char **args, t_var *env_map)
 	return (path);
 }
 
+int	path_check(const char *path)
+{
+	struct stat	path_stat;
 
-int path_check(const char *path)
-{
-    struct stat path_stat;
-    if (stat(path, &path_stat) != 0) {
-        return -1; // エラーが発生した場合
-    }
-    return S_ISDIR(path_stat.st_mode);
+	if (stat(path, &path_stat) != 0)
+	{
+		return (-1);
+	}
+	return (S_ISDIR(path_stat.st_mode));
 }
-int check_is_directory(const char *path)
+
+int	check_is_directory(const char *path)
 {
-    int result;
-    result = path_check(path);
-    if(result == 0)
-    {
-        printf("minishell: cd: %s: Not a directory\n", path);
-        return -1;
-    }
-    return 0;
+	int	result;
+
+	result = path_check(path);
+	if (result == 0)
+	{
+		printf("minishell: cd: %s: Not a directory\n", path);
+		return (-1);
+	}
+	return (0);
 }
 
 int	builtin_cd(char **args, t_var *env_map)
@@ -71,9 +74,9 @@ int	builtin_cd(char **args, t_var *env_map)
 	path = get_target_path(args, env_map);
 	if (!path)
 		return (minishell_error("HOME not set"));
-    if(check_is_directory(path)< 0)
-        return(free(pwd),free(oldpwd),free(path),1);
-    if (chdir(path) < 0)
+	if (check_is_directory(path) < 0)
+		return (free(pwd), free(oldpwd), free(path), 1);
+	if (chdir(path) < 0)
 	{
 		free(pwd);
 		return (cd_error(path));
